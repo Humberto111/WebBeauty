@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import "./Signin.css";
+import { Link } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 import {
   MDBBtn,
@@ -10,33 +13,46 @@ import {
   MDBInput,
   MDBIcon,
 } from "mdb-react-ui-kit";
-import "./Signin.css";
 
 function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       const response = await fetch(
-        "https://web-beauty-api-638331a8cfae.herokuapp.com/agregar-usuario",
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/signin",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ "nombre": email })
+          body: JSON.stringify({ 
+            "email": email,
+            "password": password
+          })
         }
       );
 
       if (response.ok) {
-        // El servidor respondió con éxito, puedes realizar acciones adicionales si es necesario
-        console.log("Inicio de sesión exitoso");
+        Swal.fire({
+          title: 'Web Beauty!',
+          text: 'Iniciando Sesión ...',
+          icon: 'success',
+          timer: 1500,
+          position: 'top-end',
+        }).then((result) => {
+          window.location.href = "/test";
+        })
       } else {
-        // Maneja los errores aquí, por ejemplo, muestra un mensaje de error al usuario
-        console.error("Error al iniciar sesión");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Algo salió mal. Intentalo nuevamente!',
+        })
       }
     } catch (error) {
       console.error("Error de red:", error);
@@ -96,9 +112,9 @@ function Signin() {
               <div>
                 <p className="mb-0">
                   Don't have an account?{" "}
-                  <a href="#!" class="text-white-50 fw-bold">
+                  <Link to="/register" class="text-white-50 fw-bold">
                     Sign Up
-                  </a>
+                  </Link>
                 </p>
               </div>
             </MDBCardBody>
