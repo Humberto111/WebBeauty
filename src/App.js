@@ -13,12 +13,10 @@ import ShowProducts from './Components/Productos/ShowProducts/ShowProducts';
 function App() {
   return (
     <div className="app">
-        <Sidebar />
-        <ShowProducts/>
       <BrowserRouter>
         <Routes>
-          <Route path="/test" element={<div>Hello</div>} />
-          {/*<Route path="/" element={<Signin />} />*/}
+          <Route path="/test" element={<Sidebar />} />
+          <Route path="/" element={<Signin />} />
           <Route path="/register" element={<Register />} />
           <Route path="/Auth" element={<Auth />} />
           <Route path="/verify" element={<Verify />} />
