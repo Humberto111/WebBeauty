@@ -22,7 +22,7 @@ const ShowProducts = () => {
     const getProducts = async () => {
         try {
             const response = await fetch(
-                "http://localhost:3000/products",
+                "https://web-beauty-api-638331a8cfae.herokuapp.com/products",
                 {
                     method: "GET",
                     headers: {
@@ -95,7 +95,7 @@ const ShowProducts = () => {
         if (operation === 2) {
             try {
                 const response = await fetch(
-                    "http://localhost:3000/editProduct",
+                    "https://web-beauty-api-638331a8cfae.herokuapp.com/editProduct",
                     {
                         method: "PUT",
                         headers: {
@@ -135,7 +135,7 @@ const ShowProducts = () => {
         } else if (operation === 1) {
             try {
                 const response = await fetch(
-                    "http://localhost:3000/addProduct",
+                    "https://web-beauty-api-638331a8cfae.herokuapp.com/addProduct",
                     {
                         method: "POST",
                         headers: {
@@ -179,7 +179,7 @@ const ShowProducts = () => {
     const onDeleteProduct = async (id) => {
         try {
             const response = await fetch(
-                "http://localhost:3000/deleteProduct",
+                "https://web-beauty-api-638331a8cfae.herokuapp.com/deleteProduct",
                 {
                     method: "DELETE",
                     headers: {
