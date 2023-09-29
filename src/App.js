@@ -15,7 +15,12 @@ function App() {
     <div className="app">
       <BrowserRouter>
         <Routes>
-          <Route path="/test" element={<Sidebar />} />
+          <Route path="/test" element={
+            <>
+              <Sidebar />
+              <ShowProducts />
+            </>
+          } />
           <Route path="/" element={<Signin />} />
           <Route path="/register" element={<Register />} />
           <Route path="/Auth" element={<Auth />} />
