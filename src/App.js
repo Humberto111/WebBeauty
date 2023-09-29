@@ -7,10 +7,15 @@ import Dashboard from './Components/Dashboard/dashboard';
 
 
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Sidebar from './Components/Sidebar/Sidebar';
+import Navigation from './Components/Navigation/Navigation';
+import ShowProducts from './Components/Productos/ShowProducts/ShowProducts';
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
+        <Sidebar />
+        <ShowProducts/>
       <BrowserRouter>
         <Routes>
           <Route path="/test" element={<div>Hello</div>} />
