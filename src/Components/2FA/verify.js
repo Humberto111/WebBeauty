@@ -7,7 +7,7 @@ function Verify2FA() {
 
   const verifyToken = async () => {
     try {
-      const response = await fetch('http://localhost:3000/validateTOTP', {
+      const response = await fetch('https://web-beauty-api-638331a8cfae.herokuapp.com/validateTOTP', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
