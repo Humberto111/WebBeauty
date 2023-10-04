@@ -16,7 +16,7 @@ function TwoFactorAuth() {
   const [validationMessage, setValidationMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const apiUrl = 'http://localhost:3000';
+  const apiUrl = 'https://web-beauty-api-638331a8cfae.herokuapp.com';
 
   const generateSecretAndQR = async () => {
     try {

@@ -11,7 +11,7 @@ function ProductCard(producto) {
 
     try {
       const response = await fetch(
-        "http://localhost:3000//productById",
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/productById",
         {
           method: "GET",
           headers: {
@@ -37,7 +37,7 @@ function ProductCard(producto) {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/DeleteProduct",
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/DeleteProduct",
         {
           method: "DELETE",
           headers: {
