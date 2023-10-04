@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { show_alert } from "../../../functions";
 import "./ShowProducts.css";
-import Navigation from "../../Navigation/Navigation";   
+import Navigation from "../../Navigation/Navigation";
 
 const ShowProducts = () => {
     const [products, setProducts] = useState([]);
@@ -120,7 +120,7 @@ const ShowProducts = () => {
                         position: 'top-end',
                     }).then((result) => {
                         document.getElementById('btnCerrar').click();
-                        getProducts();
+                        /*getProducts();*/
                     })
                 } else {
                     Swal.fire({
@@ -159,7 +159,7 @@ const ShowProducts = () => {
                         position: 'top-end',
                     }).then((result) => {
                         document.getElementById('btnCerrar').click();
-                        getProducts();
+                        /*getProducts();*/
                     })
                 } else {
                     Swal.fire({
@@ -190,13 +190,34 @@ const ShowProducts = () => {
                     })
                 }
             );
+            if (!response.ok) {
+                throw new Error('Error al generar el secreto');
+            }
         } catch (error) {
             console.error("Error de red:", error);
         }
     };
 
     const deleteProduct = async (id) => {
-        const MySwal = withReactContent(Swal);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                onDeleteProduct(id);
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+        /*const MySwal = withReactContent(Swal);
         MySwal.fire({
             title: 'Seguro que desea eliminar este producto?',
             icon: 'question', text: "No podras revertir esta acción",
@@ -208,7 +229,7 @@ const ShowProducts = () => {
             } else {
                 show_alert("Eliminación cancelada", "info");
             }
-        })
+        })*/
     }
 
     return (
