@@ -1,6 +1,0 @@
-.productos-container{
-    display: flex; /* Utilizamos Flexbox */
-    flex-wrap: wrap; /* Para que las tarjetas se envuelvan en filas si no caben en una sola línea */
-    flex-direction: row;
-    ;
-  }
