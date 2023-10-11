@@ -38,6 +38,7 @@ import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
 
+  // En el siguiente codigo se necesitan los grids si o si para que funcione ---->> Humberto
   return (
     <DashboardLayout>
       <DashboardNavbar />
