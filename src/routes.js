@@ -6,6 +6,8 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import Verify2fa from "layouts/authentication/verify2fa";
+import Add2fa from "layouts/authentication/add2fa";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -66,6 +68,14 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
     component: <SignUp />,
+  },
+  {
+    route: "/authentication/verify2fa",
+    component: <Verify2fa />,
+  },
+  {
+    route: "/authentication/add2fa",
+    component: <Add2fa />,
   },
 ];
 
