@@ -74,6 +74,10 @@ const routes = [
     component: <Verify2fa />,
   },
   {
+    type: "collapse",
+    name: "Factor de Autenticación",
+    key: "2fa",
+    icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/add2fa",
     component: <Add2fa />,
   },
