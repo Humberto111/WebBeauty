@@ -8,40 +8,32 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-
-// Dashboard components
-import Projects from "layouts/dashboard/components/Projects";
-import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { doc } from "prettier";
 
 /* prettier-ignore */
-const Dashboard = () => {
-  const [products, setProducts] = useState([]);
+const ServicesDashboard = () => {
+  const [services, setServices] = useState([]);
   const [id, setId] = useState('');
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [precio, setPrecio] = useState(0);
   const [operation, setOperation] = useState(0);
   const [title, setTitle] = useState('');
-  const [cantidad_en_stock, setCantidad_en_stock] = useState(0);
+  const [categoria, setCategoria] = useState('');
+  const [duracion, setDuracion] = useState('');
+  const [disponibilidad, setDisponibilidad] = useState('');
   const [file, setFile] = useState(null);
 
   useEffect(() => {
-    getProducts();
-  }, [products]);
+    getServices();
+  }, [services]);
 
-  const getProducts = async () => {
+  const getServices = async () => {
     try {
-      const response = await fetch("http://localhost:3000/products", {
+      const response = await fetch("http://localhost:3000/services", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -49,29 +41,33 @@ const Dashboard = () => {
       });
 
       const data = await response.json();
-      setProducts(data);
+      setServices(data);
     } catch (error) {
       console.error("Error de red:", error);
     }
   };
 
-  const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock, file) => {
+  const openModal = (op, id, nombre, descripcion, precio, categoria, duracion, disponibilidad, file) => {
     setId('');
     setNombre('');
     setDescripcion('');
     setPrecio('');
-    setCantidad_en_stock('');
+    setCategoria('');
+    setDuracion('');
+    setDisponibilidad('');
     setFile(null);
     if (op === 1) {
-      setTitle('Nuevo producto');
+      setTitle('Nuevo Servicio');
       setOperation(1);
     } else if (op === 2) {
-      setTitle('Editar producto');
+      setTitle('Editar Servicio');
       setId(id);
       setNombre(nombre);
       setDescripcion(descripcion);
       setPrecio(precio);
-      setCantidad_en_stock(cantidad_en_stock);
+      setCategoria(categoria);
+      setDuracion(duracion);
+      setDisponibilidad(disponibilidad);
       setFile(file);
       setOperation(2);
     }
@@ -94,14 +90,22 @@ const Dashboard = () => {
       alert('El precio es obligatorio', 'warning');
       return false;
     }
-    else if (cantidad_en_stock === '') {
-      alert('La cantidad en stock es obligatorio', 'warning');
+    else if (categoria === '') {
+      alert('La categoría en stock es obligatorio', 'warning');
       return false;
+    }
+    else if (duracion === '') {
+        alert('La duración en stock es obligatorio', 'warning');
+        return false;
+    }
+    else if (disponibilidad === '') {
+        alert('La disponibilidad es obligatoria', 'warning');
+        return false;
     } else {
       if (operation === 1) {
-        parametros = { nombre: nombre.trim(), descripcion: descripcion.trim(), precio: precio, cantidad_en_stock: cantidad_en_stock, imagen: file };
+        parametros = { nombre: nombre.trim(), descripcion: descripcion.trim(), precio, categoria: categoria.trim(), duracion: duracion.trim(), disponibilidad: disponibilidad.trim(), imagen: file };
       } else if (operation === 2) {
-        parametros = { id: id, nombre: nombre.trim(), descripcion: descripcion.trim(), precio: precio, cantidad_en_stock: cantidad_en_stock, imagen: file }
+        parametros = { id: id, nombre: nombre.trim(), descripcion: descripcion.trim(), precio, categoria: categoria.trim(), duracion: duracion.trim(), disponibilidad: disponibilidad.trim(), imagen: file }
       }
       else {
         return false;
@@ -114,7 +118,7 @@ const Dashboard = () => {
     if (operation === 2) {
       try {
         const response = await fetch(
-          "http://localhost:3000/editProduct",
+          "http://localhost:3000/editService",
           {
             method: "PUT",
             headers: {
@@ -125,7 +129,9 @@ const Dashboard = () => {
               "nombre": parametros.nombre,
               "precio": parametros.precio,
               "descripcion": parametros.descripcion,
-              "cantidad_en_stock": parametros.cantidad_en_stock,
+              "categoria": parametros.categoria,
+              "duracion": parametros.duracion,
+              "disponibilidad": parametros.disponibilidad,
               "imagen": parametros.file
             })
           }
@@ -134,13 +140,13 @@ const Dashboard = () => {
         if (response.ok) {
           Swal.fire({
             title: 'Edicion Exitosa!',
-            text: 'Producto editado exitosamente',
+            text: 'Servicio editado exitosamente',
             icon: 'success',
             timer: 1500,
             position: 'top-end',
           }).then((result) => {
             document.getElementById('btnCerrar').click();
-            getProducts();
+            getServices();
           })
         } else {
           Swal.fire({
@@ -154,34 +160,36 @@ const Dashboard = () => {
       }
     } else if (operation === 1) {
       try {
-
-        const formData = new FormData();
-        formData.append('imagen', file);
-        formData.append('nombre', parametros.nombre);
-        formData.append('descripcion', parametros.descripcion);
-        formData.append('precio', parametros.precio);
-        formData.append('cantidad_en_stock', parametros.cantidad_en_stock);
-
-
         const response = await fetch(
-          "http://localhost:3000/addProduct",
+          "http://localhost:3000/addService",
           {
             method: "POST",
-            body: formData
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              "nombre": parametros.nombre,
+              "precio": parametros.precio,
+              "descripcion": parametros.descripcion,
+              "categoria": parametros.categoria,
+              "disponibilidad": parametros.disponibilidad,
+              "duracion": parametros.duracion,
+              "imagen": parametros.file
+            })
           }
         );
 
         if (response.ok) {
           Swal.fire({
             title: 'Registro Exitoso!',
-            text: 'Producto agregado exitosamente',
+            text: 'Servicio agregado exitosamente',
             icon: 'success',
             timer: 1500,
             position: 'top-end',
           }).then((result) => {
             document.getElementById('btnCerrar').click();
-            getProducts();
-            document.getElementById('imagenProducto').value = null;
+            getservices();
+            document.getElementById('imagenserviceo').value = null;
           })
         } else {
           Swal.fire({
@@ -198,10 +206,10 @@ const Dashboard = () => {
     }
   }
 
-  const onDeleteProduct = async (id) => {
+  const onDeleteService = async (id) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/deleteProduct",
+        "http://localhost:3000/deleteService",
         {
           method: "DELETE",
           headers: {
@@ -217,7 +225,7 @@ const Dashboard = () => {
     }
   };
 
-  const deleteProduct = async (id) => {
+  const deleteService = async (id) => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -228,8 +236,8 @@ const Dashboard = () => {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        onDeleteProduct(id);
-        getProducts();
+        onDeleteService(id);
+        getServices();
       }
     })
   }
@@ -241,7 +249,7 @@ const Dashboard = () => {
       <div className="row mt-3">
         <div className="col-md-4 offset-md-4">
           <div className="d-grid mx-auto">
-            <button onClick={() => openModal(1)} className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalProducts">
+            <button onClick={() => openModal(1)} className="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modalServices">
               <i className="fa-solid fa-circle-plus">Agregar</i>
             </button>
           </div>
@@ -250,23 +258,25 @@ const Dashboard = () => {
       <MDBox py={3} style={{ display: 'flex', width: '100%' }}>
         <div className="container-fluid d-flex justify-content-center">
           <div className="row">
-            {products.map((product) => (
-              <div key={product.id} className="card mb-3 mx-auto" style={{ maxWidth: '390px', minWidth: '270px', width: '270px' }}>
+            {services.map((service) => (
+              <div key={service.id} className="card mb-3 mx-auto" style={{ maxWidth: '390px', minWidth: '270px', width: '270px' }}>
                 <div className="card">
                   <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png' className="card-img-top" alt="..." />
                   <div className="card-body">
-                    <h4 className="card-title" style={{ textAlign: 'center' }}>{product.nombre}</h4>
-                    <p className="card-text">{product.descripcion}</p>
-                    <p className="card-text"><small className="text-body-secondary">Precio: {product.precio}</small></p>
-                    <p className="card-text"><small className="text-body-secondary">Productos restantes: {product.cantidad_en_stock}</small></p>
+                    <h4 className="card-title" style={{ textAlign: 'center' }}>{service.nombre}</h4>
+                    <p className="card-text">{service.descripcion}</p>
+                    <p className="card-text"><small className="text-body-secondary">Precio: {service.precio}</small></p>
+                    <p className="card-text"><small className="text-body-secondary">Categoría: {service.categoria}</small></p>
+                    <p className="card-text"><small className="text-body-secondary">Duración: {service.duracion}</small></p>
+                    <p className="card-text"><small className="text-body-secondary">Disponibilidad: {service.disponibilidad}</small></p>
                   </div>
                 </div>
                 <div className="buttons" style={{ textAlign: 'center', padding: '10px' }}>
-                  <button onClick={() => openModal(2, product.id, product.nombre, product.descripcion, product.precio, product.cantidad_en_stock)}
-                    className="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalProducts" style={{ marginRight: '20px' }}>
+                  <button onClick={() => openModal(2, service.id, service.nombre, service.descripcion, service.precio, service.categoria, service.duracion, service.disponibilidad)}
+                    className="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalServices" style={{ marginRight: '20px' }}>
                     Editar
                   </button>
-                  <button onClick={() => deleteProduct(product.id)} className="btn btn-danger" style={{ color: 'black' }}>
+                  <button onClick={() => deleteService(service.id)} className="btn btn-danger" style={{ color: 'black' }}>
                     Eliminar
                   </button>
                 </div>
@@ -275,7 +285,7 @@ const Dashboard = () => {
           </div>
         </div >
       </MDBox >
-      <div id="modalProducts" className="modal fade" aria-hidden="true" style={{ zIndex: '9999' }}>
+      <div id="modalServices" className="modal fade" aria-hidden="true" style={{ zIndex: '9999' }}>
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
@@ -301,12 +311,22 @@ const Dashboard = () => {
               </div>
               <div className="input-group mb-3">
                 <span className="input-group-text"><i className="fa-solid fa-gift"></i></span>
-                <input type="text" id="cantidad_en_stock" className="form-control" placeholder="Cantidad en Stock" value={cantidad_en_stock}
-                  onChange={(e) => setCantidad_en_stock(e.target.value)}></input>
+                <input type="text" id="categoria" className="form-control" placeholder="Categoría" value={categoria}
+                  onChange={(e) => setCategoria(e.target.value)}></input>
               </div>
               <div className="input-group mb-3">
                 <span className="input-group-text"><i className="fa-solid fa-gift"></i></span>
-                <input type="file" id="imagenProducto" name="file" className="form-control" onChange={(e) => setFile(e.target.files[0])}></input>
+                <input type="text" id="duracion" className="form-control" placeholder="Duración" value={duracion}
+                  onChange={(e) => setDuracion(e.target.value)}></input>
+              </div>
+              <div className="input-group mb-3">
+                <span className="input-group-text"><i className="fa-solid fa-gift"></i></span>
+                <input type="text" id="disponibilidad" className="form-control" placeholder="Disponibilidad" value={disponibilidad}
+                  onChange={(e) => setDisponibilidad(e.target.value)}></input>
+              </div>
+              <div className="input-group mb-3">
+                <span className="input-group-text"><i className="fa-solid fa-gift"></i></span>
+                <input type="file" id="imagenService" name="file" className="form-control" onChange={(e) => setFile(e.target.files[0])}></input>
               </div>
               <div className="d-grid col-6 mx-auto">
                 <button onClick={() => validar()} className="btn btn-success">
@@ -325,4 +345,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default ServicesDashboard;
