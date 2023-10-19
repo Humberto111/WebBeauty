@@ -7,6 +7,8 @@ import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import Verify2fa from "layouts/authentication/verify2fa";
+import Add2fa from "layouts/authentication/add2fa";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -69,6 +71,18 @@ const routes = [
     component: <SignUp />,
   },
   {
+    route: "/authentication/verify2fa",
+    component: <Verify2fa />,
+  },
+  {
+    type: "collapse",
+    name: "Factor de Autenticación",
+    key: "2fa",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/authentication/add2fa",
+    component: <Add2fa />,
+   },
+   {
     type: "collapse",
     name: "Servicios",
     key: "services",
