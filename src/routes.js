@@ -9,6 +9,8 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Verify2fa from "layouts/authentication/verify2fa";
 import Add2fa from "layouts/authentication/add2fa";
+import TipoProductos from "layouts/productos/tipo_productos";
+import CategoriaProductos from "layouts/productos/categoria_productos";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -18,9 +20,25 @@ const routes = [
     type: "collapse",
     name: "Productos",
     key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
+    icon: <Icon fontSize="small">timeline</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Tipo de productos",
+    key: "Tipo_productos",
+    icon: <Icon fontSize="small">category</Icon>,
+    route: "/tipo_productos",
+    component: <TipoProductos />,
+  },
+  {
+    type: "collapse",
+    name: "Categoría de productos",
+    key: "categoria_productos",
+    icon: <Icon fontSize="small">category</Icon>,
+    route: "/categoria_productos",
+    component: <CategoriaProductos />,
   },
   {
     type: "collapse",
@@ -63,14 +81,6 @@ const routes = [
     component: <SignIn />,
   },
   {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
-  {
     route: "/authentication/verify2fa",
     component: <Verify2fa />,
   },
@@ -78,15 +88,15 @@ const routes = [
     type: "collapse",
     name: "Factor de Autenticación",
     key: "2fa",
-    icon: <Icon fontSize="small">login</Icon>,
+    icon: <Icon fontSize="small">security_two_tone</Icon>,
     route: "/authentication/add2fa",
     component: <Add2fa />,
-   },
-   {
+  },
+  {
     type: "collapse",
     name: "Servicios",
     key: "services",
-    icon: <Icon fontSize="small">assignment</Icon>,
+    icon: <Icon fontSize="small">work</Icon>,
     route: "/servicesDashboard",
     component: <ServicesDashboard />,
   },

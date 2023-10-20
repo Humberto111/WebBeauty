@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   const getProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3000/products", {
+      const response = await fetch("http://localhost:3001/products", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ const Dashboard = () => {
     if (operation === 2) {
       try {
         const response = await fetch(
-          "http://localhost:3000/editProduct",
+          "http://localhost:3001/editProduct",
           {
             method: "PUT",
             headers: {
@@ -164,7 +164,7 @@ const Dashboard = () => {
 
 
         const response = await fetch(
-          "http://localhost:3000/addProduct",
+          "http://localhost:3001/addProduct",
           {
             method: "POST",
             body: formData
@@ -201,7 +201,7 @@ const Dashboard = () => {
   const onDeleteProduct = async (id) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/deleteProduct",
+        "http://localhost:3001/deleteProduct",
         {
           method: "DELETE",
           headers: {

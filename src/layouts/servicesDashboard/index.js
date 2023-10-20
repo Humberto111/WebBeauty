@@ -33,7 +33,7 @@ const ServicesDashboard = () => {
 
   const getServices = async () => {
     try {
-      const response = await fetch("http://localhost:3000/services", {
+      const response = await fetch("http://localhost:3001/services", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -118,7 +118,7 @@ const ServicesDashboard = () => {
     if (operation === 2) {
       try {
         const response = await fetch(
-          "http://localhost:3000/editService",
+          "http://localhost:3001/editService",
           {
             method: "PUT",
             headers: {
@@ -161,7 +161,7 @@ const ServicesDashboard = () => {
     } else if (operation === 1) {
       try {
         const response = await fetch(
-          "http://localhost:3000/addService",
+          "http://localhost:3001/addService",
           {
             method: "POST",
             headers: {
@@ -209,7 +209,7 @@ const ServicesDashboard = () => {
   const onDeleteService = async (id) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/deleteService",
+        "http://localhost:3001/deleteService",
         {
           method: "DELETE",
           headers: {
