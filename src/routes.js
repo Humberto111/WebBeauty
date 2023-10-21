@@ -1,5 +1,4 @@
 import Dashboard from "layouts/dashboard";
-import ServicesDashboard from "layouts/servicesDashboard";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
@@ -14,7 +13,7 @@ import Icon from "@mui/material/Icon";
 const routes = [
   {
     type: "collapse",
-    name: "Productos",
+    name: "Dashboard",
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
@@ -67,14 +66,6 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/authentication/sign-up",
     component: <SignUp />,
-  },
-  {
-    type: "collapse",
-    name: "Servicios",
-    key: "services",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/servicesDashboard",
-    component: <ServicesDashboard />,
   },
 ];
 
