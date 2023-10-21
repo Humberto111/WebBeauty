@@ -81,8 +81,8 @@ const routes = [
     icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication/add2fa",
     component: <Add2fa />,
-   },
-   {
+  },
+  {
     type: "collapse",
     name: "Servicios",
     key: "services",
