@@ -1,3 +1,18 @@
+/**
+=========================================================
+* Material Dashboard 2 React - v2.2.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/material-dashboard-react
+* Copyright 2023 Creative Tim (https://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*/
+
 // react-router-dom components
 import { Link } from "react-router-dom";
 
@@ -10,7 +25,6 @@ import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-import MDSnackbar from "components/MDSnackbar";
 
 // Authentication layout components
 import CoverLayout from "layouts/authentication/components/CoverLayout";
@@ -18,78 +32,7 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 
-import { useState } from "react";
-
 function Cover() {
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [successSB, setSuccessSB] = useState(false);
-  const [errorSB, setErrorSB] = useState(false);
-
-  const openSuccessSB = () => setSuccessSB(true);
-  const closeSuccessSB = () => setSuccessSB(false);
-  const openErrorSB = () => setErrorSB(true);
-  const closeErrorSB = () => setErrorSB(false);
-
-  const renderSuccessSB = (
-    <MDSnackbar
-      color="success"
-      icon="check"
-      title="Web Beauty"
-      content="Bienvenido!"
-      open={successSB}
-      onClose={closeSuccessSB}
-      close={closeSuccessSB}
-      bgWhite
-    />
-  );
-
-  const renderErrorSB = (
-    <MDSnackbar
-      color="error"
-      icon="warning"
-      title="Web Beauty"
-      content="Verifique sus credenciales e intente nuevamente!"
-      open={errorSB}
-      onClose={closeErrorSB}
-      close={closeErrorSB}
-      bgWhite
-    />
-  );
-
-  const onSubmitRegister = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nombre: nombre,
-          apellido: apellido,
-          email: email,
-          password: password,
-        }),
-      });
-
-      if (response.ok) {
-        openSuccessSB(true);
-        console.log("entró");
-        window.location.href = "/";
-      } else {
-        openErrorSB(true);
-        console.log("error");
-      }
-    } catch (error) {
-      console.error("Error de red:", error);
-    }
-  };
-
   return (
     <CoverLayout image={bgImage}>
       <Card>
@@ -105,53 +48,22 @@ function Cover() {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Registro
+            Join us today
           </MDTypography>
           <MDTypography display="block" variant="button" color="white" my={1}>
-            Introduzca los datos solicitados
+            Enter your email and password to register
           </MDTypography>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput
-                type="text"
-                label="Nombre"
-                variant="standard"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                fullWidth
-              />
+              <MDInput type="text" label="Name" variant="standard" fullWidth />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput
-                type="text"
-                label="Apellido"
-                variant="standard"
-                value={apellido}
-                onChange={(e) => setApellido(e.target.value)}
-                fullWidth
-              />
+              <MDInput type="email" label="Email" variant="standard" fullWidth />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput
-                type="email"
-                label="Correo"
-                variant="standard"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                fullWidth
-              />
-            </MDBox>
-            <MDBox mb={2}>
-              <MDInput
-                type="password"
-                label="Contraseña"
-                variant="standard"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                fullWidth
-              />
+              <MDInput type="password" label="Password" variant="standard" fullWidth />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox />
@@ -175,13 +87,13 @@ function Cover() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" onClick={onSubmitRegister} fullWidth>
-                Registrar
+              <MDButton variant="gradient" color="info" fullWidth>
+                sign in
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
-                Ya tienes cuenta?{" "}
+                Already have an account?{" "}
                 <MDTypography
                   component={Link}
                   to="/authentication/sign-in"
@@ -190,7 +102,7 @@ function Cover() {
                   fontWeight="medium"
                   textGradient
                 >
-                  Inicia Sesión
+                  Sign In
                 </MDTypography>
               </MDTypography>
             </MDBox>

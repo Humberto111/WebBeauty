@@ -1,3 +1,18 @@
+/**
+=========================================================
+* Material Dashboard 2 React - v2.2.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/material-dashboard-react
+* Copyright 2023 Creative Tim (https://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*/
+
 // @mui material components
 import Grid from "@mui/material/Grid";
 
@@ -217,24 +232,9 @@ const Dashboard = () => {
     }
   };
 
-  const deleteProduct = async (id) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        onDeleteProduct(id);
-        getProducts();
-      }
-    })
-  }
+function Dashboard() {
+  const { sales, tasks } = reportsLineChartData;
 
-  // En el siguiente codigo se necesitan los grids si o si para que funcione ---->> Humberto
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -321,8 +321,8 @@ const Dashboard = () => {
         </div>
       </div>
       <Footer />
-    </DashboardLayout >
+    </DashboardLayout>
   );
-};
+}
 
 export default Dashboard;
