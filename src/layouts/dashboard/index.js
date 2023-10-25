@@ -41,7 +41,7 @@ const Dashboard = () => {
 
   const getProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3000/products", {
+      const response = await fetch("http://localhost:3001/products", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -114,7 +114,7 @@ const Dashboard = () => {
     if (operation === 2) {
       try {
         const response = await fetch(
-          "http://localhost:3000/editProduct",
+          "http://localhost:3001/editProduct",
           {
             method: "PUT",
             headers: {
@@ -164,7 +164,7 @@ const Dashboard = () => {
 
 
         const response = await fetch(
-          "http://localhost:3000/addProduct",
+          "http://localhost:3001/addProduct",
           {
             method: "POST",
             body: formData
@@ -201,7 +201,7 @@ const Dashboard = () => {
   const onDeleteProduct = async (id) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/deleteProduct",
+        "http://localhost:3001/deleteProduct",
         {
           method: "DELETE",
           headers: {
@@ -252,9 +252,9 @@ const Dashboard = () => {
           <div className="row">
             {products.map((product) => (
               <div key={product.id} className="card mb-3 mx-auto" style={{ maxWidth: '390px', minWidth: '270px', width: '270px' }}>
-                <div className="card">
+                <div key={product.id} className="card">
                   <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png' className="card-img-top" alt="..." />
-                  <div className="card-body">
+                  <div key={product.id} className="card-body">
                     <h4 className="card-title" style={{ textAlign: 'center' }}>{product.nombre}</h4>
                     <p className="card-text">{product.descripcion}</p>
                     <p className="card-text"><small className="text-body-secondary">Precio: {product.precio}</small></p>

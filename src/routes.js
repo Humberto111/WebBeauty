@@ -9,6 +9,8 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Verify2fa from "layouts/authentication/verify2fa";
 import Add2fa from "layouts/authentication/add2fa";
+import TipoProductos from "layouts/productos/tipo_productos";
+import CategoriaProductos from "layouts/productos/categoria_productos";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -21,6 +23,22 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Tipo de productos",
+    key: "Tipo_productos",
+    icon: <Icon fontSize="small">category</Icon>,
+    route: "/tipo_productos",
+    component: <TipoProductos />,
+  },
+  {
+    type: "collapse",
+    name: "Categoría de productos",
+    key: "categoria_productos",
+    icon: <Icon fontSize="small">category</Icon>,
+    route: "/categoria_productos",
+    component: <CategoriaProductos />,
   },
   {
     type: "collapse",
