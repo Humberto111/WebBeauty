@@ -11,6 +11,8 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
+import MDButton from "components/MDButton";
+import Icon from "@mui/material/Icon";
 
 // Data
 //import authorsTableData from "layouts/productos/tipo_productos/data/authorsTableData";
@@ -199,22 +201,31 @@ function Tables() {
                         </MDTypography>
                       ),
                       action: (
-                        <div>
-                          <button
-                            className="btn btn-warning"
+                        <MDBox
+                          display="flex"
+                          alignItems="center"
+                          mt={{ xs: 2, sm: 0 }}
+                          ml={{ xs: -1.5, sm: 0 }}
+                        >
+                          <MDBox mr={1}>
+                            <MDButton
+                              variant="text"
+                              color="error"
+                              onClick={() => deleteProduct(product.id)}
+                            >
+                              <Icon>delete</Icon>&nbsp;Eliminar
+                            </MDButton>
+                          </MDBox>
+                          <MDButton
+                            variant="text"
+                            color="dark"
                             onClick={() => openModal(2, product.id, product.nombre)}
                             data-bs-toggle="modal"
                             data-bs-target="#modalProducts"
                           >
-                            Editar
-                          </button>
-                          <button
-                            className="btn btn-danger"
-                            onClick={() => deleteProduct(product.id)}
-                          >
-                            Eliminar
-                          </button>
-                        </div>
+                            <Icon>edit</Icon>&nbsp;Editar
+                          </MDButton>
+                        </MDBox>
                       ),
                     })),
                   }}
