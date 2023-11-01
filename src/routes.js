@@ -11,6 +11,8 @@ import Verify2fa from "layouts/authentication/verify2fa";
 import Add2fa from "layouts/authentication/add2fa";
 import TipoProductos from "layouts/productos/tipo_productos";
 import CategoriaProductos from "layouts/productos/categoria_productos";
+import Galeria from "layouts/galeria";
+import Calendar from "layouts/calendario";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -107,6 +109,22 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/servicesDashboard",
     component: <ServicesDashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Galeria de estilos",
+    key: "estilos",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/galeria",
+    component: <Galeria />,
+  },
+  {
+    type: "collapse",
+    name: "Reserva de citas",
+    key: "reserva",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/reserva",
+    component: <Calendar />,
   },
 ];
 

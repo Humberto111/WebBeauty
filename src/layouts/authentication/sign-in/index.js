@@ -87,7 +87,7 @@ function Basic() {
         const data = await response.json();
         console.log(data);
         const jsonData = JSON.stringify(data);
-        localStorage.setItem("data", jsonData);
+        localStorage.setItem("user", jsonData);
         window.location.href = "/dashboard";
       } else {
         openErrorSB(true);
