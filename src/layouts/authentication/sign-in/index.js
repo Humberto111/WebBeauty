@@ -85,9 +85,8 @@ function Basic() {
       if (response.ok) {
         openSuccessSB(true);
         const data = await response.json();
-        console.log(data);
         const jsonData = JSON.stringify(data);
-        localStorage.setItem("user", jsonData);
+        localStorage.setItem("users", jsonData);
         window.location.href = "/dashboard";
       } else {
         openErrorSB(true);

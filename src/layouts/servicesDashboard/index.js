@@ -10,8 +10,8 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import { doc } from "prettier";
+import Swal from "sweetalert2";
 
 /* prettier-ignore */
 const ServicesDashboard = () => {
@@ -25,7 +25,6 @@ const ServicesDashboard = () => {
   const [categoria, setCategoria] = useState('');
   const [duracion, setDuracion] = useState('');
   const [disponibilidad, setDisponibilidad] = useState('');
-  const [file, setFile] = useState(null);
 
   useEffect(() => {
     getServices();
@@ -33,7 +32,7 @@ const ServicesDashboard = () => {
 
   const getServices = async () => {
     try {
-      const response = await fetch("http://localhost:3000/services", {
+      const response = await fetch("http://localhost:3001/services", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -47,7 +46,7 @@ const ServicesDashboard = () => {
     }
   };
 
-  const openModal = (op, id, nombre, descripcion, precio, categoria, duracion, disponibilidad, file) => {
+  const openModal = (op, id, nombre, descripcion, precio, categoria, duracion, disponibilidad) => {
     setId('');
     setNombre('');
     setDescripcion('');
@@ -55,7 +54,6 @@ const ServicesDashboard = () => {
     setCategoria('');
     setDuracion('');
     setDisponibilidad('');
-    setFile(null);
     if (op === 1) {
       setTitle('Nuevo Servicio');
       setOperation(1);
@@ -68,7 +66,6 @@ const ServicesDashboard = () => {
       setCategoria(categoria);
       setDuracion(duracion);
       setDisponibilidad(disponibilidad);
-      setFile(file);
       setOperation(2);
     }
     window.setTimeout(() => {
@@ -103,9 +100,9 @@ const ServicesDashboard = () => {
         return false;
     } else {
       if (operation === 1) {
-        parametros = { nombre: nombre.trim(), descripcion: descripcion.trim(), precio, categoria: categoria.trim(), duracion: duracion.trim(), disponibilidad: disponibilidad.trim(), imagen: file };
+        parametros = { nombre: nombre.trim(), descripcion: descripcion.trim(), precio, categoria: categoria.trim(), duracion: duracion.trim(), disponibilidad: disponibilidad.trim()};
       } else if (operation === 2) {
-        parametros = { id: id, nombre: nombre.trim(), descripcion: descripcion.trim(), precio, categoria: categoria.trim(), duracion: duracion.trim(), disponibilidad: disponibilidad.trim(), imagen: file }
+        parametros = { id: id, nombre: nombre.trim(), descripcion: descripcion.trim(), precio, categoria: categoria.trim(), duracion: duracion.trim(), disponibilidad: disponibilidad.trim()}
       }
       else {
         return false;
@@ -132,7 +129,6 @@ const ServicesDashboard = () => {
               "categoria": parametros.categoria,
               "duracion": parametros.duracion,
               "disponibilidad": parametros.disponibilidad,
-              "imagen": parametros.file
             })
           }
         );
@@ -161,7 +157,7 @@ const ServicesDashboard = () => {
     } else if (operation === 1) {
       try {
         const response = await fetch(
-          "http://localhost:3000/addService",
+          "http://localhost:3001/addService",
           {
             method: "POST",
             headers: {
@@ -174,7 +170,6 @@ const ServicesDashboard = () => {
               "categoria": parametros.categoria,
               "disponibilidad": parametros.disponibilidad,
               "duracion": parametros.duracion,
-              "imagen": parametros.file
             })
           }
         );
@@ -188,8 +183,7 @@ const ServicesDashboard = () => {
             position: 'top-end',
           }).then((result) => {
             document.getElementById('btnCerrar').click();
-            getservices();
-            document.getElementById('imagenserviceo').value = null;
+            getServices();
           })
         } else {
           Swal.fire({
@@ -209,7 +203,7 @@ const ServicesDashboard = () => {
   const onDeleteService = async (id) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/deleteService",
+        "http://localhost:3001/deleteService",
         {
           method: "DELETE",
           headers: {
@@ -323,10 +317,6 @@ const ServicesDashboard = () => {
                 <span className="input-group-text"><i className="fa-solid fa-gift"></i></span>
                 <input type="text" id="disponibilidad" className="form-control" placeholder="Disponibilidad" value={disponibilidad}
                   onChange={(e) => setDisponibilidad(e.target.value)}></input>
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text"><i className="fa-solid fa-gift"></i></span>
-                <input type="file" id="imagenService" name="file" className="form-control" onChange={(e) => setFile(e.target.files[0])}></input>
               </div>
               <div className="d-grid col-6 mx-auto">
                 <button onClick={() => validar()} className="btn btn-success">

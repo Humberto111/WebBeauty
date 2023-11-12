@@ -12,7 +12,7 @@ import Add2fa from "layouts/authentication/add2fa";
 import TipoProductos from "layouts/productos/tipo_productos";
 import CategoriaProductos from "layouts/productos/categoria_productos";
 import Galeria from "layouts/galeria";
-import Calendar from "layouts/calendario";
+import Calendario from "layouts/calendar";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -119,12 +119,11 @@ const routes = [
     component: <Galeria />,
   },
   {
-    type: "collapse",
-    name: "Reserva de citas",
-    key: "reserva",
+    name: "Calendario",
+    key: "calendario",
     icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/reserva",
-    component: <Calendar />,
+    route: "/calendario",
+    component: <Calendario />,
   },
 ];
 
