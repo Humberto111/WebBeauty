@@ -33,7 +33,6 @@ const Dashboard = () => {
   const [operation, setOperation] = useState(0);
   const [title, setTitle] = useState('');
   const [cantidad_en_stock, setCantidad_en_stock] = useState(0);
-  const [file, setFile] = useState(null);
 
   useEffect(() => {
     getProducts();
@@ -55,13 +54,12 @@ const Dashboard = () => {
     }
   };
 
-  const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock, file) => {
+  const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock) => {
     setId('');
     setNombre('');
     setDescripcion('');
     setPrecio('');
     setCantidad_en_stock('');
-    setFile(null);
     if (op === 1) {
       setTitle('Nuevo producto');
       setOperation(1);
@@ -72,7 +70,6 @@ const Dashboard = () => {
       setDescripcion(descripcion);
       setPrecio(precio);
       setCantidad_en_stock(cantidad_en_stock);
-      setFile(file);
       setOperation(2);
     }
     window.setTimeout(() => {
@@ -99,9 +96,9 @@ const Dashboard = () => {
       return false;
     } else {
       if (operation === 1) {
-        parametros = { nombre: nombre.trim(), descripcion: descripcion.trim(), precio: precio, cantidad_en_stock: cantidad_en_stock, imagen: file };
+        parametros = { nombre: nombre.trim(), descripcion: descripcion.trim(), precio: precio, cantidad_en_stock: cantidad_en_stock };
       } else if (operation === 2) {
-        parametros = { id: id, nombre: nombre.trim(), descripcion: descripcion.trim(), precio: precio, cantidad_en_stock: cantidad_en_stock, imagen: file }
+        parametros = { id: id, nombre: nombre.trim(), descripcion: descripcion.trim(), precio: precio, cantidad_en_stock: cantidad_en_stock }
       }
       else {
         return false;
@@ -126,7 +123,6 @@ const Dashboard = () => {
               "precio": parametros.precio,
               "descripcion": parametros.descripcion,
               "cantidad_en_stock": parametros.cantidad_en_stock,
-              "imagen": parametros.file
             })
           }
         );
@@ -155,19 +151,19 @@ const Dashboard = () => {
     } else if (operation === 1) {
       try {
 
-        const formData = new FormData();
-        formData.append('imagen', file);
-        formData.append('nombre', parametros.nombre);
-        formData.append('descripcion', parametros.descripcion);
-        formData.append('precio', parametros.precio);
-        formData.append('cantidad_en_stock', parametros.cantidad_en_stock);
-
-
         const response = await fetch(
           "http://localhost:3001/addProduct",
           {
             method: "POST",
-            body: formData
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              "nombre": parametros.nombre,
+              "precio": parametros.precio,
+              "descripcion": parametros.descripcion,
+              "cantidad_en_stock": parametros.cantidad_en_stock,
+            })
           }
         );
 
@@ -181,7 +177,6 @@ const Dashboard = () => {
           }).then((result) => {
             document.getElementById('btnCerrar').click();
             getProducts();
-            document.getElementById('imagenProducto').value = null;
           })
         } else {
           Swal.fire({
@@ -303,10 +298,6 @@ const Dashboard = () => {
                 <span className="input-group-text"><i className="fa-solid fa-gift"></i></span>
                 <input type="text" id="cantidad_en_stock" className="form-control" placeholder="Cantidad en Stock" value={cantidad_en_stock}
                   onChange={(e) => setCantidad_en_stock(e.target.value)}></input>
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text"><i className="fa-solid fa-gift"></i></span>
-                <input type="file" id="imagenProducto" name="file" className="form-control" onChange={(e) => setFile(e.target.files[0])}></input>
               </div>
               <div className="d-grid col-6 mx-auto">
                 <button onClick={() => validar()} className="btn btn-success">

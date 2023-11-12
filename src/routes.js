@@ -11,6 +11,7 @@ import Verify2fa from "layouts/authentication/verify2fa";
 import Add2fa from "layouts/authentication/add2fa";
 import TipoProductos from "layouts/productos/tipo_productos";
 import CategoriaProductos from "layouts/productos/categoria_productos";
+import Calendario from "layouts/calendar";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -107,6 +108,14 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/servicesDashboard",
     component: <ServicesDashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Calendario",
+    key: "calendario",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/calendario",
+    component: <Calendario />,
   },
 ];
 

@@ -1,19 +1,4 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // react-router-dom components
 import { useLocation, NavLink } from "react-router-dom";
@@ -52,6 +37,13 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const { miniSidenav, transparentSidenav, whiteSidenav, darkMode, sidenavColor } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
+  const [id, setId] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [precio, setPrecio] = useState(0);
+  const [operation, setOperation] = useState(0);
+  const [title, setTitle] = useState("");
+  const [cantidad_en_stock, setCantidad_en_stock] = useState(0);
 
   let textColor = "white";
 
@@ -140,6 +132,29 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     return returnValue;
   });
 
+  const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock) => {
+    setId("");
+    setNombre("");
+    setDescripcion("");
+    setPrecio("");
+    setCantidad_en_stock("");
+    if (op === 1) {
+      setTitle("Nuevo producto");
+      setOperation(1);
+    } else if (op === 2) {
+      setTitle("Editar producto");
+      setId(id);
+      setNombre(nombre);
+      setDescripcion(descripcion);
+      setPrecio(precio);
+      setCantidad_en_stock(cantidad_en_stock);
+      setOperation(2);
+    }
+    window.setTimeout(() => {
+      document.getElementById("nombre").focus();
+    }, 500);
+  };
+
   return (
     <SidenavRoot
       {...rest}
@@ -181,17 +196,105 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
         <MDButton
+          onClick={() => openModal(1)}
+          className="btn btn-dark"
+          data-bs-toggle="modal"
+          data-bs-target="#modalProducts"
           component="a"
-          href="https://www.creative-tim.com/product/material-dashboard-pro-react"
           target="_blank"
           rel="noreferrer"
           variant="gradient"
           color={sidenavColor}
           fullWidth
         >
-          upgrade to pro
+          Reservar Cita
         </MDButton>
       </MDBox>
+      <div id="modalProducts" className="modal fade" aria-hidden="true" style={{ zIndex: "9999" }}>
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <label className="h5">{title}</label>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <input type="hidden" id="id"></input>
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  type="text"
+                  id="nombre"
+                  className="form-control"
+                  placeholder="Nombre"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                ></input>
+              </div>
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  type="text"
+                  id="descripcion"
+                  className="form-control"
+                  placeholder="Descripción"
+                  value={descripcion}
+                  onChange={(e) => setDescripcion(e.target.value)}
+                ></input>
+              </div>
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  type="text"
+                  id="precio"
+                  className="form-control"
+                  placeholder="Precio"
+                  value={precio}
+                  onChange={(e) => setPrecio(e.target.value)}
+                ></input>
+              </div>
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  type="text"
+                  id="cantidad_en_stock"
+                  className="form-control"
+                  placeholder="Cantidad en Stock"
+                  value={cantidad_en_stock}
+                  onChange={(e) => setCantidad_en_stock(e.target.value)}
+                ></input>
+              </div>
+              <div className="d-grid col-6 mx-auto">
+                <button onClick={() => validar()} className="btn btn-success">
+                  <i className="fa-solid fa-floppy-disk"></i> Gaurdar
+                </button>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                id="btnCerrar"
+                type="button"
+                className="btn btn-seconday"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </SidenavRoot>
   );
 }
