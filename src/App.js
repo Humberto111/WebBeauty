@@ -20,6 +20,7 @@ import brandDark from "assets/images/logo-ct-dark.png";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
+
   const {
     miniSidenav,
     direction,
@@ -76,12 +77,19 @@ export default function App() {
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
+      const isAuthenticated =
+        localStorage.getItem("users") !== null && localStorage.getItem("users") !== "";
       if (route.collapse) {
         return getRoutes(route.collapse);
       }
-
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        if (isAuthenticated) {
+          return <Route exact path={route.route} element={route.component} key={route.key} />;
+        } else {
+          if (route.key === "sign-in" || route.key === "sign-up") {
+            return <Route exact path={route.route} element={route.component} key={route.key} />;
+          }
+        }
       }
 
       return null;

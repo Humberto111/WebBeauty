@@ -196,10 +196,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <List>{renderRoutes}</List>
       <MDBox p={2} mt="auto">
         <MDButton
-          onClick={() => openModal(1)}
           className="btn btn-dark"
-          data-bs-toggle="modal"
-          data-bs-target="#modalProducts"
           component="a"
           target="_blank"
           rel="noreferrer"
@@ -207,94 +204,9 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           color={sidenavColor}
           fullWidth
         >
-          Reservar Cita
+          Biti
         </MDButton>
       </MDBox>
-      <div id="modalProducts" className="modal fade" aria-hidden="true" style={{ zIndex: "9999" }}>
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <label className="h5">{title}</label>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <input type="hidden" id="id"></input>
-              <div className="input-group mb-3">
-                <span className="input-group-text">
-                  <i className="fa-solid fa-gift"></i>
-                </span>
-                <input
-                  type="text"
-                  id="nombre"
-                  className="form-control"
-                  placeholder="Nombre"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                ></input>
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">
-                  <i className="fa-solid fa-gift"></i>
-                </span>
-                <input
-                  type="text"
-                  id="descripcion"
-                  className="form-control"
-                  placeholder="Descripción"
-                  value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)}
-                ></input>
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">
-                  <i className="fa-solid fa-gift"></i>
-                </span>
-                <input
-                  type="text"
-                  id="precio"
-                  className="form-control"
-                  placeholder="Precio"
-                  value={precio}
-                  onChange={(e) => setPrecio(e.target.value)}
-                ></input>
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">
-                  <i className="fa-solid fa-gift"></i>
-                </span>
-                <input
-                  type="text"
-                  id="cantidad_en_stock"
-                  className="form-control"
-                  placeholder="Cantidad en Stock"
-                  value={cantidad_en_stock}
-                  onChange={(e) => setCantidad_en_stock(e.target.value)}
-                ></input>
-              </div>
-              <div className="d-grid col-6 mx-auto">
-                <button onClick={() => validar()} className="btn btn-success">
-                  <i className="fa-solid fa-floppy-disk"></i> Gaurdar
-                </button>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                id="btnCerrar"
-                type="button"
-                className="btn btn-seconday"
-                data-bs-dismiss="modal"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </SidenavRoot>
   );
 }
