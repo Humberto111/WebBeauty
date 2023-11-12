@@ -8,6 +8,9 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import { useEffect, useState } from "react";
+import MDButton from "components/MDButton";
+import Icon from "@mui/material/Icon";
+import { redirect } from "react-router-dom";
 
 function Tables() {
   //const { columns, rows } = authorsTableData();
@@ -141,6 +144,35 @@ function Tables() {
     getProducts();
   };
 
+  const createCheckoutSession = async (id) => {
+    try {
+      debugger;
+      const response = await fetch("http://localhost:3001/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: "id",
+        }),
+      });
+      const data = await response.json();
+      window.location.href = data.url;
+    } catch (error) {
+      //si la respuesta es correcta, se redirecciona a la página de stripe
+      console.error("Error de red:", error);
+    }
+  };
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+
+    if (user === null) {
+      //quiero redireccionar a la página de login
+      window.location.href = "/sign-in";
+    }
+  }, []);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -168,6 +200,9 @@ function Tables() {
                   >
                     <i className="fa-solid fa-circle-plus">Agregar</i>
                   </button>
+                  <button onClick={() => createCheckoutSession(1)} className="btn btn-dark">
+                    <i className="fa-solid fa-circle-plus">Pasarela de pago</i>
+                  </button>
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
@@ -192,22 +227,31 @@ function Tables() {
                         </MDTypography>
                       ),
                       action: (
-                        <div>
-                          <button
-                            className="btn btn-warning"
+                        <MDBox
+                          display="flex"
+                          alignItems="center"
+                          mt={{ xs: 2, sm: 0 }}
+                          ml={{ xs: -1.5, sm: 0 }}
+                        >
+                          <MDBox mr={1}>
+                            <MDButton
+                              variant="text"
+                              color="error"
+                              onClick={() => deleteProduct(product.id)}
+                            >
+                              <Icon>delete</Icon>&nbsp;Eliminar
+                            </MDButton>
+                          </MDBox>
+                          <MDButton
+                            variant="text"
+                            color="dark"
                             onClick={() => openModal(2, product.id, product.nombre)}
                             data-bs-toggle="modal"
                             data-bs-target="#modalProducts"
                           >
-                            Editar
-                          </button>
-                          <button
-                            className="btn btn-danger"
-                            onClick={() => deleteProduct(product.id)}
-                          >
-                            Eliminar
-                          </button>
-                        </div>
+                            <Icon>edit</Icon>&nbsp;Editar
+                          </MDButton>
+                        </MDBox>
                       ),
                     })),
                   }}
