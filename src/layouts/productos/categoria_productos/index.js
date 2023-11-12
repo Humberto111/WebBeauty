@@ -164,15 +164,6 @@ function Tables() {
     }
   };
 
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-
-    if (user === null) {
-      //quiero redireccionar a la página de login
-      window.location.href = "/sign-in";
-    }
-  }, []);
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
