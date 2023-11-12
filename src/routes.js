@@ -119,6 +119,7 @@ const routes = [
     component: <Galeria />,
   },
   {
+    type: "collapse",
     name: "Calendario",
     key: "calendario",
     icon: <Icon fontSize="small">assignment</Icon>,

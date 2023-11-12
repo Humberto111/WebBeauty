@@ -101,7 +101,6 @@ const DemoApp = () => {
 
   const getEstilistaById = async (id) => {
     try {
-      debugger;
       const response = await fetch(`http://localhost:3001/estilistaById?id=${id}`, {
         method: "GET",
         headers: {
