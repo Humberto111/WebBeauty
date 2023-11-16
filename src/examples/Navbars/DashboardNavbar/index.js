@@ -162,7 +162,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 sx={navbarIconButton}
                 onClick={handleConfiguratorOpen}
               >
-                <Icon sx={iconsStyle}>settings</Icon>
+                <Icon sx={iconsStyle}>shopping_cart</Icon>
               </IconButton>
               <IconButton
                 size="small"
