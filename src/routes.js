@@ -13,6 +13,7 @@ import TipoProductos from "layouts/productos/tipo_productos";
 import CategoriaProductos from "layouts/productos/categoria_productos";
 import Galeria from "layouts/galeria";
 import Calendario from "layouts/calendar";
+import CarritoCompras from "layouts/cart";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -125,6 +126,13 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/calendario",
     component: <Calendario />,
+  },
+  {
+    name: "Cart",
+    key: "cart",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/cart",
+    component: <CarritoCompras />,
   },
 ];
 
