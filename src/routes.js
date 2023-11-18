@@ -13,6 +13,7 @@ import TipoProductos from "layouts/productos/tipo_productos";
 import CategoriaProductos from "layouts/productos/categoria_productos";
 import Galeria from "layouts/galeria";
 import Calendario from "layouts/calendar";
+import Comentarios from "layouts/comentarios";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -68,7 +69,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Profile",
+    name: "Perfil",
     key: "profile",
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
@@ -96,14 +97,6 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Factor de Autenticación",
-    key: "2fa",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/add2fa",
-    component: <Add2fa />,
-  },
-  {
-    type: "collapse",
     name: "Servicios",
     key: "services",
     icon: <Icon fontSize="small">assignment</Icon>,
@@ -125,6 +118,14 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/calendario",
     component: <Calendario />,
+  },
+  {
+    type: "collapse",
+    name: "Comentarios y reseñas",
+    key: "comentarios",
+    icon: <Icon fontSize="small">comments</Icon>,
+    route: "/comentarios",
+    component: <Comentarios />,
   },
 ];
 

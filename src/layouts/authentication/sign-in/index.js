@@ -87,10 +87,31 @@ function Basic() {
         const data = await response.json();
         const jsonData = JSON.stringify(data);
         localStorage.setItem("users", jsonData);
-        window.location.href = "/dashboard";
+        handleVerify2FA();
       } else {
         openErrorSB(true);
         console.log("error");
+      }
+    } catch (error) {
+      console.error("Error de red:", error);
+    }
+  };
+
+  const handleVerify2FA = async (e) => {
+    try {
+      // tiene que realizar un get para saber si el usuario tiene habilitado el 2FA
+      const user = JSON.parse(localStorage.getItem("users"));
+      const response = await fetch(`http://localhost:3001/getUserAuth?usuario=${user.email}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (data[0].activo) {
+        window.location.href = "/authentication/verify2fa";
+      } else {
+        window.location.href = "/Dashboard";
       }
     } catch (error) {
       console.error("Error de red:", error);
