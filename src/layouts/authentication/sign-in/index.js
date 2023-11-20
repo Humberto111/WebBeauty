@@ -71,7 +71,7 @@ function Basic() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3001/signin", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,12 +101,15 @@ function Basic() {
     try {
       // tiene que realizar un get para saber si el usuario tiene habilitado el 2FA
       const user = JSON.parse(localStorage.getItem("users"));
-      const response = await fetch(`http://localhost:3001/getUserAuth?usuario=${user.email}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getUserAuth?usuario=${user.email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       if (data[0].activo) {
         window.location.href = "/authentication/verify2fa";

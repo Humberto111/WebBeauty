@@ -72,16 +72,19 @@ function Cover() {
     }
     try {
       const user = JSON.parse(localStorage.getItem("users"));
-      const response = await fetch("http://localhost:3001/validateTOTP", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.email,
-          code,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/validateTOTP",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user.email,
+            code,
+          }),
+        }
+      );
 
       if (!response.ok) {
         if (response.status === 401) {
