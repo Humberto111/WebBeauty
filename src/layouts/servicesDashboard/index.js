@@ -10,7 +10,6 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 
 import { useEffect, useState } from "react";
-import { doc } from "prettier";
 import Swal from "sweetalert2";
 
 /* prettier-ignore */
