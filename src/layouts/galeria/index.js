@@ -21,7 +21,6 @@ import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { doc } from "prettier";
 
 /* prettier-ignore */
 const Dashboard = () => {
