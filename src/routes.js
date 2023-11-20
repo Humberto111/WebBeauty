@@ -14,6 +14,7 @@ import CategoriaProductos from "layouts/productos/categoria_productos";
 import Galeria from "layouts/galeria";
 import Calendario from "layouts/calendar";
 import Comentarios from "layouts/comentarios";
+import CarritoCompras from "layouts/cart";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -126,6 +127,14 @@ const routes = [
     icon: <Icon fontSize="small">comments</Icon>,
     route: "/comentarios",
     component: <Comentarios />,
+  },
+  {
+    type: "collapse",
+    name: "Cart",
+    key: "cart",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/cart",
+    component: <CarritoCompras />,
   },
 ];
 
