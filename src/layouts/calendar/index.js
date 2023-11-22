@@ -6,6 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import Dashboard from "layouts/dashboard";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import isLocate from "@fullcalendar/core/locales/es";
 import Swal from "sweetalert2";
 
@@ -295,6 +296,7 @@ const DemoApp = () => {
 
   return (
     <DashboardLayout>
+      <DashboardNavbar />
       <div className="demo-app">
         <div className="demo-app-main" style={{ zIndex: 9999 }}>
           <FullCalendar
