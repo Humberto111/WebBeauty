@@ -11,10 +11,11 @@ function Notifications() {
   const [newComment, setNewComment] = useState("");
   const [responseText, setResponseText] = useState("");
   const [responseTexts, setResponseTexts] = useState({});
+  const baseUrl = "https://web-beauty-api-638331a8cfae.herokuapp.com";
 
   const getComment = async () => {
     try {
-      const response = await fetch("http://localhost:3001/coments", {
+      const response = await fetch(`${baseUrl}/coments`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -35,7 +36,7 @@ function Notifications() {
   const handleCommentSubmit = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("users"));
-      const response = await fetch("http://localhost:3001/addComent", {
+      const response = await fetch(`${baseUrl}/addComent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +59,7 @@ function Notifications() {
   const handleResponseSubmit = async (commentId) => {
     try {
       const user = JSON.parse(localStorage.getItem("users"));
-      const response = await fetch(`http://localhost:3001/responseComent`, {
+      const response = await fetch(`${baseUrl}/responseComent`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
