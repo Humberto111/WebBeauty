@@ -115,7 +115,7 @@ function Notifications() {
       <MDBox pt={2} px={2}>
         {comentario.map((comment) => (
           <Box key={comment.comentario_id} mb={2}>
-            <Alert color="primary" dismissible>
+            <Alert color="primary" dismissible="true">
               <Typography variant="body2">{comment.texto}</Typography>
             </Alert>
             {/* Formulario para Responder a Comentario */}
