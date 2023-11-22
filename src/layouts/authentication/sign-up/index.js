@@ -43,6 +43,7 @@ function Cover() {
       open={successSB}
       onClose={closeSuccessSB}
       close={closeSuccessSB}
+      dateTime={new Date().toISOString().split("T")[0]}
       bgWhite
     />
   );
@@ -56,6 +57,7 @@ function Cover() {
       open={errorSB}
       onClose={closeErrorSB}
       close={closeErrorSB}
+      dateTime={new Date().toISOString().split("T")[0]}
       bgWhite
     />
   );
