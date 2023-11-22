@@ -174,15 +174,8 @@ function Basic() {
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
                 No tienes cuenta?{" "}
-                <MDTypography
-                  component={Link}
-                  to="/authentication/sign-up"
-                  variant="button"
-                  color="info"
-                  fontWeight="medium"
-                  textGradient
-                >
-                  Registrate
+                <MDTypography variant="button" color="info" fontWeight="medium" textGradient>
+                  <Link to="/authentication/sign-up">Regístrate</Link>
                 </MDTypography>
                 {renderSuccessSB}
                 {renderErrorSB}
