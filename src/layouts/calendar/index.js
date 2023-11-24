@@ -110,7 +110,7 @@ const DemoApp = () => {
 
       const data = await response.json();
 
-      setEstilistaToolTip(data[0].nombre);
+      setEstilistaToolTip(data[0].nombre + " " + data[0].apellido);
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -118,23 +118,27 @@ const DemoApp = () => {
 
   const getServicioById = async (id) => {
     try {
-      const response = await fetch("http://localhost:3001/serviceById", {
+      const response = await fetch(`http://localhost:3001/serviceById?id=${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id: id,
-        }),
       });
 
       const data = await response.json();
-      setServicioToolTip(data);
 
-      console(servicioToolTip);
+      setServicioToolTip(data[0].nombre);
     } catch (error) {
       console.error("Error de red:", error);
     }
+  };
+
+  const limpiarModal = () => {
+    setHoraInicial("");
+    setHoraFinal("");
+    setObservaciones("");
+    setServicioSeleccionado(0);
+    setEstilistaSeleccionado(0);
   };
 
   const enviarSolicitud = async () => {
@@ -158,6 +162,7 @@ const DemoApp = () => {
       });
 
       if (response.ok) {
+        document.getElementById("btnModalCerrar").click();
         Swal.fire({
           title: "Registro Exitoso!",
           text: "Cita agregada exitosamente",
@@ -165,8 +170,8 @@ const DemoApp = () => {
           timer: 1500,
           position: "top-end",
         }).then((result) => {
-          document.getElementById("btnModalCerrar").click();
           getCitas();
+          limpiarModal();
         });
       } else {
         Swal.fire({
@@ -208,35 +213,49 @@ const DemoApp = () => {
 
   const handleEventClick = async (clickInfo) => {
     if (clickInfo.event.extendedProps.id_usuario === usuarioLogeado) {
-      const result = await Swal.fire({
-        title: "Deseas borrar esta cita?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      });
+      console.log(clickInfo.event.extendedProps);
+      getServicioById(clickInfo.event.extendedProps.id_servicio);
+      getEstilistaById(clickInfo.event.extendedProps.id_estilista);
+      setHoraInicial(clickInfo.event.extendedProps.fecha_hora_inicio);
+      setHoraFinal(clickInfo.event.extendedProps.fecha_hora_fin);
+      setObservaciones(clickInfo.event.extendedProps.observaciones);
+      setServicioSeleccionado(servicioToolTip);
+      setEstilistaSeleccionado(estilistaToolTip);
+      setId(clickInfo.event.extendedProps.id);
+      $("#modalMostrarCitas").modal("show");
+      // En lugar de esto necesito abrir un modal y cargar los datos de la cita
+      // para que el usuario pueda modificarlos
+    }
+  };
 
-      if (result.isConfirmed) {
-        try {
-          await onDeleteCita(clickInfo.event.id);
-          await getCitas();
-          Swal.fire({
-            icon: "success",
-            title: "Cita Eliminada",
-            text: "Tu cita ha sido eliminada!",
-          });
-        } catch (error) {
-          console.error("Error deleting or fetching data:", error);
-        }
+  const eliminarCita = async (id) => {
+    const result = await Swal.fire({
+      title: "Deseas borrar esta cita?",
+      text: "No podras revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, eliminar!",
+      cancelButtonText: "No, cancelar!",
+      customClass: {
+        container: "zIndex: 9999",
+      },
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await onDeleteCita(id);
+        await getCitas();
+        document.getElementById("btnModalMostrarCerrar").click();
+        Swal.fire({
+          icon: "success",
+          title: "Cita Eliminada",
+          text: "Tu cita ha sido eliminada!",
+        });
+      } catch (error) {
+        console.error("Error deleting or fetching data:", error);
       }
-    } else {
-      Swal.fire({
-        icon: "info",
-        title: "Oops...",
-        text: "Este evento pertenece a otro usuario!",
-      });
     }
   };
 
@@ -256,21 +275,6 @@ const DemoApp = () => {
     enviarSolicitud();
   };
 
-  /*
-  .
-  .
-  .
-  .
-  .
-  .
-  .
-  .
-  .
-  .
-  .
-  .
-  .
-  .*/
   const handleDateClick = (info) => {
     setHoraInicial(info.dateStr);
 
@@ -326,13 +330,19 @@ const DemoApp = () => {
             eventDidMount={(e) => {
               console.log(estilistaToolTip);
               if (e.event.extendedProps.id_usuario === usuarioLogeado) {
-                getServicioById(e.event.extendedProps.id_servicio);
-                getEstilistaById(e.event.extendedProps.id_estilista);
                 return new bootstrap.Popover(e.el, {
                   title: "Cita Registrada",
                   placement: "auto",
                   trigger: "hover",
-                  content: estilistaToolTip + " - " + e.event.extendedProps.id_servicio,
+                  content: "Haz click para ver los detalles de la cita!",
+                  html: true,
+                });
+              } else {
+                return new bootstrap.Popover(e.el, {
+                  title: "Cita Registrada",
+                  placement: "auto",
+                  trigger: "hover",
+                  content: "Esta cita pertenece a otro cliente!",
                   html: true,
                 });
               }
@@ -461,7 +471,7 @@ const DemoApp = () => {
 
                 <div className="d-grid col-6 mx-auto">
                   <button onClick={() => validar()} className="btn btn-success">
-                    <i className="fa-solid fa-floppy-disk"></i> Gaurdar
+                    <i className="fa-solid fa-floppy-disk"></i> Guardar
                   </button>
                 </div>
               </div>
@@ -475,6 +485,138 @@ const DemoApp = () => {
                   Cerrar
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="modalMostrarCitas" className="modal fade" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <label className="h5">Informacion de la Cita</label>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <input type="hidden" id="id"></input>
+              <label>Nombre</label>
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  value={nombre}
+                  type="text"
+                  id="nombre"
+                  className="form-control"
+                  disabled
+                ></input>
+              </div>
+              <label>Email</label>
+
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  value={email}
+                  type="text"
+                  id="email"
+                  className="form-control"
+                  disabled
+                ></input>
+              </div>
+              <label>Hora de inicio</label>
+
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  value={horaFinal}
+                  type="text"
+                  id="horaInicial"
+                  className="form-control"
+                  disabled
+                ></input>
+              </div>
+              <label>Hora de finalización</label>
+
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  value={horaFinal}
+                  type="text"
+                  id="horaFinal"
+                  className="form-control"
+                  disabled
+                ></input>
+              </div>
+              <label>Observaciones</label>
+
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  value={observaciones}
+                  type="text"
+                  id="observaciones"
+                  className="form-control"
+                  disabled
+                ></input>
+              </div>
+              <label>Servicio</label>
+
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  value={servicioToolTip}
+                  type="text"
+                  id="servicio"
+                  className="form-control"
+                  disabled
+                ></input>
+              </div>
+              <label>Estilista</label>
+
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  value={estilistaToolTip}
+                  type="text"
+                  id="estilista"
+                  className="form-control"
+                  disabled
+                ></input>
+              </div>
+
+              <div className="d-grid col-6 mx-auto">
+                <button onClick={() => eliminarCita(id)} className="btn btn-danger">
+                  <i className="fa-solid fa-floppy-disk"></i> Elminar
+                </button>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                id="btnModalMostrarCerrar"
+                type="button"
+                className="btn btn-seconday"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
             </div>
           </div>
         </div>

@@ -21,6 +21,10 @@ const formatCurrency = (amount) => {
 const Dashboard = () => {
   const [productsStored, setProductsStored] = useState([]);
   const [usuarioLogeado, setUsuarioLogeado] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
+  const [descuento, setDescuento] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [retrieveProducts, setRetrieveProducts] = useState([]);
 
   useEffect(() => {
     const userStored = JSON.parse(localStorage.getItem("users"));
@@ -28,10 +32,81 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if (usuarioLogeado.id) {
-      getProductsOnCart();
-    }
+    const fetchData = async () => {
+      if (usuarioLogeado.id) {
+        await getProductsOnCart();
+      }
+    };
+
+    fetchData();
   }, [usuarioLogeado]);
+
+  useEffect(() => {
+    verificarCompra();
+  }, [productsStored]);
+
+  const verificarCompra = async () => {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const compraRealizada = params.get("compra_realizada");
+
+    if (compraRealizada === "1") {
+      const fechaActual = new Date();
+      const anno = fechaActual.getFullYear();
+      const mes = (fechaActual.getMonth() + 1).toString().padStart(2, "0");
+      const dia = fechaActual.getDate().toString().padStart(2, "0");
+      const fechaFormateada = `${anno}-${mes}-${dia}`;
+
+      if (productsStored.length > 0) {
+        console.log(productsStored);
+        try {
+          const response = await fetch("http://localhost:3001/addSale", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              productos: productsStored,
+              id_usuario: usuarioLogeado.id,
+              fecha_venta: fechaFormateada,
+              descuento: descuento,
+              subtotal: subtotal,
+              total: total,
+            }),
+          });
+          const data = await response.json();
+        } catch (error) {
+          console.error("Error de red:", error);
+        }
+
+        const productsRetrieved = JSON.parse(localStorage.getItem("products"));
+        for (const product of productsRetrieved) {
+          console.log("aqui edita la cantidad en stock");
+          console.log(product);
+          try {
+            const response = await fetch("http://localhost:3001/editProduct", {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: product.id,
+                cantidad_en_stock: product.cantidad_en_stock.toString(),
+              }),
+            });
+            onDeleteProduct(product.id);
+          } catch (error) {
+            // Si hay un error, puedes manejarlo aquí
+            console.error("Error de red:", error);
+          }
+        }
+
+        window.location.href = "/dashboard";
+      } else {
+        return false;
+      }
+    }
+  };
 
   const getProductsOnCart = async () => {
     try {
@@ -46,7 +121,22 @@ const Dashboard = () => {
       );
 
       const data = await response.json();
-      setProductsStored(data);
+
+      // Verificar si hay datos antes de actualizar el estado
+      if (Array.isArray(data) && data.length > 0) {
+        data.map((item) => {
+          if (item.cantidad_en_stock > 0) {
+            item.cantidad_en_stock -= 1;
+          }
+          return false;
+        });
+
+        setProductsStored(data);
+        updateTotals(data);
+      } else {
+        // Puedes manejar el caso donde los datos están vacíos
+        console.log("No hay datos disponibles");
+      }
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -70,7 +160,7 @@ const Dashboard = () => {
     }
   };
 
-  const deleteProduct = async (id) => {
+  const deleteProduct = (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -91,9 +181,10 @@ const Dashboard = () => {
       const updatedProducts = [...prevProducts];
       const product = updatedProducts[index];
 
-      if (product && product.cantidad_en_stock > 1) {
+      if (product && product.cantidad_en_stock > 0) {
         product.cantidad += 1;
         product.cantidad_en_stock -= 1;
+        console.log(product.cantidad_en_stock);
       } else {
         Swal.fire({
           icon: "info",
@@ -102,6 +193,7 @@ const Dashboard = () => {
         });
       }
 
+      updateTotals(updatedProducts);
       return updatedProducts;
     });
   };
@@ -114,6 +206,7 @@ const Dashboard = () => {
       if (product && product.cantidad > 1) {
         product.cantidad -= 1;
         product.cantidad_en_stock += 1;
+        console.log(product.cantidad_en_stock);
       } else {
         Swal.fire({
           icon: "info",
@@ -122,11 +215,23 @@ const Dashboard = () => {
         });
       }
 
+      updateTotals(updatedProducts);
       return updatedProducts;
     });
   };
 
-  const createCheckoutSession = async () => {
+  const updateTotals = (updatedProducts) => {
+    const newSubtotal = updatedProducts.reduce(
+      (acc, product) => acc + product.precio * product.cantidad,
+      0
+    );
+
+    setSubtotal(newSubtotal);
+    setTotal(newSubtotal - descuento);
+  };
+
+  const finalizarPedido = async () => {
+    localStorage.setItem("products", JSON.stringify(productsStored));
     try {
       const response = await fetch("http://localhost:3001/create-checkout-session", {
         method: "POST",
@@ -138,7 +243,6 @@ const Dashboard = () => {
         }),
       });
       const data = await response.json();
-      console.log(data);
       window.location.href = data.url;
     } catch (error) {
       //si la respuesta es correcta, se redirecciona a la página de stripe
@@ -205,7 +309,7 @@ const Dashboard = () => {
             <tr>
               <td colSpan="5"></td>
               <td style={{ textAlign: "right" }}>Total productos</td>
-              <td>
+              <td id="montoSubtotal">
                 {formatCurrency(
                   productsStored.reduce(
                     (total, product) => total + product.precio * product.cantidad,
@@ -217,12 +321,12 @@ const Dashboard = () => {
             <tr>
               <td colSpan="5"></td>
               <td style={{ textAlign: "right" }}>Descuento</td>
-              <td>{formatCurrency(0)}</td>
+              <td id="montoDescueto">{formatCurrency(0)}</td>
             </tr>
             <tr>
               <td colSpan="5"></td>
               <td style={{ textAlign: "right" }}>Total</td>
-              <td>
+              <td id="montoTotal">
                 {formatCurrency(
                   productsStored.reduce(
                     (total, product) => total + product.precio * product.cantidad,
@@ -247,7 +351,7 @@ const Dashboard = () => {
                   }}
                   onMouseOver={(e) => (e.target.style.backgroundColor = "#45a049")}
                   onMouseOut={(e) => (e.target.style.backgroundColor = "#4caf50")}
-                  onClick={(e) => createCheckoutSession()}
+                  onClick={(e) => finalizarPedido()}
                 >
                   FNALIZAR PEDIDO
                 </button>

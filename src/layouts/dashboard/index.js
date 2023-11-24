@@ -22,6 +22,7 @@ import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { doc } from "prettier";
+import select from "assets/theme/components/form/select";
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
@@ -32,6 +33,7 @@ const Dashboard = () => {
   const [operation, setOperation] = useState(0);
   const [title, setTitle] = useState("");
   const [cantidad_en_stock, setCantidad_en_stock] = useState(0);
+  const [file, setFile] = useState(null);
   const [usuarioLogeado, setUsuarioLogeado] = useState([]);
 
   useEffect(() => {
@@ -50,13 +52,14 @@ const Dashboard = () => {
       });
 
       const data = await response.json();
+
       setProducts(data);
     } catch (error) {
       console.error("Error de red:", error);
     }
   };
 
-  const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock) => {
+  const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock, file) => {
     setId("");
     setNombre("");
     setDescripcion("");
@@ -72,6 +75,7 @@ const Dashboard = () => {
       setDescripcion(descripcion);
       setPrecio(precio);
       setCantidad_en_stock(cantidad_en_stock);
+      setFile(file);
       setOperation(2);
     }
     window.setTimeout(() => {
@@ -93,6 +97,9 @@ const Dashboard = () => {
     } else if (cantidad_en_stock === "") {
       alert("La cantidad en stock es obligatorio", "warning");
       return false;
+    } else if (!file) {
+      alert("Por favor seleccione una imagen!", "warning");
+      return false;
     } else {
       if (operation === 1) {
         parametros = {
@@ -100,6 +107,7 @@ const Dashboard = () => {
           descripcion: descripcion.trim(),
           precio: precio,
           cantidad_en_stock: cantidad_en_stock,
+          file: file,
         };
       } else if (operation === 2) {
         parametros = {
@@ -108,6 +116,7 @@ const Dashboard = () => {
           descripcion: descripcion.trim(),
           precio: precio,
           cantidad_en_stock: cantidad_en_stock,
+          file: file,
         };
       } else {
         return false;
@@ -130,6 +139,7 @@ const Dashboard = () => {
             precio: parametros.precio,
             descripcion: parametros.descripcion,
             cantidad_en_stock: parametros.cantidad_en_stock,
+            file: parametros.file,
           }),
         });
 
@@ -156,17 +166,16 @@ const Dashboard = () => {
       }
     } else if (operation === 1) {
       try {
+        const formData = new FormData();
+        formData.append("imageProduct", file);
+        formData.append("nombre", parametros.nombre);
+        formData.append("precio", parametros.precio);
+        formData.append("descripcion", parametros.descripcion);
+        formData.append("cantidad_en_stock", parametros.cantidad_en_stock);
+
         const response = await fetch("http://localhost:3001/addProduct", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nombre: parametros.nombre,
-            precio: parametros.precio,
-            descripcion: parametros.descripcion,
-            cantidad_en_stock: parametros.cantidad_en_stock,
-          }),
+          body: formData,
         });
 
         if (response.ok) {
@@ -228,7 +237,19 @@ const Dashboard = () => {
     });
   };
 
-  const añadirAlCarrito = async (idProduct) => {
+  const añadirAlCarrito = async (product) => {
+    if (product.cantidad_en_stock === 0) {
+      Swal.fire({
+        title: "¡Error!",
+        text: "No hay productos en stock!",
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+      });
+      return false;
+    }
+
     try {
       const response = await fetch("http://localhost:3001/addShopping_cart", {
         method: "POST",
@@ -237,7 +258,7 @@ const Dashboard = () => {
         },
         body: JSON.stringify({
           id_usuario: usuarioLogeado.id,
-          id_producto: idProduct,
+          id_producto: product.id,
           cantidad: 1,
         }),
       });
@@ -260,6 +281,10 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error de red:", error);
     }
+  };
+
+  const selectHandler = (e) => {
+    setFile(e.target.files[0]);
   };
 
   return (
@@ -290,7 +315,7 @@ const Dashboard = () => {
               >
                 <div key={product.id} className="card">
                   <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png"
+                    src={"http://localhost:3001/" + product.imagen}
                     className="card-img-top"
                     alt="..."
                   />
@@ -307,16 +332,10 @@ const Dashboard = () => {
                         Productos restantes: {product.cantidad_en_stock}
                       </small>
                     </p>
-                    <p className="card-text">
-                      <small className="text-body-secondary">
-                        Cantidad:
-                        <p value={1}>1</p>
-                      </small>
-                    </p>
                   </div>
                 </div>
                 {(() => {
-                  if (usuarioLogeado.tipo === "C") {
+                  if (usuarioLogeado.tipo === "A") {
                     return (
                       <div className="buttons" style={{ textAlign: "center", padding: "10px" }}>
                         <button
@@ -327,7 +346,8 @@ const Dashboard = () => {
                               product.nombre,
                               product.descripcion,
                               product.precio,
-                              product.cantidad_en_stock
+                              product.cantidad_en_stock,
+                              product.imagen
                             )
                           }
                           className="btn btn-warning"
@@ -346,13 +366,10 @@ const Dashboard = () => {
                         </button>
                       </div>
                     );
-                  } else if (usuarioLogeado.tipo === "A") {
+                  } else if (usuarioLogeado.tipo === "C") {
                     return (
                       <div className="buttons" style={{ textAlign: "center", padding: "10px" }}>
-                        <button
-                          onClick={() => añadirAlCarrito(product.id)}
-                          className="btn btn-info"
-                        >
+                        <button onClick={() => añadirAlCarrito(product)} className="btn btn-info">
                           Añadir al carrito
                         </button>
                       </div>
@@ -432,9 +449,20 @@ const Dashboard = () => {
                   onChange={(e) => setCantidad_en_stock(e.target.value)}
                 ></input>
               </div>
+              <div className="input-group mb-3">
+                <span className="input-group-text">
+                  <i className="fa-solid fa-gift"></i>
+                </span>
+                <input
+                  type="file"
+                  id="fileInput"
+                  className="form-control"
+                  onChange={selectHandler}
+                ></input>
+              </div>
               <div className="d-grid col-6 mx-auto">
                 <button onClick={() => validar()} className="btn btn-success">
-                  <i className="fa-solid fa-floppy-disk"></i> Gaurdar
+                  <i className="fa-solid fa-floppy-disk"></i> Guardar
                 </button>
               </div>
             </div>
