@@ -26,7 +26,7 @@ const Dashboard = () => {
 
   const getProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3001/products", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/products", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -110,20 +110,23 @@ const Dashboard = () => {
   const enviarSolicitud = async (parametros) => {
     if (operation === 2) {
       try {
-        const response = await fetch("http://localhost:3001/editProduct", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: parametros.id,
-            nombre: parametros.nombre,
-            precio: parametros.precio,
-            descripcion: parametros.descripcion,
-            cantidad_en_stock: parametros.cantidad_en_stock,
-            file: parametros.file,
-          }),
-        });
+        const response = await fetch(
+          "https://web-beauty-api-638331a8cfae.herokuapp.com/editProduct",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: parametros.id,
+              nombre: parametros.nombre,
+              precio: parametros.precio,
+              descripcion: parametros.descripcion,
+              cantidad_en_stock: parametros.cantidad_en_stock,
+              file: parametros.file,
+            }),
+          }
+        );
 
         if (response.ok) {
           Swal.fire({
@@ -155,10 +158,13 @@ const Dashboard = () => {
         formData.append("descripcion", parametros.descripcion);
         formData.append("cantidad_en_stock", parametros.cantidad_en_stock);
 
-        const response = await fetch("http://localhost:3001/addProduct", {
-          method: "POST",
-          body: formData,
-        });
+        const response = await fetch(
+          "https://web-beauty-api-638331a8cfae.herokuapp.com/addProduct",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
         if (response.ok) {
           Swal.fire({
@@ -188,15 +194,18 @@ const Dashboard = () => {
 
   const onDeleteProduct = async (id) => {
     try {
-      const response = await fetch("http://localhost:3001/deleteProduct", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/deleteProduct",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+          }),
+        }
+      );
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -233,17 +242,20 @@ const Dashboard = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/addShopping_cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id_usuario: usuarioLogeado.id,
-          id_producto: product.id,
-          cantidad: 1,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/addShopping_cart",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id_usuario: usuarioLogeado.id,
+            id_producto: product.id,
+            cantidad: 1,
+          }),
+        }
+      );
 
       if (response.ok) {
         Swal.fire({

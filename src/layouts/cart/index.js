@@ -59,20 +59,23 @@ const Dashboard = () => {
       if (productsStored.length > 0) {
         console.log(productsStored);
         try {
-          const response = await fetch("http://localhost:3001/addSale", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              productos: productsStored,
-              id_usuario: usuarioLogeado.id,
-              fecha_venta: fechaFormateada,
-              descuento: descuento,
-              subtotal: subtotal,
-              total: total,
-            }),
-          });
+          const response = await fetch(
+            "https://web-beauty-api-638331a8cfae.herokuapp.com/addSale",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                productos: productsStored,
+                id_usuario: usuarioLogeado.id,
+                fecha_venta: fechaFormateada,
+                descuento: descuento,
+                subtotal: subtotal,
+                total: total,
+              }),
+            }
+          );
           const data = await response.json();
         } catch (error) {
           console.error("Error de red:", error);
@@ -83,16 +86,19 @@ const Dashboard = () => {
           console.log("aqui edita la cantidad en stock");
           console.log(product);
           try {
-            const response = await fetch("http://localhost:3001/editProduct", {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                id: product.id,
-                cantidad_en_stock: product.cantidad_en_stock.toString(),
-              }),
-            });
+            const response = await fetch(
+              "https://web-beauty-api-638331a8cfae.herokuapp.com/editProduct",
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  id: product.id,
+                  cantidad_en_stock: product.cantidad_en_stock.toString(),
+                }),
+              }
+            );
             onDeleteProduct(product.id);
           } catch (error) {
             console.error("Error de red:", error);
@@ -109,7 +115,7 @@ const Dashboard = () => {
   const getProductsOnCart = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/shopping_cart?id_usuario=${usuarioLogeado.id}`,
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/shopping_cart?id_usuario=${usuarioLogeado.id}`,
         {
           method: "GET",
           headers: {
@@ -142,16 +148,19 @@ const Dashboard = () => {
 
   const onDeleteProduct = async (idProducto) => {
     try {
-      const response = await fetch("http://localhost:3001/deleteShopping_cart", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id_usuario: usuarioLogeado.id,
-          id_producto: idProducto,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/deleteShopping_cart",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id_usuario: usuarioLogeado.id,
+            id_producto: idProducto,
+          }),
+        }
+      );
       getProductsOnCart();
     } catch (error) {
       console.error("Error de red:", error);
@@ -231,15 +240,18 @@ const Dashboard = () => {
   const finalizarPedido = async () => {
     localStorage.setItem("products", JSON.stringify(productsStored));
     try {
-      const response = await fetch("http://localhost:3001/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productos: productsStored,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/create-checkout-session",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productos: productsStored,
+          }),
+        }
+      );
       const data = await response.json();
       window.location.href = data.url;
     } catch (error) {

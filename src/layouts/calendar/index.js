@@ -45,7 +45,7 @@ const DemoApp = () => {
 
   const getCitas = async () => {
     try {
-      const response = await fetch("http://localhost:3001/citas", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/citas", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,7 @@ const DemoApp = () => {
 
   const getServices = async () => {
     try {
-      const response = await fetch("http://localhost:3001/services", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/services", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +85,7 @@ const DemoApp = () => {
 
   const getEstilistas = async () => {
     try {
-      const response = await fetch("http://localhost:3001/estilistas", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/estilistas", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -101,12 +101,15 @@ const DemoApp = () => {
 
   const getEstilistaById = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/estilistaById?id=${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/estilistaById?id=${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
 
@@ -118,12 +121,15 @@ const DemoApp = () => {
 
   const getServicioById = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/serviceById?id=${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/serviceById?id=${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
 
@@ -144,7 +150,7 @@ const DemoApp = () => {
   const enviarSolicitud = async () => {
     const userStored = JSON.parse(localStorage.getItem("users"));
     try {
-      const response = await fetch("http://localhost:3001/addCita", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/addCita", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -197,7 +203,7 @@ const DemoApp = () => {
 
   const onDeleteCita = async (id) => {
     try {
-      const response = await fetch("http://localhost:3001/deleteCita", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/deleteCita", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
