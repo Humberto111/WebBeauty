@@ -22,7 +22,7 @@ const Dashboard = () => {
 
   const getImages = async () => {
     try {
-      const response = await fetch("http://localhost:3001/images");
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/images");
       const data = await response.json();
       setImageList(data);
     } catch (error) {
@@ -48,10 +48,13 @@ const Dashboard = () => {
     formData.append("image", file);
 
     try {
-      const response = await fetch("http://localhost:3001/images/post", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/images/post",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       // Realizar acciones adicionales según sea necesario
@@ -66,15 +69,18 @@ const Dashboard = () => {
 
   const onDeleteImagen = async (id) => {
     try {
-      const response = await fetch("http://localhost:3001/deleteImagen", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/deleteImagen",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+          }),
+        }
+      );
     } catch (error) {
       console.error("Error de red:", error);
     }

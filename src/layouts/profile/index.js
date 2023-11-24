@@ -52,7 +52,7 @@ function Overview() {
   const [profile_picture, setProfile_picture] = useState("");
   const [tipo, setTipo] = useState("");
 
-  const apiUrl = "http://localhost:3001";
+  const apiUrl = "https://web-beauty-api-638331a8cfae.herokuapp.com";
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -87,12 +87,15 @@ function Overview() {
   const getUsuario = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("users"));
-      const response = await fetch(`http://localhost:3001/getUserById?id=${user.id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getUserById?id=${user.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       setUsuario(data[0]);
@@ -110,15 +113,18 @@ function Overview() {
       //es post
       const user = JSON.parse(localStorage.getItem("users"));
       console.log(user.email);
-      const response = await fetch("http://localhost:3001/generateSecretAndQR", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.email,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/generateSecretAndQR",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: user.email,
+          }),
+        }
+      );
       const data = await response.json();
       setQrCodeUrl(data.qrCodeDataURL);
       console.log(data);
@@ -186,22 +192,25 @@ function Overview() {
 
   const enviarSolicitud = async (parametros) => {
     try {
-      const response = await fetch("http://localhost:3001/editUsuario", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: parametros.id,
-          nombre: parametros.nombre,
-          apellido: parametros.apellido,
-          email: parametros.email,
-          fecha_nacimiento: parametros.fecha_nacimiento,
-          genero: parametros.genero,
-          password: parametros.password,
-          tipo: parametros.tipo,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/editUsuario",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: parametros.id,
+            nombre: parametros.nombre,
+            apellido: parametros.apellido,
+            email: parametros.email,
+            fecha_nacimiento: parametros.fecha_nacimiento,
+            genero: parametros.genero,
+            password: parametros.password,
+            tipo: parametros.tipo,
+          }),
+        }
+      );
       if (response.ok) {
         Swal.fire({
           title: "Edicion Exitosa!",
@@ -232,7 +241,7 @@ function Overview() {
   const handleValidation = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("users"));
-      const response = await fetch("http://localhost:3001/saveSecret", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/saveSecret", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
