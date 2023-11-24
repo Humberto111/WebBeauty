@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2  React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useMemo } from "react";
 
 // porp-types is a library for typechecking of props
@@ -55,64 +40,40 @@ ChartJS.register(
   Filler
 );
 
-function ReportsLineChart({ color, title, description, date, chart }) {
-  const { data, options } = configs(chart.labels || [], chart.datasets || {});
+var beneficios = [0, 56, 45, 50, 60, 70, 80, 90, 100, 85, 120, 70];
+var meses = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Setiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
 
-  return (
-    <Card sx={{ height: "100%" }}>
-      <MDBox padding="1rem">
-        {useMemo(
-          () => (
-            <MDBox
-              variant="gradient"
-              bgColor={color}
-              borderRadius="lg"
-              coloredShadow={color}
-              py={2}
-              pr={0.5}
-              mt={-5}
-              height="12.5rem"
-            >
-              <Line data={data} options={options} redraw />
-            </MDBox>
-          ),
-          [chart, color]
-        )}
-        <MDBox pt={3} pb={1} px={1}>
-          <MDTypography variant="h6" textTransform="capitalize">
-            {title}
-          </MDTypography>
-          <MDTypography component="div" variant="button" color="text" fontWeight="light">
-            {description}
-          </MDTypography>
-          <Divider />
-          <MDBox display="flex" alignItems="center">
-            <MDTypography variant="button" color="text" lineHeight={1} sx={{ mt: 0.15, mr: 0.5 }}>
-              <Icon>schedule</Icon>
-            </MDTypography>
-            <MDTypography variant="button" color="text" fontWeight="light">
-              {date}
-            </MDTypography>
-          </MDBox>
-        </MDBox>
-      </MDBox>
-    </Card>
-  );
+var midata = {
+  labels: meses,
+  datasets: [
+    {
+      label: "Beneficios",
+      data: beneficios,
+      fill: false,
+      backgroundColor: "#FF0000",
+      borderColor: "#FF0000",
+      pointRadius: 5,
+      pointBorderColor: "#FF0000",
+      pointBackgroundColor: "#FF0000",
+    },
+  ],
+};
+
+const misoptions = {};
+
+export default function ReportsLineChart() {
+  return <Line data={midata} options={misoptions} />;
 }
-
-// Setting default values for the props of ReportsLineChart
-ReportsLineChart.defaultProps = {
-  color: "info",
-  description: "",
-};
-
-// Typechecking props for the ReportsLineChart
-ReportsLineChart.propTypes = {
-  color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
-  title: PropTypes.string.isRequired,
-  description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  date: PropTypes.string.isRequired,
-  chart: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])).isRequired,
-};
-
-export default ReportsLineChart;

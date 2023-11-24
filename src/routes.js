@@ -15,6 +15,8 @@ import Galeria from "layouts/galeria";
 import Calendario from "layouts/calendar";
 import Comentarios from "layouts/comentarios";
 import CarritoCompras from "layouts/cart";
+import Estilistas from "layouts/estilistas";
+import Graficos from "layouts/graficos";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -114,6 +116,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Estilistas",
+    key: "estilista",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/estilistas",
+    component: <Estilistas />,
+  },
+  {
+    type: "collapse",
     name: "Calendario",
     key: "calendario",
     icon: <Icon fontSize="small">assignment</Icon>,
@@ -135,6 +145,14 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/cart",
     component: <CarritoCompras />,
+  },
+  {
+    type: "collapse",
+    name: "Graficos",
+    key: "graficos",
+    icon: <Icon fontSize="small">assignment</Icon>,
+    route: "/graficos",
+    component: <Graficos />,
   },
 ];
 
