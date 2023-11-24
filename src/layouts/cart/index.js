@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
@@ -96,7 +95,6 @@ const Dashboard = () => {
             });
             onDeleteProduct(product.id);
           } catch (error) {
-            // Si hay un error, puedes manejarlo aquí
             console.error("Error de red:", error);
           }
         }
