@@ -43,6 +43,7 @@ function Cover() {
       open={successSB}
       onClose={closeSuccessSB}
       close={closeSuccessSB}
+      dateTime={new Date().toISOString().split("T")[0]}
       bgWhite
     />
   );
@@ -56,6 +57,7 @@ function Cover() {
       open={errorSB}
       onClose={closeErrorSB}
       close={closeErrorSB}
+      dateTime={new Date().toISOString().split("T")[0]}
       bgWhite
     />
   );
@@ -182,15 +184,8 @@ function Cover() {
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
                 Ya tienes cuenta?{" "}
-                <MDTypography
-                  component={Link}
-                  to="/authentication/sign-in"
-                  variant="button"
-                  color="info"
-                  fontWeight="medium"
-                  textGradient
-                >
-                  Inicia Sesión
+                <MDTypography variant="button" color="info" fontWeight="medium" textGradient>
+                  <Link to="/authentication/sign-in">Inicia Sesión</Link>
                 </MDTypography>
               </MDTypography>
             </MDBox>

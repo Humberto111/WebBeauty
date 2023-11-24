@@ -7,11 +7,8 @@ import MDBox from "components/MDBox";
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
 import theme from "assets/theme";
-import themeRTL from "assets/theme/theme-rtl";
 import themeDark from "assets/theme-dark";
-import themeDarkRTL from "assets/theme-dark/theme-rtl";
 import rtlPlugin from "stylis-plugin-rtl";
-import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import routes from "routes";
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
@@ -79,12 +76,23 @@ export default function App() {
     allRoutes.map((route) => {
       const isAuthenticated =
         localStorage.getItem("users") !== null && localStorage.getItem("users") !== "";
+      const user = JSON.parse(localStorage.getItem("users"));
       if (route.collapse) {
         return getRoutes(route.collapse);
       }
       if (route.route) {
         if (isAuthenticated) {
-          return <Route exact path={route.route} element={route.component} key={route.key} />;
+          if (user.tipo === "C") {
+            if (
+              route.key !== "categoria_productos" &&
+              route.key !== "Tipo_productos" &&
+              route.key !== "services"
+            ) {
+              return <Route exact path={route.route} element={route.component} key={route.key} />;
+            }
+          } else {
+            return <Route exact path={route.route} element={route.component} key={route.key} />;
+          }
         } else {
           if (route.key === "sign-in" || route.key === "sign-up") {
             return <Route exact path={route.route} element={route.component} key={route.key} />;
@@ -93,6 +101,32 @@ export default function App() {
       }
 
       return null;
+    });
+
+  const rendePorTipo = (allRoute) =>
+    allRoute.map((route) => {
+      const user = JSON.parse(localStorage.getItem("users"));
+      if (user !== null) {
+        if (user.tipo === "C") {
+          if (
+            route.key !== "categoria_productos" &&
+            route.key !== "Tipo_productos" &&
+            route.key !== "services"
+          ) {
+            return route;
+          } else {
+            return "";
+          }
+        } else {
+          return route;
+        }
+      } else {
+        if (route.key === "sign-in" || route.key === "sign-up") {
+          return route;
+        } else {
+          return route;
+        }
+      }
     });
 
   const configsButton = (
@@ -128,7 +162,7 @@ export default function App() {
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
             brandName="Web Beauty"
-            routes={routes}
+            routes={rendePorTipo(routes)}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />

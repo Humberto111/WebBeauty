@@ -58,6 +58,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const [controller, dispatch] = useMaterialUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
+  const [openAuth, setOpenAuth] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
 
   useEffect(() => {
@@ -90,6 +91,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const handleOpenAuth = (event) => setOpenAuth(event.currentTarget);
+  const handleCloseAuth = () => setOpenAuth(false);
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -107,6 +110,29 @@ function DashboardNavbar({ absolute, light, isMini }) {
       <NotificationItem icon={<Icon>email</Icon>} title="Check new messages" />
       <NotificationItem icon={<Icon>podcasts</Icon>} title="Manage Podcast sessions" />
       <NotificationItem icon={<Icon>shopping_cart</Icon>} title="Payment successfully completed" />
+    </Menu>
+  );
+
+  const handleLogout = () => {
+    alert("Sesión cerrada");
+    localStorage.removeItem("users");
+    window.location.href = "/authentication/sign-in";
+  };
+
+  const renderAuth = () => (
+    <Menu
+      anchorEl={openAuth}
+      anchorReference={null}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      open={Boolean(openAuth)}
+      onClose={handleCloseAuth}
+      sx={{ mt: 2 }}
+    >
+      <NotificationItem icon={<Icon>account_circle</Icon>} title="Perfil" />
+      <NotificationItem icon={<Icon>logout</Icon>} title="Cerrar sesión" onClick={handleLogout} />
     </Menu>
   );
 
@@ -139,11 +165,19 @@ function DashboardNavbar({ absolute, light, isMini }) {
               <MDInput label="Search here" />
             </MDBox>
             <MDBox color={light ? "white" : "inherit"}>
-              <Link to="/authentication/sign-in/basic">
-                <IconButton sx={navbarIconButton} size="small" disableRipple>
-                  <Icon sx={iconsStyle}>account_circle</Icon>
-                </IconButton>
-              </Link>
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                aria-controls="notification-menu"
+                aria-haspopup="true"
+                variant="contained"
+                onClick={handleOpenAuth}
+              >
+                <Icon sx={iconsStyle}>account_circle</Icon>
+              </IconButton>
+              {renderAuth()}
               <IconButton
                 size="small"
                 disableRipple

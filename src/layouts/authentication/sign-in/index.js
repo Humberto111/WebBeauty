@@ -6,13 +6,6 @@ import { Link } from "react-router-dom";
 // @mui material components
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
-import Grid from "@mui/material/Grid";
-import MuiLink from "@mui/material/Link";
-
-// @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -50,6 +43,7 @@ function Basic() {
       open={successSB}
       onClose={closeSuccessSB}
       close={closeSuccessSB}
+      dateTime={new Date().toISOString().split("T")[0]}
       bgWhite
     />
   );
@@ -63,6 +57,7 @@ function Basic() {
       open={errorSB}
       onClose={closeErrorSB}
       close={closeErrorSB}
+      dateTime={new Date().toISOString().split("T")[0]}
       bgWhite
     />
   );
@@ -71,7 +66,7 @@ function Basic() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:3001/signin", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,10 +82,34 @@ function Basic() {
         const data = await response.json();
         const jsonData = JSON.stringify(data);
         localStorage.setItem("users", jsonData);
-        window.location.href = "/dashboard";
+        handleVerify2FA();
       } else {
         openErrorSB(true);
         console.log("error");
+      }
+    } catch (error) {
+      console.error("Error de red:", error);
+    }
+  };
+
+  const handleVerify2FA = async (e) => {
+    try {
+      // tiene que realizar un get para saber si el usuario tiene habilitado el 2FA
+      const user = JSON.parse(localStorage.getItem("users"));
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getUserAuth?usuario=${user.email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (data[0].activo) {
+        window.location.href = "/authentication/verify2fa";
+      } else {
+        window.location.href = "/Dashboard";
       }
     } catch (error) {
       console.error("Error de red:", error);
@@ -155,15 +174,8 @@ function Basic() {
             <MDBox mt={3} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
                 No tienes cuenta?{" "}
-                <MDTypography
-                  component={Link}
-                  to="/authentication/sign-up"
-                  variant="button"
-                  color="info"
-                  fontWeight="medium"
-                  textGradient
-                >
-                  Registrate
+                <MDTypography variant="button" color="info" fontWeight="medium" textGradient>
+                  <Link to="/authentication/sign-up">Regístrate</Link>
                 </MDTypography>
                 {renderSuccessSB}
                 {renderErrorSB}
