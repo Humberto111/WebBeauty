@@ -106,10 +106,14 @@ function Basic() {
         }
       );
       const data = await response.json();
-      if (data[0].activo) {
-        window.location.href = "/authentication/verify2fa";
-      } else {
+      if (data[0] === undefined) {
         window.location.href = "/Dashboard";
+      } else {
+        if (data[0].activo) {
+          window.location.href = "/authentication/verify2fa";
+        } else {
+          window.location.href = "/Dashboard";
+        }
       }
     } catch (error) {
       console.error("Error de red:", error);
