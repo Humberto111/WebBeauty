@@ -309,7 +309,7 @@ const Dashboard = () => {
               >
                 <div key={product.id} className="card">
                   <img
-                    src={"http://localhost:3001/" + product.imagen}
+                    src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + product.imagen}
                     className="card-img-top"
                     alt="..."
                   />
