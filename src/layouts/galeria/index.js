@@ -130,7 +130,7 @@ const Dashboard = () => {
                   className="image-card-container"
                   component="img"
                   alt="..."
-                  src={"http://localhost:3001/" + image}
+                  src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + image}
                   style={{
                     height: "auto",
                     width: "auto",
