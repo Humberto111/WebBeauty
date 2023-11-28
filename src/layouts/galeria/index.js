@@ -95,7 +95,7 @@ const Dashboard = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, Eliminar!",
+      confirmButtonText: "Si, Eliminar!!",
     }).then((result) => {
       if (result.isConfirmed) {
         onDeleteImagen(id);
