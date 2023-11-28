@@ -50,7 +50,7 @@ function Dashboard() {
 
   const getVentas = async () => {
     try {
-      const response = await fetch("http://localhost:3001/sales", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/sales", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,7 @@ function Dashboard() {
   const getMontoTotalVentasPorMes = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/getMontoTotalVentasPorMes?mes=${selectedMonth}&anno=${selectedYear}`,
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getMontoTotalVentasPorMes?mes=${selectedMonth}&anno=${selectedYear}`,
         {
           method: "GET",
           headers: {
@@ -88,7 +88,7 @@ function Dashboard() {
   const getValorPromedioPedidoPorMes = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/getValorPromedioPedidoPorMes?mes=${selectedMonth}&anno=${selectedYear}`,
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getValorPromedioPedidoPorMes?mes=${selectedMonth}&anno=${selectedYear}`,
         {
           method: "GET",
           headers: {
@@ -107,7 +107,7 @@ function Dashboard() {
   const getUsuarioMayorVentasPorMes = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/getUsuarioMayorVentasPorMes?mes=${selectedMonth}&anno=${selectedYear}`,
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getUsuarioMayorVentasPorMes?mes=${selectedMonth}&anno=${selectedYear}`,
         {
           method: "GET",
           headers: {
@@ -127,7 +127,7 @@ function Dashboard() {
   const getUnidadesVendidasPorMes = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/getUnidadesVendidasPorMes?mes=${selectedMonth}&anno=${selectedYear}`,
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getUnidadesVendidasPorMes?mes=${selectedMonth}&anno=${selectedYear}`,
         {
           method: "GET",
           headers: {
@@ -147,7 +147,7 @@ function Dashboard() {
   const getMontoVentasPorMes = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/getMontoVentasPorMes?anno=${selectedYear}`,
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getMontoVentasPorMes?anno=${selectedYear}`,
         {
           method: "GET",
           headers: {
