@@ -363,7 +363,7 @@ const Dashboard = () => {
                   onMouseOut={(e) => (e.target.style.backgroundColor = "#4caf50")}
                   onClick={(e) => finalizarPedido()}
                 >
-                  FNALIZAR PEDIDO
+                  FINALIZAR PEDIDO
                 </button>
               </td>
             </tr>

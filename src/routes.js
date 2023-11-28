@@ -139,7 +139,6 @@ const routes = [
     component: <Comentarios />,
   },
   {
-    type: "collapse",
     name: "Cart",
     key: "cart",
     icon: <Icon fontSize="small">assignment</Icon>,

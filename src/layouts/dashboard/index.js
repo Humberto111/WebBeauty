@@ -41,12 +41,13 @@ const Dashboard = () => {
     }
   };
 
-  const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock, file) => {
+  const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock) => {
     setId("");
     setNombre("");
     setDescripcion("");
     setPrecio("");
     setCantidad_en_stock("");
+    setFile("");
     if (op === 1) {
       setTitle("Nuevo producto");
       setOperation(1);
@@ -79,11 +80,13 @@ const Dashboard = () => {
     } else if (cantidad_en_stock === "") {
       alert("La cantidad en stock es obligatorio", "warning");
       return false;
-    } else if (!file) {
-      alert("Por favor seleccione una imagen!", "warning");
-      return false;
     } else {
       if (operation === 1) {
+        if (!file) {
+          alert("Por favor seleccione una imagen!", "warning");
+          return false;
+        }
+
         parametros = {
           nombre: nombre.trim(),
           descripcion: descripcion.trim(),
@@ -110,21 +113,19 @@ const Dashboard = () => {
   const enviarSolicitud = async (parametros) => {
     if (operation === 2) {
       try {
+        const formData = new FormData();
+        formData.append("id", parametros.id);
+        formData.append("imageProduct", file);
+        formData.append("nombre", parametros.nombre);
+        formData.append("precio", parametros.precio);
+        formData.append("descripcion", parametros.descripcion);
+        formData.append("cantidad_en_stock", parametros.cantidad_en_stock);
+
         const response = await fetch(
           "https://web-beauty-api-638331a8cfae.herokuapp.com/editProduct",
           {
             method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id: parametros.id,
-              nombre: parametros.nombre,
-              precio: parametros.precio,
-              descripcion: parametros.descripcion,
-              cantidad_en_stock: parametros.cantidad_en_stock,
-              file: parametros.file,
-            }),
+            body: formData,
           }
         );
 
@@ -312,6 +313,7 @@ const Dashboard = () => {
                     src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + product.imagen}
                     className="card-img-top"
                     alt="..."
+                    style={{ maxHeight: "200px", maxWidth: "200px" }}
                   />
                   <div key={product.id} className="card-body">
                     <h4 className="card-title" style={{ textAlign: "center" }}>
