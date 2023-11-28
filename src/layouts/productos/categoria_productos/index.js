@@ -26,12 +26,15 @@ function Tables() {
 
   const getProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3001/obtenerCategoriasProductos", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/obtenerCategoriasProductos",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       setProducts(data);
@@ -77,16 +80,19 @@ function Tables() {
   const enviarSolicitud = async (parametros) => {
     if (operation === 2) {
       try {
-        const response = await fetch("http://localhost:3001/editarCategoriaProducto", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: parametros.id,
-            nombre: parametros.nombre,
-          }),
-        });
+        const response = await fetch(
+          "https://web-beauty-api-638331a8cfae.herokuapp.com/editarCategoriaProducto",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: parametros.id,
+              nombre: parametros.nombre,
+            }),
+          }
+        );
 
         if (response.ok) {
           document.getElementById("btnCerrar").click();
@@ -99,15 +105,18 @@ function Tables() {
       }
     } else if (operation === 1) {
       try {
-        const response = await fetch("http://localhost:3001/agregarCategoriaProducto", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nombre: parametros.nombre,
-          }),
-        });
+        const response = await fetch(
+          "https://web-beauty-api-638331a8cfae.herokuapp.com/agregarCategoriaProducto",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nombre: parametros.nombre,
+            }),
+          }
+        );
 
         if (response.ok) {
           document.getElementById("btnCerrar").click();
@@ -125,15 +134,18 @@ function Tables() {
 
   const onDeleteProduct = async (id) => {
     try {
-      const response = await fetch("http://localhost:3001/eliminarCategoriaProducto", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/eliminarCategoriaProducto",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+          }),
+        }
+      );
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -147,15 +159,18 @@ function Tables() {
   const createCheckoutSession = async (id) => {
     try {
       debugger;
-      const response = await fetch("http://localhost:3001/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: "id",
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/create-checkout-session",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: "id",
+          }),
+        }
+      );
       const data = await response.json();
       window.location.href = data.url;
     } catch (error) {

@@ -365,6 +365,7 @@ const DemoApp = () => {
             eventClick={handleEventClick}
             height={"90vh"}
             locales={[isLocate]}
+            timeZone="UTC"
             /*slotDuration="01:00:00"*/
             locale="es"
             events={citas}

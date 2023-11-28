@@ -25,7 +25,7 @@ const Dashboard = () => {
 
   const getEstilistas = async () => {
     try {
-      const response = await fetch("http://localhost:3001/estilistas", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/estilistas", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -116,21 +116,24 @@ const Dashboard = () => {
   const enviarSolicitud = async (parametros) => {
     if (operation === 2) {
       try {
-        const response = await fetch("http://localhost:3001/editEstilista", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: parametros.id,
-            nombre: parametros.nombre,
-            apellido: parametros.apellido,
-            telefono: parametros.telefono,
-            direccion: parametros.direccion,
-            email: parametros.email,
-            descripcion: parametros.descripcion,
-          }),
-        });
+        const response = await fetch(
+          "https://web-beauty-api-638331a8cfae.herokuapp.com/editEstilista",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: parametros.id,
+              nombre: parametros.nombre,
+              apellido: parametros.apellido,
+              telefono: parametros.telefono,
+              direccion: parametros.direccion,
+              email: parametros.email,
+              descripcion: parametros.descripcion,
+            }),
+          }
+        );
 
         if (response.ok) {
           Swal.fire({
@@ -155,21 +158,24 @@ const Dashboard = () => {
       }
     } else if (operation === 1) {
       try {
-        const response = await fetch("http://localhost:3001/addEstilista", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: parametros.id,
-            nombre: parametros.nombre,
-            apellido: parametros.apellido,
-            telefono: parametros.telefono,
-            direccion: parametros.direccion,
-            email: parametros.email,
-            descripcion: parametros.descripcion,
-          }),
-        });
+        const response = await fetch(
+          "https://web-beauty-api-638331a8cfae.herokuapp.com/addEstilista",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: parametros.id,
+              nombre: parametros.nombre,
+              apellido: parametros.apellido,
+              telefono: parametros.telefono,
+              direccion: parametros.direccion,
+              email: parametros.email,
+              descripcion: parametros.descripcion,
+            }),
+          }
+        );
 
         if (response.ok) {
           Swal.fire({
@@ -200,15 +206,18 @@ const Dashboard = () => {
 
   const onDeleteEstilista = async (id) => {
     try {
-      const response = await fetch("http://localhost:3001/deleteEstilista", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/deleteEstilista",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+          }),
+        }
+      );
     } catch (error) {
       console.error("Error de red:", error);
     }
