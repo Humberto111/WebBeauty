@@ -45,7 +45,7 @@ const DemoApp = () => {
 
   const getCitas = async () => {
     try {
-      const response = await fetch("http://localhost:3001/citas", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/citas", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -62,6 +62,8 @@ const DemoApp = () => {
         backgroundColor: usuarioLogeado === item.id_usuario ? "" : "red",
       }));
       setCitas(events);
+      eventosPrueba.push(events);
+      console.log(events);
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -69,7 +71,7 @@ const DemoApp = () => {
 
   const getServices = async () => {
     try {
-      const response = await fetch("http://localhost:3001/services", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/services", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +87,7 @@ const DemoApp = () => {
 
   const getEstilistas = async () => {
     try {
-      const response = await fetch("http://localhost:3001/estilistas", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/estilistas", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -101,12 +103,15 @@ const DemoApp = () => {
 
   const getEstilistaById = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/estilistaById?id=${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/estilistaById?id=${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
 
@@ -118,12 +123,15 @@ const DemoApp = () => {
 
   const getServicioById = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/serviceById?id=${id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/serviceById?id=${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
 
@@ -144,7 +152,7 @@ const DemoApp = () => {
   const enviarSolicitud = async () => {
     const userStored = JSON.parse(localStorage.getItem("users"));
     try {
-      const response = await fetch("http://localhost:3001/addCita", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/addCita", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -197,7 +205,7 @@ const DemoApp = () => {
 
   const onDeleteCita = async (id) => {
     try {
-      const response = await fetch("http://localhost:3001/deleteCita", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/deleteCita", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -297,6 +305,42 @@ const DemoApp = () => {
     $("#modalCitas").modal("show");
   };
 
+  const mierda = [
+    {
+      id: 1,
+      title: "Evento 1",
+      start: "2023-11-26T10:00:00",
+      end: "2023-11-26T12:00:00",
+      backgroundColor: "#28a745", // verde
+    },
+    {
+      id: 2,
+      title: "Evento 2",
+      start: "2023-11-27T14:00:00",
+      end: "2023-11-27T16:30:00",
+      backgroundColor: "#007bff", // azul
+    },
+    {
+      id: 3,
+      title: "Evento 1",
+      start: "2023-11-26T13:00:00",
+      end: "2023-11-26T15:00:00",
+      backgroundColor: "#28a745", // verde
+    },
+    // Agrega más eventos según sea necesario
+  ];
+
+  const eventosPrueba = [
+    ...mierda,
+    {
+      id: 4,
+      title: "Evento 4",
+      start: "2023-11-28T10:00:00",
+      end: "2023-11-28T12:00:00",
+      backgroundColor: "#28a745", // verde
+    },
+  ];
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -312,15 +356,13 @@ const DemoApp = () => {
             initialView="timeGridDay"
             editable={true}
             selectable={true}
-            selectMirror={true}
+            selectMirror={false}
             dayMaxEvents={true}
             droppable={true}
             weekends={weekendsVisible}
             select={handleDateSelect}
             dateClick={handleDateClick}
-            eventContent={renderEventContent} // custom render function
             eventClick={handleEventClick}
-            eventsSet={handleEvents}
             height={"90vh"}
             locales={[isLocate]}
             /*slotDuration="01:00:00"*/
