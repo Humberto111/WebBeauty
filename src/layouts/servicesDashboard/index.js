@@ -24,7 +24,7 @@ const ServicesDashboard = () => {
 
   const getServices = async () => {
     try {
-      const response = await fetch("http://localhost:3001/services", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/services", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const ServicesDashboard = () => {
   const enviarSolicitud = async (parametros) => {
     if (operation === 2) {
       try {
-        const response = await fetch("http://localhost:3000/editService", {
+        const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/editService", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -154,7 +154,7 @@ const ServicesDashboard = () => {
       }
     } else if (operation === 1) {
       try {
-        const response = await fetch("http://localhost:3001/addService", {
+        const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/addService", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -197,7 +197,7 @@ const ServicesDashboard = () => {
 
   const onDeleteService = async (id) => {
     try {
-      const response = await fetch("http://localhost:3001/deleteService", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/deleteService", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
