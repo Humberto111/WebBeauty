@@ -115,21 +115,24 @@ const ServicesDashboard = () => {
   const enviarSolicitud = async (parametros) => {
     if (operation === 2) {
       try {
-        const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/editService", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: parametros.id,
-            nombre: parametros.nombre,
-            precio: parametros.precio,
-            descripcion: parametros.descripcion,
-            categoria: parametros.categoria,
-            duracion: parametros.duracion,
-            disponibilidad: parametros.disponibilidad,
-          }),
-        });
+        const response = await fetch(
+          "https://web-beauty-api-638331a8cfae.herokuapp.com/editService",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: parametros.id,
+              nombre: parametros.nombre,
+              precio: parametros.precio,
+              descripcion: parametros.descripcion,
+              categoria: parametros.categoria,
+              duracion: parametros.duracion,
+              disponibilidad: parametros.disponibilidad,
+            }),
+          }
+        );
 
         if (response.ok) {
           Swal.fire({
@@ -154,20 +157,23 @@ const ServicesDashboard = () => {
       }
     } else if (operation === 1) {
       try {
-        const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/addService", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nombre: parametros.nombre,
-            precio: parametros.precio,
-            descripcion: parametros.descripcion,
-            categoria: parametros.categoria,
-            disponibilidad: parametros.disponibilidad,
-            duracion: parametros.duracion,
-          }),
-        });
+        const response = await fetch(
+          "https://web-beauty-api-638331a8cfae.herokuapp.com/addService",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nombre: parametros.nombre,
+              precio: parametros.precio,
+              descripcion: parametros.descripcion,
+              categoria: parametros.categoria,
+              disponibilidad: parametros.disponibilidad,
+              duracion: parametros.duracion,
+            }),
+          }
+        );
 
         if (response.ok) {
           Swal.fire({
@@ -197,15 +203,18 @@ const ServicesDashboard = () => {
 
   const onDeleteService = async (id) => {
     try {
-      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/deleteService", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-        }),
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/deleteService",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+          }),
+        }
+      );
     } catch (error) {
       console.error("Error de red:", error);
     }
