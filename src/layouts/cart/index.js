@@ -49,6 +49,9 @@ const Dashboard = () => {
     const params = new URLSearchParams(queryString);
     const compraRealizada = params.get("compra_realizada");
 
+    const productsRetrieved = JSON.parse(localStorage.getItem("products"));
+    const montosRetrieved = JSON.parse(localStorage.getItem("montosTotales"));
+
     if (compraRealizada === "1") {
       const fechaActual = new Date();
       const anno = fechaActual.getFullYear();
@@ -57,7 +60,6 @@ const Dashboard = () => {
       const fechaFormateada = `${anno}-${mes}-${dia}`;
 
       if (productsStored.length > 0) {
-        console.log(productsStored);
         try {
           const response = await fetch(
             "https://web-beauty-api-638331a8cfae.herokuapp.com/addSale",
@@ -67,12 +69,12 @@ const Dashboard = () => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                productos: productsStored,
+                productos: productsRetrieved,
                 id_usuario: usuarioLogeado.id,
                 fecha_venta: fechaFormateada,
-                descuento: descuento,
-                subtotal: subtotal,
-                total: total,
+                descuento: montosRetrieved.descuento,
+                subtotal: montosRetrieved.subtotal,
+                total: montosRetrieved.total,
               }),
             }
           );
@@ -81,27 +83,28 @@ const Dashboard = () => {
           console.error("Error de red:", error);
         }
 
-        const productsRetrieved = JSON.parse(localStorage.getItem("products"));
-        for (const product of productsRetrieved) {
-          console.log("aqui edita la cantidad en stock");
-          console.log(product);
-          try {
-            const response = await fetch(
-              "https://web-beauty-api-638331a8cfae.herokuapp.com/editProduct",
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  id: product.id,
-                  cantidad_en_stock: product.cantidad_en_stock.toString(),
-                }),
-              }
-            );
-            onDeleteProduct(product.id);
-          } catch (error) {
-            console.error("Error de red:", error);
+        for (const key in productsRetrieved) {
+          if (Object.hasOwnProperty.call(productsRetrieved, key)) {
+            const product = productsRetrieved[key];
+
+            try {
+              const response = await fetch(
+                "https://web-beauty-api-638331a8cfae.herokuapp.com/editProduct",
+                {
+                  method: "PUT",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    id: product.id,
+                    cantidad_en_stock: product.cantidad_en_stock.toString(),
+                  }),
+                }
+              );
+              onDeleteProduct(product.id);
+            } catch (error) {
+              console.error("Error de red:", error);
+            }
           }
         }
 
@@ -126,7 +129,6 @@ const Dashboard = () => {
 
       const data = await response.json();
 
-      // Verificar si hay datos antes de actualizar el estado
       if (Array.isArray(data) && data.length > 0) {
         data.map((item) => {
           if (item.cantidad_en_stock > 0) {
@@ -138,8 +140,7 @@ const Dashboard = () => {
         setProductsStored(data);
         updateTotals(data);
       } else {
-        // Puedes manejar el caso donde los datos están vacíos
-        console.log("No hay datos disponibles");
+        return false;
       }
     } catch (error) {
       console.error("Error de red:", error);
@@ -161,6 +162,16 @@ const Dashboard = () => {
           }),
         }
       );
+
+      if (response.ok) {
+        // Eliminar el producto de localStorage con la clave "productsStored"
+        const productosAlmacenadosCarrito =
+          JSON.parse(localStorage.getItem("productsStored")) || [];
+        const updatedProducts = productosAlmacenadosCarrito.filter(
+          (product) => product.id_producto !== idProducto
+        );
+        localStorage.setItem("productsStored", JSON.stringify(updatedProducts));
+      }
       getProductsOnCart();
     } catch (error) {
       console.error("Error de red:", error);
@@ -191,7 +202,6 @@ const Dashboard = () => {
       if (product && product.cantidad_en_stock > 0) {
         product.cantidad += 1;
         product.cantidad_en_stock -= 1;
-        console.log(product.cantidad_en_stock);
       } else {
         Swal.fire({
           icon: "info",
@@ -213,7 +223,6 @@ const Dashboard = () => {
       if (product && product.cantidad > 1) {
         product.cantidad -= 1;
         product.cantidad_en_stock += 1;
-        console.log(product.cantidad_en_stock);
       } else {
         Swal.fire({
           icon: "info",
@@ -239,6 +248,7 @@ const Dashboard = () => {
 
   const finalizarPedido = async () => {
     localStorage.setItem("products", JSON.stringify(productsStored));
+    localStorage.setItem("montosTotales", JSON.stringify({ subtotal, descuento, total }));
     try {
       const response = await fetch(
         "https://web-beauty-api-638331a8cfae.herokuapp.com/create-checkout-session",
@@ -255,7 +265,6 @@ const Dashboard = () => {
       const data = await response.json();
       window.location.href = data.url;
     } catch (error) {
-      //si la respuesta es correcta, se redirecciona a la página de stripe
       console.error("Error de red:", error);
     }
   };
@@ -306,7 +315,7 @@ const Dashboard = () => {
                   <button
                     onClick={() => deleteProduct(product.id)}
                     className="btn btn-danger"
-                    style={{ color: "black" }}
+                    style={{ color: "white" }}
                   >
                     <DeleteIcon />
                   </button>
