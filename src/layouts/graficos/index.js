@@ -103,12 +103,15 @@ function Dashboard() {
 
   const getMontoTotalVentas = async () => {
     try {
-      const response = await fetch(`https://web-beauty-api-638331a8cfae.herokuapp.com/getMontoTotalVentas`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getMontoTotalVentas`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       setMontoTotalVentas(data.monto_total_ventas);
@@ -138,12 +141,15 @@ function Dashboard() {
 
   const getValorPromedioPedido = async () => {
     try {
-      const response = await fetch(`https://web-beauty-api-638331a8cfae.herokuapp.com/getValorPromedioPedido`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getValorPromedioPedido`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       setValorPromedioPedido(data.valor_promedio_pedido);
@@ -173,12 +179,15 @@ function Dashboard() {
 
   const getUsuarioMayorVentas = async () => {
     try {
-      const response = await fetch(`https://web-beauty-api-638331a8cfae.herokuapp.com/getUsuarioMayorVentas`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getUsuarioMayorVentas`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       setUsuarioMayorVentas(data[0]);
@@ -208,12 +217,15 @@ function Dashboard() {
 
   const getUnidadesVendidas = async () => {
     try {
-      const response = await fetch(`https://web-beauty-api-638331a8cfae.herokuapp.com/getUnidadesVendidas`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getUnidadesVendidas`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       setUnidadesVendidas(data[0]);
@@ -262,12 +274,15 @@ function Dashboard() {
 
   const getTopProductos = async () => {
     try {
-      const response = await fetch(`https://web-beauty-api-638331a8cfae.herokuapp.com/getTopProductos`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getTopProductos`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       setTopProductos(data);

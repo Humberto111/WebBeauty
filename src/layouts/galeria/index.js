@@ -52,10 +52,13 @@ const Dashboard = () => {
     formData.append("image", file);
 
     try {
-      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/images/post", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://web-beauty-api-638331a8cfae.herokuapp.com/images/post",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       // Realizar acciones adicionales según sea necesario
