@@ -78,6 +78,7 @@ const routes = [
     component: <SignUp />,
   },
   {
+    key: "authentication-add-2fa",
     route: "/authentication/verify2fa",
     component: <Verify2fa />,
   },
@@ -122,6 +123,7 @@ const routes = [
     component: <Comentarios />,
   },
   {
+    type: "collapse",
     name: "Cart",
     key: "cart",
     icon: <Icon fontSize="small">assignment</Icon>,
