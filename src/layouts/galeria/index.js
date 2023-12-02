@@ -52,7 +52,7 @@ const Dashboard = () => {
     formData.append("image", file);
 
     try {
-      const response = await fetch("http://localhost:3001/images/post", {
+      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/images/post", {
         method: "POST",
         body: formData,
       });
