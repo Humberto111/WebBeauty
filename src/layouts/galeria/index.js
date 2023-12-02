@@ -15,8 +15,11 @@ import "./style.css";
 const Dashboard = () => {
   const [file, setFile] = useState(null);
   const [imageList, setImageList] = useState([]);
+  const [usuarioLogeado, setUsuarioLogeado] = useState([]);
 
   useEffect(() => {
+    const userStored = JSON.parse(localStorage.getItem("users"));
+    setUsuarioLogeado(userStored);
     getImages();
   }, []);
 
@@ -49,13 +52,10 @@ const Dashboard = () => {
     formData.append("image", file);
 
     try {
-      const response = await fetch(
-        "https://web-beauty-api-638331a8cfae.herokuapp.com/images/post",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("http://localhost:3001/images/post", {
+        method: "POST",
+        body: formData,
+      });
 
       const data = await response.json();
       // Realizar acciones adicionales según sea necesario
@@ -108,18 +108,22 @@ const Dashboard = () => {
     <DashboardLayout>
       <DashboardNavbar />
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Box p={2}>
-            <Input id="fileInput" onChange={selectHandler} fullWidth type="file" />
-          </Box>
-        </Grid>
-        <Grid item xs={12}>
-          <Box p={2}>
-            <Button variant="contained" color="primary" fullWidth onClick={enviarSolicitud}>
-              Guardar
-            </Button>
-          </Box>
-        </Grid>
+        {usuarioLogeado.tipo === "A" ? (
+          <>
+            <Grid item xs={12}>
+              <Box p={2}>
+                <Input id="fileInput" onChange={selectHandler} fullWidth type="file" />
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box p={2}>
+                <Button variant="contained" color="primary" fullWidth onClick={enviarSolicitud}>
+                  Guardar
+                </Button>
+              </Box>
+            </Grid>
+          </>
+        ) : null}
         {imageList.map((image) => (
           <Grid key={image.id} item xs={12}>
             <Box p={2}>

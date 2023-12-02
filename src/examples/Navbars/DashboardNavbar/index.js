@@ -194,7 +194,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 disableRipple
                 color="inherit"
                 sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
+                onClick={() => (window.location.href = "/cart")}
               >
                 <Icon sx={iconsStyle}>shopping_cart</Icon>
               </IconButton>

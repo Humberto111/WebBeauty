@@ -86,7 +86,9 @@ export default function App() {
             if (
               route.key !== "categoria_productos" &&
               route.key !== "Tipo_productos" &&
-              route.key !== "services"
+              route.key !== "services" &&
+              route.key !== "graficos" &&
+              route.key !== "estilista"
             ) {
               return <Route exact path={route.route} element={route.component} key={route.key} />;
             }
@@ -111,7 +113,9 @@ export default function App() {
           if (
             route.key !== "categoria_productos" &&
             route.key !== "Tipo_productos" &&
-            route.key !== "services"
+            route.key !== "services" &&
+            route.key !== "graficos" &&
+            route.key !== "estilista"
           ) {
             return route;
           } else {

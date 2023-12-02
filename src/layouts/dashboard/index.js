@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
+  const [productsStored, setProductsStored] = useState([]);
   const [id, setId] = useState("");
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -21,8 +22,11 @@ const Dashboard = () => {
   useEffect(() => {
     const userStored = JSON.parse(localStorage.getItem("users"));
     setUsuarioLogeado(userStored);
+
+    const storedProducts = JSON.parse(localStorage.getItem("productsStored")) || [];
+    setProductsStored(storedProducts);
     getProducts();
-  }, [products]);
+  }, []);
 
   const getProducts = async () => {
     try {
@@ -36,6 +40,29 @@ const Dashboard = () => {
       const data = await response.json();
 
       setProducts(data);
+    } catch (error) {
+      console.error("Error de red:", error);
+    }
+  };
+
+  const getProductsOnCart = async () => {
+    if (!usuarioLogeado || !usuarioLogeado.id) {
+      return;
+    }
+    try {
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/shopping_cart?id_usuario=${usuarioLogeado.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+      setProductsStored(data);
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -242,6 +269,21 @@ const Dashboard = () => {
       return false;
     }
 
+    const isProductInCart = productsStored.some((item) => item.id_producto === product.id);
+    console.log(isProductInCart);
+
+    if (isProductInCart) {
+      Swal.fire({
+        title: "El producto ya se encuentra en el carrito!",
+        text: "Si deseas agregar más unidades, ve al carrito!",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+      });
+      return false;
+    }
+
     try {
       const response = await fetch(
         "https://web-beauty-api-638331a8cfae.herokuapp.com/addShopping_cart",
@@ -259,6 +301,11 @@ const Dashboard = () => {
       );
 
       if (response.ok) {
+        // Actualizar productos en el carrito localmente y almacenar en localStorage
+        const updatedProductsStored = [...productsStored, { id_producto: product.id }];
+        setProductsStored(updatedProductsStored);
+        localStorage.setItem("productsStored", JSON.stringify(updatedProductsStored));
+
         Swal.fire({
           title: "¡Éxito!",
           text: "El producto ha sido agregado en el carrito!",
@@ -267,6 +314,7 @@ const Dashboard = () => {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "¡Ir al carrito!",
+          cancelButtonText: "¡Seguir comprando!",
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.href = "/cart";
@@ -286,18 +334,20 @@ const Dashboard = () => {
     <DashboardLayout>
       <DashboardNavbar />
       <div className="row mt-3">
-        <div className="col-md-4 offset-md-4">
-          <div className="d-grid mx-auto">
-            <button
-              onClick={() => openModal(1)}
-              className="btn btn-dark"
-              data-bs-toggle="modal"
-              data-bs-target="#modalProducts"
-            >
-              <i className="fa-solid fa-circle-plus">Agregar</i>
-            </button>
+        {usuarioLogeado.tipo === "A" ? (
+          <div className="col-md-4 offset-md-4">
+            <div className="d-grid mx-auto">
+              <button
+                onClick={() => openModal(1)}
+                className="btn btn-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#modalProducts"
+              >
+                <i className="fa-solid fa-circle-plus">Agregar</i>
+              </button>
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
       <MDBox py={3} style={{ display: "flex", width: "100%" }}>
         <div className="container-fluid d-flex justify-content-center">
@@ -313,7 +363,6 @@ const Dashboard = () => {
                     src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + product.imagen}
                     className="card-img-top"
                     alt="..."
-                    style={{ maxHeight: "200px", maxWidth: "200px" }}
                   />
                   <div key={product.id} className="card-body">
                     <h4 className="card-title" style={{ textAlign: "center" }}>
@@ -365,7 +414,7 @@ const Dashboard = () => {
                   } else if (usuarioLogeado.tipo === "C") {
                     return (
                       <div className="buttons" style={{ textAlign: "center", padding: "10px" }}>
-                        <button onClick={() => añadirAlCarrito(product)} className="btn btn-info">
+                        <button onClick={() => añadirAlCarrito(product)} className="btn btn-dark">
                           Añadir al carrito
                         </button>
                       </div>

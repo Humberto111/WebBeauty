@@ -18,6 +18,13 @@ import CarritoCompras from "layouts/cart";
 import Estilistas from "layouts/estilistas";
 import Graficos from "layouts/graficos";
 
+import GridViewIcon from "@mui/icons-material/GridView";
+import FilterBAndWIcon from "@mui/icons-material/FilterBAndW";
+import ContentCutIcon from "@mui/icons-material/ContentCut";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
+import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
+
 // @mui icons
 import Icon from "@mui/material/Icon";
 
@@ -42,33 +49,9 @@ const routes = [
     type: "collapse",
     name: "Categoría de productos",
     key: "categoria_productos",
-    icon: <Icon fontSize="small">category</Icon>,
+    icon: <FormatAlignJustifyIcon />,
     route: "/categoria_productos",
     component: <CategoriaProductos />,
-  },
-  {
-    type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
-  },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
   },
   {
     type: "collapse",
@@ -102,7 +85,7 @@ const routes = [
     type: "collapse",
     name: "Servicios",
     key: "services",
-    icon: <Icon fontSize="small">assignment</Icon>,
+    icon: <GridViewIcon />,
     route: "/servicesDashboard",
     component: <ServicesDashboard />,
   },
@@ -110,7 +93,7 @@ const routes = [
     type: "collapse",
     name: "Galeria de estilos",
     key: "estilos",
-    icon: <Icon fontSize="small">assignment</Icon>,
+    icon: <FilterBAndWIcon />,
     route: "/galeria",
     component: <Galeria />,
   },
@@ -118,7 +101,7 @@ const routes = [
     type: "collapse",
     name: "Estilistas",
     key: "estilista",
-    icon: <Icon fontSize="small">assignment</Icon>,
+    icon: <ContentCutIcon />,
     route: "/estilistas",
     component: <Estilistas />,
   },
@@ -126,7 +109,7 @@ const routes = [
     type: "collapse",
     name: "Calendario",
     key: "calendario",
-    icon: <Icon fontSize="small">assignment</Icon>,
+    icon: <CalendarMonthIcon />,
     route: "/calendario",
     component: <Calendario />,
   },
@@ -149,7 +132,7 @@ const routes = [
     type: "collapse",
     name: "Graficos",
     key: "graficos",
-    icon: <Icon fontSize="small">assignment</Icon>,
+    icon: <LeaderboardIcon />,
     route: "/graficos",
     component: <Graficos />,
   },
