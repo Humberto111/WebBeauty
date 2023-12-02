@@ -8,7 +8,7 @@ import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
 import theme from "assets/theme";
 import themeDark from "assets/theme-dark";
-import rtlPlugin from "stylis-plugin-rtl";
+//import rtlPlugin from "stylis-plugin-rtl";
 import createCache from "@emotion/cache";
 import routes from "routes";
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
@@ -33,14 +33,14 @@ export default function App() {
   const { pathname } = useLocation();
 
   // Cache for the rtl
-  useMemo(() => {
+  /*useMemo(() => {
     const cacheRtl = createCache({
       key: "rtl",
       stylisPlugins: [rtlPlugin],
     });
 
     setRtlCache(cacheRtl);
-  }, []);
+  }, []);*/
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
