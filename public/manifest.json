@@ -1,9 +1,9 @@
 {
-  "short_name": "Material Dashboard",
-  "name": "Material Dashboard 2 React",
+  "short_name": "Web Beauty",
+  "name": "Web Beauty Beta",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "Beauty.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/png"
     }
