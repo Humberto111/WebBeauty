@@ -17,6 +17,7 @@ import Comentarios from "layouts/comentarios";
 import CarritoCompras from "layouts/cart";
 import Estilistas from "layouts/estilistas";
 import Graficos from "layouts/graficos";
+import HistorialProductos from "layouts/historialProductos";
 
 import GridViewIcon from "@mui/icons-material/GridView";
 import FilterBAndWIcon from "@mui/icons-material/FilterBAndW";
@@ -137,6 +138,14 @@ const routes = [
     icon: <LeaderboardIcon />,
     route: "/graficos",
     component: <Graficos />,
+  },
+  {
+    type: "collapse",
+    name: "Historial de Productos",
+    key: "historialProductos",
+    icon: <LeaderboardIcon />,
+    route: "/historialProductos",
+    component: <HistorialProductos />,
   },
 ];
 

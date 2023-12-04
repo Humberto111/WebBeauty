@@ -267,10 +267,6 @@ const DemoApp = () => {
     }
   };
 
-  const handleEvents = (events) => {
-    setCurrentEvents(events);
-  };
-
   const validar = () => {
     if (servicioSeleccionado === 0) {
       alert("Debe seleccionar el servicio", "warning");
@@ -295,51 +291,14 @@ const DemoApp = () => {
     let horaFinal = `${horaOriginal}:${minutosSumados}:${"00"}`;
 
     if (minutosSumados === 60) {
-      horaFinal = `${dFechaInicial}${horaOriginal + 1}:${"00"}:${"00"}${"-06:00"}`;
+      horaFinal = `${dFechaInicial}${horaOriginal + 1}:${"00"}:${"00"}`;
     } else {
-      //complete el codigo
-      horaFinal = `${dFechaInicial}${horaOriginal}:${minutosSumados}:${"00"}${"-06:00"}`;
+      horaFinal = `${dFechaInicial}${horaOriginal}:${minutosSumados}:${"00Z"}`;
     }
 
     setHoraFinal(horaFinal);
     $("#modalCitas").modal("show");
   };
-
-  const mierda = [
-    {
-      id: 1,
-      title: "Evento 1",
-      start: "2023-11-26T10:00:00",
-      end: "2023-11-26T12:00:00",
-      backgroundColor: "#28a745", // verde
-    },
-    {
-      id: 2,
-      title: "Evento 2",
-      start: "2023-11-27T14:00:00",
-      end: "2023-11-27T16:30:00",
-      backgroundColor: "#007bff", // azul
-    },
-    {
-      id: 3,
-      title: "Evento 1",
-      start: "2023-11-26T13:00:00",
-      end: "2023-11-26T15:00:00",
-      backgroundColor: "#28a745", // verde
-    },
-    // Agrega más eventos según sea necesario
-  ];
-
-  const eventosPrueba = [
-    ...mierda,
-    {
-      id: 4,
-      title: "Evento 4",
-      start: "2023-11-28T10:00:00",
-      end: "2023-11-28T12:00:00",
-      backgroundColor: "#28a745", // verde
-    },
-  ];
 
   return (
     <DashboardLayout>
