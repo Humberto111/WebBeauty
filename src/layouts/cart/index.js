@@ -101,7 +101,10 @@ const Dashboard = () => {
                   }),
                 }
               );
-              onDeleteProduct(product.id);
+              const data = await response.json();
+              if (response.ok) {
+                onDeleteProduct(product.id);
+              }
             } catch (error) {
               console.error("Error de red:", error);
             }
@@ -147,6 +150,11 @@ const Dashboard = () => {
     }
   };
 
+  const removeFromLocalStorage = (productId) => {
+    const updatedProductsStored = productsStored.filter((product) => product.id !== productId);
+    localStorage.setItem("productsStored", JSON.stringify(updatedProductsStored));
+  };
+
   const onDeleteProduct = async (idProducto) => {
     try {
       const response = await fetch(
@@ -162,17 +170,11 @@ const Dashboard = () => {
           }),
         }
       );
-
+      const data = await response.json();
       if (response.ok) {
-        // Eliminar el producto de localStorage con la clave "productsStored"
-        const productosAlmacenadosCarrito =
-          JSON.parse(localStorage.getItem("productsStored")) || [];
-        const updatedProducts = productosAlmacenadosCarrito.filter(
-          (product) => product.id_producto !== idProducto
-        );
-        localStorage.setItem("productsStored", JSON.stringify(updatedProducts));
+        getProductsOnCart();
+        removeFromLocalStorage(idProducto);
       }
-      getProductsOnCart();
     } catch (error) {
       console.error("Error de red:", error);
     }
