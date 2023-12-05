@@ -102,11 +102,18 @@ export default function App() {
         }
       }
 
-      return null;
+      return (
+        <Route
+          exact
+          path="*"
+          element={<Navigate to="/authentication/sign-in" />}
+          key="rutaPodefecto"
+        />
+      );
     });
 
   const rendePorTipo = (allRoute) => {
-    const user = JSON.parse(localStorage.getItem("users"));
+    const user = JSON.parse(localStorage.getItem("users")) ?? {};
 
     if (!user) {
       return allRoute.filter((route) => route.key === "sign-in" || route.key === "sign-up");
