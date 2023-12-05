@@ -88,7 +88,8 @@ export default function App() {
               route.key !== "Tipo_productos" &&
               route.key !== "services" &&
               route.key !== "graficos" &&
-              route.key !== "estilista"
+              route.key !== "estilista" &&
+              route.key !== "historialVentas"
             ) {
               return <Route exact path={route.route} element={route.component} key={route.key} />;
             }
@@ -115,7 +116,8 @@ export default function App() {
             route.key !== "Tipo_productos" &&
             route.key !== "services" &&
             route.key !== "graficos" &&
-            route.key !== "estilista"
+            route.key !== "estilista" &&
+            route.key !== "historialVentas"
           ) {
             return route;
           } else {
