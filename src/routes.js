@@ -18,6 +18,7 @@ import CarritoCompras from "layouts/cart";
 import Estilistas from "layouts/estilistas";
 import Graficos from "layouts/graficos";
 import HistorialProductos from "layouts/historialProductos";
+import HistorialVentas from "layouts/historialVentas";
 
 import GridViewIcon from "@mui/icons-material/GridView";
 import FilterBAndWIcon from "@mui/icons-material/FilterBAndW";
@@ -28,6 +29,9 @@ import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+
+//Cargar el usuario de localStorage
+const userStored = JSON.parse(localStorage.getItem("users"));
 
 const routes = [
   {
@@ -140,12 +144,20 @@ const routes = [
     component: <Graficos />,
   },
   {
-    type: "collapse",
-    name: "Historial de Productos",
+    type: userStored.tipo === "C" ? "collapse" : "hidden",
+    name: "Historial de Compras",
     key: "historialProductos",
     icon: <LeaderboardIcon />,
     route: "/historialProductos",
     component: <HistorialProductos />,
+  },
+  {
+    type: userStored.tipo === "A" ? "collapse" : "hidden",
+    name: "Historial de Ventas",
+    key: "historialVentas",
+    icon: <LeaderboardIcon />,
+    route: "/historialVentas",
+    component: <HistorialVentas />,
   },
 ];
 

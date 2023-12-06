@@ -37,7 +37,7 @@ const formatDate = (dateString) => {
 
 const Dashboard = () => {
   const [usuarioLogeado, setUsuarioLogeado] = useState([]);
-  const [historialProductos, setHistorialProductos] = useState([]);
+  const [historialVentas, setHistorialVentas] = useState([]);
 
   useEffect(() => {
     const userStored = JSON.parse(localStorage.getItem("users"));
@@ -46,17 +46,17 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (usuarioLogeado && usuarioLogeado.id) {
-      getHistorialProductos();
+      getHistorialVentas();
     }
   }, [usuarioLogeado]);
 
-  const getHistorialProductos = async () => {
+  const getHistorialVentas = async () => {
     if (!usuarioLogeado || !usuarioLogeado.id) {
       return;
     }
     try {
       const response = await fetch(
-        `https://web-beauty-api-638331a8cfae.herokuapp.com/historialProductos?id_usuario=${usuarioLogeado.id}`,
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/historialVentas`,
         {
           method: "GET",
           headers: {
@@ -67,7 +67,7 @@ const Dashboard = () => {
 
       const data = await response.json();
       console.log(data);
-      setHistorialProductos(data);
+      setHistorialVentas(data);
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -81,30 +81,30 @@ const Dashboard = () => {
           <thead>
             <tr>
               <th scope="col">Producto</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Descripción</th>
-              <th scope="col">Precio unitario</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Fecha</th>
-              <th scope="col">Total</th>
+              <th scope="col">Nombre del producto</th>
+              <th scope="col">Nombre del usuario</th>
+              <th scope="col">Email del usuario</th>
+              <th scope="col">Cantidad de productos</th>
+              <th scope="col">Fecha de venta</th>
+              <th scope="col">Monto total venta</th>
             </tr>
           </thead>
           <tbody>
-            {historialProductos.map((product, index) => (
-              <tr key={product.id}>
+            {historialVentas.map((venta, index) => (
+              <tr key={venta.id_venta}>
                 <td>
                   <img
-                    src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + product.imagen}
-                    alt={product.nombre}
+                    src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + venta.imagen}
+                    alt={venta.nombre_producto}
                     style={{ width: "130px" }}
                   />
                 </td>
-                <td>{product.nombre}</td>
-                <td>{product.descripcion}</td>
-                <td>{formatCurrency(product.precio)}</td>
-                <td>{product.cantidad}</td>
-                <td>{formatDate(product.fecha_venta).replace(",", " ")}</td>
-                <td>{formatCurrency(product.total)}</td>
+                <td>{venta.nombre_producto}</td>
+                <td>{venta.nombre + " " + venta.apellido}</td>
+                <td>{venta.email}</td>
+                <td>{venta.cantidad}</td>
+                <td>{formatDate(venta.fecha_venta).replace(",", " ")}</td>
+                <td>{formatCurrency(venta.total)}</td>
               </tr>
             ))}
           </tbody>
