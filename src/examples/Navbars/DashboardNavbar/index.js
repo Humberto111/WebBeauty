@@ -114,7 +114,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
   );
 
   const handleLogout = () => {
-    alert("Sesión cerrada");
     localStorage.removeItem("users");
     window.location.href = "/authentication/sign-in";
   };

@@ -103,7 +103,14 @@ export default function App() {
         }
       }
 
-      return null;
+      return (
+        <Route
+          exact
+          path="*"
+          element={<Navigate to="/authentication/sign-in" />}
+          key="rutaPodefecto"
+        />
+      );
     });
 
   const rendePorTipo = (allRoute) =>
