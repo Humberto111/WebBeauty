@@ -144,7 +144,8 @@ const routes = [
     component: <Graficos />,
   },
   {
-    type: userStored.tipo === "C" ? "collapse" : "hidden",
+    //type: userStored.tipo === "C" ? "collapse" : "hidden",
+    type: "collapse",
     name: "Historial de Compras",
     key: "historialProductos",
     icon: <LeaderboardIcon />,
@@ -152,7 +153,8 @@ const routes = [
     component: <HistorialProductos />,
   },
   {
-    type: userStored.tipo === "A" ? "collapse" : "hidden",
+    //type: userStored.tipo === "A" ? "collapse" : "hidden",
+    type: "collapse",
     name: "Historial de Ventas",
     key: "historialVentas",
     icon: <LeaderboardIcon />,
