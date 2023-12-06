@@ -102,7 +102,6 @@ export default function App() {
           }
         }
       }
-
       return (
         <Route
           exact
@@ -113,34 +112,24 @@ export default function App() {
       );
     });
 
-  const rendePorTipo = (allRoute) =>
-    allRoute.map((route) => {
-      const user = JSON.parse(localStorage.getItem("users"));
-      if (user !== null) {
-        if (user.tipo === "C") {
-          if (
-            route.key !== "categoria_productos" &&
-            route.key !== "Tipo_productos" &&
-            route.key !== "services" &&
-            route.key !== "graficos" &&
-            route.key !== "estilista" &&
-            route.key !== "historialVentas"
-          ) {
-            return route;
-          } else {
-            return "";
-          }
-        } else {
-          return route;
-        }
-      } else {
-        if (route.key === "sign-in" || route.key === "sign-up") {
-          return route;
-        } else {
-          return route;
-        }
-      }
-    });
+  const rendePorTipo = (allRoute) => {
+    const user = JSON.parse(localStorage.getItem("users")) ?? {};
+    if (!user) {
+      return allRoute.filter((route) => route.key === "sign-in" || route.key === "sign-up");
+    }
+    if (user.tipo === "C") {
+      const allowedRoutes = [
+        "categoria_productos",
+        "Tipo_productos",
+        "services",
+        "graficos",
+        "estilista",
+        "historialVentas",
+      ];
+      return allRoute.filter((route) => !allowedRoutes.includes(route.key));
+    }
+    return allRoute;
+  };
 
   const configsButton = (
     <MDBox
