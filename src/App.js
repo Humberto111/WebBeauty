@@ -12,8 +12,8 @@ import themeDark from "assets/theme-dark";
 import createCache from "@emotion/cache";
 import routes from "routes";
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
+import brandWhite from "assets/images/Beauty-white-2.png";
+import brandDark from "assets/images/Beauty.png";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -89,7 +89,9 @@ export default function App() {
               route.key !== "services" &&
               route.key !== "graficos" &&
               route.key !== "estilista" &&
-              route.key !== "historialVentas"
+              route.key !== "historialVentas" &&
+              route.key !== "sing-in-factu" &&
+              route.key !== "sing-up-factu"
             ) {
               return <Route exact path={route.route} element={route.component} key={route.key} />;
             }
@@ -125,6 +127,8 @@ export default function App() {
         "graficos",
         "estilista",
         "historialVentas",
+        "sing-in-factu",
+        "sing-up-factu",
       ];
       return allRoute.filter((route) => !allowedRoutes.includes(route.key));
     }
