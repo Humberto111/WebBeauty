@@ -33,7 +33,7 @@ const DemoApp = () => {
     const userStored = JSON.parse(localStorage.getItem("users"));
     setNombre(userStored.nombre);
     setEmail(userStored.email);
-    setUsuarioLogeado(userStored.id);
+    setUsuarioLogeado(userStored);
     getServices();
     getEstilistas();
     getCitas();
@@ -56,14 +56,14 @@ const DemoApp = () => {
       const events = data.map((item) => ({
         id: item.id,
         extendedProps: item,
-        title: usuarioLogeado === item.id_usuario ? "Tu Evento" : "",
+        title:
+          usuarioLogeado.id === item.id_usuario || usuarioLogeado.tipo === "A" ? "Tu Evento" : "",
         start: item.fecha_hora_inicio,
         end: item.fecha_hora_fin,
-        backgroundColor: usuarioLogeado === item.id_usuario ? "" : "red",
+        backgroundColor:
+          usuarioLogeado.id === item.id_usuario || usuarioLogeado.tipo === "A" ? "" : "red",
       }));
       setCitas(events);
-      eventosPrueba.push(events);
-      console.log(events);
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -80,6 +80,25 @@ const DemoApp = () => {
 
       const data = await response.json();
       setServices(data);
+    } catch (error) {
+      console.error("Error de red:", error);
+    }
+  };
+
+  const getUserCita = async (id) => {
+    try {
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/getUserById?id=${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      return data;
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -220,8 +239,13 @@ const DemoApp = () => {
   };
 
   const handleEventClick = async (clickInfo) => {
-    if (clickInfo.event.extendedProps.id_usuario === usuarioLogeado) {
-      console.log(clickInfo.event.extendedProps);
+    if (
+      clickInfo.event.extendedProps.id_usuario === usuarioLogeado.id ||
+      usuarioLogeado.tipo === "A"
+    ) {
+      const user = await getUserCita(clickInfo.event.extendedProps.id_usuario);
+      setNombre(user[0].nombre + " " + user[0].apellido);
+      setEmail(user[0].email);
       getServicioById(clickInfo.event.extendedProps.id_servicio);
       getEstilistaById(clickInfo.event.extendedProps.id_estilista);
       setHoraInicial(clickInfo.event.extendedProps.fecha_hora_inicio);
@@ -231,8 +255,6 @@ const DemoApp = () => {
       setEstilistaSeleccionado(estilistaToolTip);
       setId(clickInfo.event.extendedProps.id);
       $("#modalMostrarCitas").modal("show");
-      // En lugar de esto necesito abrir un modal y cargar los datos de la cita
-      // para que el usuario pueda modificarlos
     }
   };
 
@@ -306,6 +328,12 @@ const DemoApp = () => {
       <div className="demo-app">
         <div className="demo-app-main" style={{ zIndex: 9999 }}>
           <FullCalendar
+            eventMouseEnter={(info) => {
+              document.body.style.cursor = "pointer";
+            }}
+            eventMouseLeave={(info) => {
+              document.body.style.cursor = "";
+            }}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             headerToolbar={{
               left: "prev,next today",
@@ -313,7 +341,6 @@ const DemoApp = () => {
               right: "dayGridMonth,timeGridWeek,timeGridDay",
             }}
             initialView="timeGridDay"
-            editable={true}
             selectable={true}
             selectMirror={false}
             dayMaxEvents={true}
@@ -325,14 +352,16 @@ const DemoApp = () => {
             height={"90vh"}
             locales={[isLocate]}
             timeZone="UTC"
-            /*slotDuration="01:00:00"*/
             locale="es"
             events={citas}
             slotMinTime="09:00"
             slotMaxTime="18:00"
             eventDidMount={(e) => {
               console.log(estilistaToolTip);
-              if (e.event.extendedProps.id_usuario === usuarioLogeado) {
+              if (
+                e.event.extendedProps.id_usuario === usuarioLogeado.id ||
+                usuarioLogeado.tipo === "A"
+              ) {
                 return new bootstrap.Popover(e.el, {
                   title: "Cita Registrada",
                   placement: "auto",

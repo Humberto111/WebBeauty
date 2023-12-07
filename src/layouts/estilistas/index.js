@@ -150,7 +150,7 @@ const Dashboard = () => {
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Algo salió mal en el Editar. Intentalo nuevamente!",
+            text: "Algo salió mal en el Editar. Inténtalo nuevamente!",
           });
         }
       } catch (error) {
@@ -161,12 +161,11 @@ const Dashboard = () => {
         const response = await fetch(
           "https://web-beauty-api-638331a8cfae.herokuapp.com/addEstilista",
           {
-            method: "PUT",
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              id: parametros.id,
               nombre: parametros.nombre,
               apellido: parametros.apellido,
               telefono: parametros.telefono,
@@ -187,13 +186,12 @@ const Dashboard = () => {
           }).then((result) => {
             document.getElementById("btnCerrar").click();
             getEstilistas();
-            document.getElementById("imagenProducto").value = null;
           });
         } else {
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Algo salió mal en el Registro. Intentalo nuevamente!",
+            text: "Algo salió mal en el Registro. Inténtalo nuevamente!",
           });
         }
       } catch (error) {
@@ -259,69 +257,60 @@ const Dashboard = () => {
       </div>
       <MDBox py={3} style={{ display: "flex", width: "100%" }}>
         <div className="container-fluid d-flex justify-content-center">
-          <div className="row">
-            {estilistas.map((estilista) => (
-              <div
-                key={estilista.id}
-                className="card mb-3 mx-auto"
-                style={{ maxWidth: "390px", minWidth: "270px", width: "270px" }}
-              >
-                <div key={estilista.id} className="card">
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                  <div key={estilista.id} className="card-body">
-                    <h4 className="card-title" style={{ textAlign: "center" }}>
-                      {estilista.nombre + " " + estilista.apellido}
-                    </h4>
-                    <p className="card-text">{estilista.descripcion}</p>
-                    <p className="card-text">
-                      <small className="text-body-secondary">Teléfono: {estilista.telefono}</small>
-                    </p>
-                    <p className="card-text">
-                      <small className="text-body-secondary">
-                        Dirección: {estilista.direccion}
-                      </small>
-                    </p>
-                    <p className="card-text">
-                      <small className="text-body-secondary">Email: {estilista.email}</small>
-                    </p>
-                  </div>
-                </div>
-                <div className="buttons" style={{ textAlign: "center", padding: "10px" }}>
-                  <button
-                    onClick={() =>
-                      openModal(
-                        2,
-                        estilista.id,
-                        estilista.nombre,
-                        estilista.apellido,
-                        estilista.telefono,
-                        estilista.direccion,
-                        estilista.email,
-                        estilista.descripcion
-                      )
-                    }
-                    className="btn btn-warning"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalEstilistas"
-                    style={{ marginRight: "20px" }}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => deleteEstilista(estilista.id)}
-                    className="btn btn-danger"
-                    style={{ color: "black" }}
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Email</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {estilistas.map((estilista) => (
+                <tr key={estilista.id}>
+                  <td>{estilista.nombre}</td>
+                  <td>{estilista.apellido}</td>
+                  <td>{estilista.telefono}</td>
+                  <td>{estilista.direccion}</td>
+                  <td>{estilista.email}</td>
+                  <td>{estilista.descripcion}</td>
+                  <td>
+                    <button
+                      onClick={() =>
+                        openModal(
+                          2,
+                          estilista.id,
+                          estilista.nombre,
+                          estilista.apellido,
+                          estilista.telefono,
+                          estilista.direccion,
+                          estilista.email,
+                          estilista.descripcion
+                        )
+                      }
+                      className="btn btn-warning"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalEstilistas"
+                      style={{ marginRight: "20px" }}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => deleteEstilista(estilista.id)}
+                      className="btn btn-danger"
+                      style={{ color: "black" }}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </MDBox>
       <div

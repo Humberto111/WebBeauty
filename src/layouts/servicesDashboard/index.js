@@ -15,8 +15,6 @@ const ServicesDashboard = () => {
   const [operation, setOperation] = useState(0);
   const [title, setTitle] = useState("");
   const [categoria, setCategoria] = useState("");
-  const [duracion, setDuracion] = useState("");
-  const [disponibilidad, setDisponibilidad] = useState("");
 
   useEffect(() => {
     getServices();
@@ -32,20 +30,19 @@ const ServicesDashboard = () => {
       });
 
       const data = await response.json();
+      console.log(data);
       setServices(data);
     } catch (error) {
       console.error("Error de red:", error);
     }
   };
 
-  const openModal = (op, id, nombre, descripcion, precio, categoria, duracion, disponibilidad) => {
+  const openModal = (op, id, nombre, descripcion, precio, categoria) => {
     setId("");
     setNombre("");
     setDescripcion("");
     setPrecio("");
     setCategoria("");
-    setDuracion("");
-    setDisponibilidad("");
     if (op === 1) {
       setTitle("Nuevo Servicio");
       setOperation(1);
@@ -56,8 +53,6 @@ const ServicesDashboard = () => {
       setDescripcion(descripcion);
       setPrecio(precio);
       setCategoria(categoria);
-      setDuracion(duracion);
-      setDisponibilidad(disponibilidad);
       setOperation(2);
     }
     window.setTimeout(() => {
@@ -79,12 +74,6 @@ const ServicesDashboard = () => {
     } else if (categoria === "") {
       alert("La categoría en stock es obligatorio", "warning");
       return false;
-    } else if (duracion === "") {
-      alert("La duración en stock es obligatorio", "warning");
-      return false;
-    } else if (disponibilidad === "") {
-      alert("La disponibilidad es obligatoria", "warning");
-      return false;
     } else {
       if (operation === 1) {
         parametros = {
@@ -92,8 +81,6 @@ const ServicesDashboard = () => {
           descripcion: descripcion.trim(),
           precio,
           categoria: categoria.trim(),
-          duracion: duracion.trim(),
-          disponibilidad: disponibilidad.trim(),
         };
       } else if (operation === 2) {
         parametros = {
@@ -102,8 +89,6 @@ const ServicesDashboard = () => {
           descripcion: descripcion.trim(),
           precio,
           categoria: categoria.trim(),
-          duracion: duracion.trim(),
-          disponibilidad: disponibilidad.trim(),
         };
       } else {
         return false;
@@ -128,8 +113,6 @@ const ServicesDashboard = () => {
               precio: parametros.precio,
               descripcion: parametros.descripcion,
               categoria: parametros.categoria,
-              duracion: parametros.duracion,
-              disponibilidad: parametros.disponibilidad,
             }),
           }
         );
@@ -169,8 +152,6 @@ const ServicesDashboard = () => {
               precio: parametros.precio,
               descripcion: parametros.descripcion,
               categoria: parametros.categoria,
-              disponibilidad: parametros.disponibilidad,
-              duracion: parametros.duracion,
             }),
           }
         );
@@ -256,72 +237,54 @@ const ServicesDashboard = () => {
       </div>
       <MDBox py={3} style={{ display: "flex", width: "100%" }}>
         <div className="container-fluid d-flex justify-content-center">
-          <div className="row">
-            {services.map((service) => (
-              <div
-                key={service.id}
-                className="card mb-3 mx-auto"
-                style={{ maxWidth: "390px", minWidth: "270px", width: "270px" }}
-              >
-                <div className="card">
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                  <div className="card-body">
-                    <h4 className="card-title" style={{ textAlign: "center" }}>
-                      {service.nombre}
-                    </h4>
-                    <p className="card-text">{service.descripcion}</p>
-                    <p className="card-text">
-                      <small className="text-body-secondary">Precio: {service.precio}</small>
-                    </p>
-                    <p className="card-text">
-                      <small className="text-body-secondary">Categoría: {service.categoria}</small>
-                    </p>
-                    <p className="card-text">
-                      <small className="text-body-secondary">Duración: {service.duracion}</small>
-                    </p>
-                    <p className="card-text">
-                      <small className="text-body-secondary">
-                        Disponibilidad: {service.disponibilidad}
-                      </small>
-                    </p>
-                  </div>
-                </div>
-                <div className="buttons" style={{ textAlign: "center", padding: "10px" }}>
-                  <button
-                    onClick={() =>
-                      openModal(
-                        2,
-                        service.id,
-                        service.nombre,
-                        service.descripcion,
-                        service.precio,
-                        service.categoria,
-                        service.duracion,
-                        service.disponibilidad
-                      )
-                    }
-                    className="btn btn-warning"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalServices"
-                    style={{ marginRight: "20px" }}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => deleteService(service.id)}
-                    className="btn btn-danger"
-                    style={{ color: "black" }}
-                  >
-                    Eliminar
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {services.map((service) => (
+                <tr key={service.id}>
+                  <td>{service.nombre}</td>
+                  <td>{service.descripcion}</td>
+                  <td>{service.precio}</td>
+                  <td>{service.categoria}</td>
+                  <td>
+                    <button
+                      onClick={() =>
+                        openModal(
+                          2,
+                          service.id,
+                          service.nombre,
+                          service.descripcion,
+                          service.precio,
+                          service.categoria
+                        )
+                      }
+                      className="btn btn-warning"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalServices"
+                      style={{ marginRight: "20px" }}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => deleteService(service.id)}
+                      className="btn btn-danger"
+                      style={{ color: "black" }}
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </MDBox>
       <div id="modalServices" className="modal fade" aria-hidden="true" style={{ zIndex: "9999" }}>
@@ -388,32 +351,6 @@ const ServicesDashboard = () => {
                   placeholder="Categoría"
                   value={categoria}
                   onChange={(e) => setCategoria(e.target.value)}
-                ></input>
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">
-                  <i className="fa-solid fa-gift"></i>
-                </span>
-                <input
-                  type="text"
-                  id="duracion"
-                  className="form-control"
-                  placeholder="Duración"
-                  value={duracion}
-                  onChange={(e) => setDuracion(e.target.value)}
-                ></input>
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">
-                  <i className="fa-solid fa-gift"></i>
-                </span>
-                <input
-                  type="text"
-                  id="disponibilidad"
-                  className="form-control"
-                  placeholder="Disponibilidad"
-                  value={disponibilidad}
-                  onChange={(e) => setDisponibilidad(e.target.value)}
                 ></input>
               </div>
               <div className="d-grid col-6 mx-auto">
