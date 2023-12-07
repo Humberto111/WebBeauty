@@ -20,6 +20,9 @@ import Graficos from "layouts/graficos";
 import HistorialProductos from "layouts/historialProductos";
 import HistorialVentas from "layouts/historialVentas";
 import SuccessPage from "layouts/successPayment";
+import DashboardFactu from "layouts/factu/dashboardFactu";
+import LoginFactu from "layouts/factu/sign-in-factu";
+
 
 import GridViewIcon from "@mui/icons-material/GridView";
 import FilterBAndWIcon from "@mui/icons-material/FilterBAndW";
@@ -46,7 +49,7 @@ const routes = [
   {
     type: "collapse",
     name: "Tipo de productos",
-    key: "Tipo_productos",
+    key: "tipo_productos",
     icon: <Icon fontSize="small">category</Icon>,
     route: "/tipo_productos",
     component: <TipoProductos />,
@@ -145,7 +148,8 @@ const routes = [
     component: <Graficos />,
   },
   {
-    type: userStored.tipo === "C" ? "collapse" : "hidden",
+    //type: userStored.tipo === "C" ? "collapse" : "hidden",
+    type: "collapse",
     name: "Historial de Compras",
     key: "historialProductos",
     icon: <LeaderboardIcon />,
@@ -153,7 +157,8 @@ const routes = [
     component: <HistorialProductos />,
   },
   {
-    type: userStored.tipo === "A" ? "collapse" : "hidden",
+    //type: userStored.tipo === "A" ? "collapse" : "hidden",
+    type: "collapse",
     name: "Historial de Ventas",
     key: "historialVentas",
     icon: <LeaderboardIcon />,
@@ -167,6 +172,22 @@ const routes = [
     icon: <LeaderboardIcon />,
     route: "/successPage",
     component: <SuccessPage />,
+  },
+  {
+    type: "collapse",
+    name: "Inicio de Sesión Factu",
+    key: "sing-in-factu",
+    icon: <LeaderboardIcon />,
+    route: "/sing-in-factu",
+    component: <LoginFactu />,
+  },
+  {
+    type: "collapse",
+    name: "Facturación",
+    key: "facturacion",
+    icon: <LeaderboardIcon />,
+    route: "/facturacion",
+    component: <DashboardFactu />,
   },
 ];
 

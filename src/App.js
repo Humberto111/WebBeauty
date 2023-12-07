@@ -12,8 +12,8 @@ import themeDark from "assets/theme-dark";
 import createCache from "@emotion/cache";
 import routes from "routes";
 import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
-import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
+import brandWhite from "assets/images/Beauty-white-2.png";
+import brandDark from "assets/images/Beauty.png";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -89,7 +89,9 @@ export default function App() {
               route.key !== "services" &&
               route.key !== "graficos" &&
               route.key !== "estilista" &&
-              route.key !== "historialVentas"
+              route.key !== "historialVentas" &&
+              route.key !== "sing-in-factu" &&
+              route.key !== "sing-up-factu"
             ) {
               return <Route exact path={route.route} element={route.component} key={route.key} />;
             }
@@ -102,7 +104,6 @@ export default function App() {
           }
         }
       }
-
       return (
         <Route
           exact
@@ -113,34 +114,26 @@ export default function App() {
       );
     });
 
-  const rendePorTipo = (allRoute) =>
-    allRoute.map((route) => {
-      const user = JSON.parse(localStorage.getItem("users"));
-      if (user !== null) {
-        if (user.tipo === "C") {
-          if (
-            route.key !== "categoria_productos" &&
-            route.key !== "Tipo_productos" &&
-            route.key !== "services" &&
-            route.key !== "graficos" &&
-            route.key !== "estilista" &&
-            route.key !== "historialVentas"
-          ) {
-            return route;
-          } else {
-            return "";
-          }
-        } else {
-          return route;
-        }
-      } else {
-        if (route.key === "sign-in" || route.key === "sign-up") {
-          return route;
-        } else {
-          return route;
-        }
-      }
-    });
+  const rendePorTipo = (allRoute) => {
+    const user = JSON.parse(localStorage.getItem("users")) ?? {};
+    if (!user) {
+      return allRoute.filter((route) => route.key === "sign-in" || route.key === "sign-up");
+    }
+    if (user.tipo === "C") {
+      const allowedRoutes = [
+        "categoria_productos",
+        "Tipo_productos",
+        "services",
+        "graficos",
+        "estilista",
+        "historialVentas",
+        "sing-in-factu",
+        "sing-up-factu",
+      ];
+      return allRoute.filter((route) => !allowedRoutes.includes(route.key));
+    }
+    return allRoute;
+  };
 
   const configsButton = (
     <MDBox
