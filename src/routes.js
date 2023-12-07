@@ -19,6 +19,8 @@ import Estilistas from "layouts/estilistas";
 import Graficos from "layouts/graficos";
 import HistorialProductos from "layouts/historialProductos";
 import HistorialVentas from "layouts/historialVentas";
+import DashboardFactu from "layouts/factu/dashboardFactu";
+import LoginFactu from "layouts/factu/sign-in-factu";
 
 import GridViewIcon from "@mui/icons-material/GridView";
 import FilterBAndWIcon from "@mui/icons-material/FilterBAndW";
@@ -45,7 +47,7 @@ const routes = [
   {
     type: "collapse",
     name: "Tipo de productos",
-    key: "Tipo_productos",
+    key: "tipo_productos",
     icon: <Icon fontSize="small">category</Icon>,
     route: "/tipo_productos",
     component: <TipoProductos />,
@@ -160,6 +162,22 @@ const routes = [
     icon: <LeaderboardIcon />,
     route: "/historialVentas",
     component: <HistorialVentas />,
+  },
+  {
+    type: "collapse",
+    name: "Inicio de Sesión Factu",
+    key: "sing-in-factu",
+    icon: <LeaderboardIcon />,
+    route: "/sing-in-factu",
+    component: <LoginFactu />,
+  },
+  {
+    type: "collapse",
+    name: "Facturación",
+    key: "facturacion",
+    icon: <LeaderboardIcon />,
+    route: "/facturacion",
+    component: <DashboardFactu />,
   },
 ];
 
