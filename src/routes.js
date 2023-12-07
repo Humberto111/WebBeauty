@@ -19,6 +19,7 @@ import Estilistas from "layouts/estilistas";
 import Graficos from "layouts/graficos";
 import HistorialProductos from "layouts/historialProductos";
 import HistorialVentas from "layouts/historialVentas";
+import SuccessPage from "layouts/successPayment";
 
 import GridViewIcon from "@mui/icons-material/GridView";
 import FilterBAndWIcon from "@mui/icons-material/FilterBAndW";
@@ -158,6 +159,14 @@ const routes = [
     icon: <LeaderboardIcon />,
     route: "/historialVentas",
     component: <HistorialVentas />,
+  },
+  {
+    type: "collapse",
+    name: "successPage",
+    key: "successPage",
+    icon: <LeaderboardIcon />,
+    route: "/successPage",
+    component: <SuccessPage />,
   },
 ];
 
