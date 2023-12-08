@@ -75,8 +75,9 @@ export default function App() {
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       const isAuthenticated =
-        localStorage.getItem("users") !== null && localStorage.getItem("users") !== "";
-      const user = JSON.parse(localStorage.getItem("users"));
+        window.localStorage.getItem("users") !== null &&
+        window.localStorage.getItem("users") !== "";
+      const user = JSON.parse(window.localStorage.getItem("users"));
       if (route.collapse) {
         return getRoutes(route.collapse);
       }
@@ -115,7 +116,7 @@ export default function App() {
     });
 
   const rendePorTipo = (allRoute) => {
-    const user = JSON.parse(localStorage.getItem("users")) ?? {};
+    const user = JSON.parse(window.localStorage.getItem("users")) ?? {};
     if (!user) {
       return allRoute.filter((route) => route.key === "sign-in" || route.key === "sign-up");
     }
