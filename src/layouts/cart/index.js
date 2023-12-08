@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import Grid from "@mui/material/Grid";
+import MDBox from "components/MDBox";
 
 const formatCurrency = (amount) => {
   const formatter = new Intl.NumberFormat("es-CR", {
@@ -274,113 +276,117 @@ const Dashboard = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div className="container mt-5">
-        <table className="table" style={{ textAlign: "center" }}>
-          <thead>
-            <tr>
-              <th scope="col">Nombre</th>
-              <th scope="col">Descripción</th>
-              <th scope="col">Precio unitario</th>
-              <th scope="col">Productos Restantes</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Acciones</th>
-              <th scope="col">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {productsStored.map((product, index) => (
-              <tr key={product.id}>
-                <td>{product.nombre}</td>
-                <td>{product.descripcion}</td>
-                <td>{formatCurrency(product.precio)}</td>
-                <td>{product.cantidad_en_stock}</td>
-                <td>
-                  <div>
-                    <input
-                      type="number"
-                      value={product.cantidad}
-                      style={{ width: "7vh", textAlign: "center", border: "none" }}
-                      disabled
-                      id="cantidadProducto"
-                      onChange={(e) => {}}
-                    />
-                    <br />
-                    <button onClick={() => sumar(index)}>
-                      <AddIcon />
+      <Grid container spacing={6}>
+        <Grid item xs={12} style={{ overflowY: "auto" }}>
+          <MDBox pt={3}>
+            <table className="table" style={{ textAlign: "center" }}>
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">Precio unitario</th>
+                  <th scope="col">Productos Restantes</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Acciones</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {productsStored.map((product, index) => (
+                  <tr key={product.id}>
+                    <td>{product.nombre}</td>
+                    <td>{product.descripcion}</td>
+                    <td>{formatCurrency(product.precio)}</td>
+                    <td>{product.cantidad_en_stock}</td>
+                    <td>
+                      <div>
+                        <input
+                          type="number"
+                          value={product.cantidad}
+                          style={{ width: "7vh", textAlign: "center", border: "none" }}
+                          disabled
+                          id="cantidadProducto"
+                          onChange={(e) => {}}
+                        />
+                        <br />
+                        <button onClick={() => sumar(index)}>
+                          <AddIcon />
+                        </button>
+                        <button onClick={() => restar(index)}>
+                          <RemoveIcon />
+                        </button>
+                      </div>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => deleteProduct(product.id)}
+                        className="btn btn-danger"
+                        style={{ color: "white" }}
+                      >
+                        <DeleteIcon />
+                      </button>
+                    </td>
+                    <td>{formatCurrency(product.precio * product.cantidad)}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colSpan="5"></td>
+                  <td style={{ textAlign: "right" }}>Total productos</td>
+                  <td id="montoSubtotal">
+                    {formatCurrency(
+                      productsStored.reduce(
+                        (total, product) => total + product.precio * product.cantidad,
+                        0
+                      )
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="5"></td>
+                  <td style={{ textAlign: "right" }}>Descuento</td>
+                  <td id="montoDescueto">{formatCurrency(0)}</td>
+                </tr>
+                <tr>
+                  <td colSpan="5"></td>
+                  <td style={{ textAlign: "right" }}>Total</td>
+                  <td id="montoTotal">
+                    {formatCurrency(
+                      productsStored.reduce(
+                        (total, product) => total + product.precio * product.cantidad,
+                        0
+                      )
+                    )}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="6"></td>
+                  <td>
+                    <button
+                      style={{
+                        backgroundColor: "#4caf50",
+                        color: "#fff",
+                        padding: "10px 20px",
+                        fontSize: "16px",
+                        border: "none",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        transition: "background-color 0.3s",
+                      }}
+                      onMouseOver={(e) => (e.target.style.backgroundColor = "#45a049")}
+                      onMouseOut={(e) => (e.target.style.backgroundColor = "#4caf50")}
+                      onClick={(e) => finalizarPedido()}
+                    >
+                      FINALIZAR PEDIDO
                     </button>
-                    <button onClick={() => restar(index)}>
-                      <RemoveIcon />
-                    </button>
-                  </div>
-                </td>
-                <td>
-                  <button
-                    onClick={() => deleteProduct(product.id)}
-                    className="btn btn-danger"
-                    style={{ color: "white" }}
-                  >
-                    <DeleteIcon />
-                  </button>
-                </td>
-                <td>{formatCurrency(product.precio * product.cantidad)}</td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan="5"></td>
-              <td style={{ textAlign: "right" }}>Total productos</td>
-              <td id="montoSubtotal">
-                {formatCurrency(
-                  productsStored.reduce(
-                    (total, product) => total + product.precio * product.cantidad,
-                    0
-                  )
-                )}
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="5"></td>
-              <td style={{ textAlign: "right" }}>Descuento</td>
-              <td id="montoDescueto">{formatCurrency(0)}</td>
-            </tr>
-            <tr>
-              <td colSpan="5"></td>
-              <td style={{ textAlign: "right" }}>Total</td>
-              <td id="montoTotal">
-                {formatCurrency(
-                  productsStored.reduce(
-                    (total, product) => total + product.precio * product.cantidad,
-                    0
-                  )
-                )}
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="6"></td>
-              <td>
-                <button
-                  style={{
-                    backgroundColor: "#4caf50",
-                    color: "#fff",
-                    padding: "10px 20px",
-                    fontSize: "16px",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    transition: "background-color 0.3s",
-                  }}
-                  onMouseOver={(e) => (e.target.style.backgroundColor = "#45a049")}
-                  onMouseOut={(e) => (e.target.style.backgroundColor = "#4caf50")}
-                  onClick={(e) => finalizarPedido()}
-                >
-                  FINALIZAR PEDIDO
-                </button>
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </MDBox>
+        </Grid>
+      </Grid>
       <Footer />
     </DashboardLayout>
   );
