@@ -78,8 +78,8 @@ export default function App() {
         const isAuthenticated =
           window.localStorage.getItem("users") !== null &&
           window.localStorage.getItem("users") !== "";
-        const usersString = window.localStorage.getItem("users");
-        const user = JSON.parse(usersString) ?? {};
+        const usersString = window.localStorage.getItem("users", {});
+        const user = JSON.parse(usersString);
         if (route.collapse) {
           return getRoutes(route.collapse);
         }
@@ -88,7 +88,7 @@ export default function App() {
             if (user.tipo === "C") {
               if (
                 route.key !== "categoria_productos" &&
-                route.key !== "Tipo_productos" &&
+                route.key !== "tipo_productos" &&
                 route.key !== "services" &&
                 route.key !== "graficos" &&
                 route.key !== "estilista" &&
@@ -122,15 +122,15 @@ export default function App() {
 
   const rendePorTipo = (allRoute) => {
     try {
-      const usersString = window.localStorage.getItem("users");
-      const user = JSON.parse(usersString) ?? {};
+      const usersString = window.localStorage.getItem("users", {});
+      const user = JSON.parse(usersString);
       if (!user) {
         return allRoute.filter((route) => route.key === "sign-in" || route.key === "sign-up");
       }
       if (user.tipo === "C") {
         const allowedRoutes = [
           "categoria_productos",
-          "Tipo_productos",
+          "tipo_productos",
           "services",
           "graficos",
           "estilista",
