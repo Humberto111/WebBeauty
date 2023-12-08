@@ -74,66 +74,74 @@ export default function App() {
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-      const isAuthenticated =
-        window.localStorage.getItem("users") !== null &&
-        window.localStorage.getItem("users") !== "";
-      const user = JSON.parse(window.localStorage.getItem("users"));
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
-      if (route.route) {
-        if (isAuthenticated) {
-          if (user.tipo === "C") {
-            if (
-              route.key !== "categoria_productos" &&
-              route.key !== "Tipo_productos" &&
-              route.key !== "services" &&
-              route.key !== "graficos" &&
-              route.key !== "estilista" &&
-              route.key !== "historialVentas" &&
-              route.key !== "sing-in-factu" &&
-              route.key !== "sing-up-factu"
-            ) {
+      try {
+        const isAuthenticated =
+          window.localStorage.getItem("users") !== null &&
+          window.localStorage.getItem("users") !== "";
+        const user = JSON.parse(window.localStorage.getItem("users"));
+        if (route.collapse) {
+          return getRoutes(route.collapse);
+        }
+        if (route.route) {
+          if (isAuthenticated) {
+            if (user.tipo === "C") {
+              if (
+                route.key !== "categoria_productos" &&
+                route.key !== "Tipo_productos" &&
+                route.key !== "services" &&
+                route.key !== "graficos" &&
+                route.key !== "estilista" &&
+                route.key !== "historialVentas" &&
+                route.key !== "sing-in-factu" &&
+                route.key !== "sing-up-factu"
+              ) {
+                return <Route exact path={route.route} element={route.component} key={route.key} />;
+              }
+            } else {
               return <Route exact path={route.route} element={route.component} key={route.key} />;
             }
           } else {
-            return <Route exact path={route.route} element={route.component} key={route.key} />;
-          }
-        } else {
-          if (route.key === "sign-in" || route.key === "sign-up") {
-            return <Route exact path={route.route} element={route.component} key={route.key} />;
+            if (route.key === "sign-in" || route.key === "sign-up") {
+              return <Route exact path={route.route} element={route.component} key={route.key} />;
+            }
           }
         }
+        return (
+          <Route
+            exact
+            path="*"
+            element={<Navigate to="/authentication/sign-in" />}
+            key="rutaPodefecto"
+          />
+        );
+      } catch (error) {
+        console.log(error);
       }
-      return (
-        <Route
-          exact
-          path="*"
-          element={<Navigate to="/authentication/sign-in" />}
-          key="rutaPodefecto"
-        />
-      );
     });
 
   const rendePorTipo = (allRoute) => {
-    const user = JSON.parse(window.localStorage.getItem("users")) ?? {};
-    if (!user) {
-      return allRoute.filter((route) => route.key === "sign-in" || route.key === "sign-up");
+    try {
+      const user = JSON.parse(window.localStorage.getItem("users")) ?? {};
+      if (!user) {
+        return allRoute.filter((route) => route.key === "sign-in" || route.key === "sign-up");
+      }
+      if (user.tipo === "C") {
+        const allowedRoutes = [
+          "categoria_productos",
+          "Tipo_productos",
+          "services",
+          "graficos",
+          "estilista",
+          "historialVentas",
+          "sing-in-factu",
+          "sing-up-factu",
+        ];
+        return allRoute.filter((route) => !allowedRoutes.includes(route.key));
+      }
+      return allRoute;
+    } catch (error) {
+      console.log(error);
     }
-    if (user.tipo === "C") {
-      const allowedRoutes = [
-        "categoria_productos",
-        "Tipo_productos",
-        "services",
-        "graficos",
-        "estilista",
-        "historialVentas",
-        "sing-in-factu",
-        "sing-up-factu",
-      ];
-      return allRoute.filter((route) => !allowedRoutes.includes(route.key));
-    }
-    return allRoute;
   };
 
   const configsButton = (
