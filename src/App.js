@@ -78,7 +78,8 @@ export default function App() {
         const isAuthenticated =
           window.localStorage.getItem("users") !== null &&
           window.localStorage.getItem("users") !== "";
-        const user = JSON.parse(window.localStorage.getItem("users"));
+        const usersString = window.localStorage.getItem("users");
+        const user = JSON.parse(usersString) ?? {};
         if (route.collapse) {
           return getRoutes(route.collapse);
         }
@@ -121,7 +122,8 @@ export default function App() {
 
   const rendePorTipo = (allRoute) => {
     try {
-      const user = JSON.parse(window.localStorage.getItem("users")) ?? {};
+      const usersString = window.localStorage.getItem("users");
+      const user = JSON.parse(usersString) ?? {};
       if (!user) {
         return allRoute.filter((route) => route.key === "sign-in" || route.key === "sign-up");
       }
