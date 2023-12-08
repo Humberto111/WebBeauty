@@ -8,9 +8,10 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
+import Card from "@mui/material/Card";
+import MDTypography from "components/MDTypography";
+import { Link } from "react-router-dom";
 
 // Data
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
@@ -442,229 +443,67 @@ function Dashboard() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox mb={1.5}>
-        <div style={{ maxWidth: "1000px", display: "flex" }}>
-          <div className="input-group mb-3">
-            <span className="input-group-text">
-              <i className="fa-solid fa-gift"></i>
-            </span>
-            <select
-              id="servicios"
-              className="form-select"
-              onChange={(e) => setSelectedMonth(e.target.value)}
-            >
-              <option value={-1}>Selecciona el mes</option>
-              {meses.map((mes, index) => (
-                <option key={index} value={index + 1}>
-                  {mes}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="input-group mb-3">
-            <span className="input-group-text">
-              <i className="fa-solid fa-gift"></i>
-            </span>
-            <select
-              id="servicios"
-              className="form-select"
-              onChange={(e) => setSelectedYear(e.target.value)}
-            >
-              <option value={0}>Selecciona el año</option>
-              {years.map((year, index) => (
-                <option key={index} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button
-            onClick={filtrarGraficos}
-            style={{ margin: "0px 0px 15px 15px" }}
-            className="btn btn-dark"
-          >
-            Filtrar
-          </button>
-        </div>
-      </MDBox>
       <MDBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Monto total de Ventas"
-                count={
-                  selectedMonth === -1 && selectedYear === 0
-                    ? formatCurrency(montoTotalVentas)
-                    : formatCurrency(montoTotalVentasPorMes)
-                }
-                percentage={{
-                  color: porcentajeVentasMesAnterior >= 0 ? "success" : "error",
-                  amount:
-                    porcentajeVentasMesAnterior > 0
-                      ? "+" + porcentajeVentasMesAnterior + "%"
-                      : porcentajeVentasMesAnterior + "%",
-                  label: "en comparación al mes pasado",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Valor promedio de los pedidos"
-                count={
-                  selectedMonth === -1 && selectedYear === 0
-                    ? formatCurrency(valorPromedioPedido)
-                    : formatCurrency(valorPromedioPedidoPorMes)
-                }
-                percentage={{
-                  color: porcentajeVentasMesAnterior >= 0 ? "success" : "error",
-                  amount:
-                    porcentajeVentasMesAnterior > 0
-                      ? "+" + porcentajeVentasMesAnterior + "%"
-                      : porcentajeVentasMesAnterior + "%",
-                  label: "than last month",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Cliente Estrella"
-                count={
-                  selectedMonth === -1 && selectedYear === 0
-                    ? usuarioMayorVentas
-                      ? usuarioMayorVentas.nombre_usuario
-                      : ""
-                    : usuarioMayorVentasPorMes
-                    ? usuarioMayorVentasPorMes.nombre_usuario
-                    : ""
-                }
-                percentage={{
-                  color: "success",
-                  amount: `${formatCurrency(
-                    selectedMonth === -1 && selectedYear === 0
-                      ? usuarioMayorVentas
-                        ? usuarioMayorVentas.total_ventas
-                        : ""
-                      : usuarioMayorVentasPorMes
-                      ? usuarioMayorVentasPorMes.total_ventas
-                      : ""
-                  )}`,
-                  label: "colones en total",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Unidades Vendidas"
-                count={
-                  selectedMonth === -1 && selectedYear === 0
-                    ? unidadesVendidas.unidades_vendidas_por_mes
-                    : unidadesVendidasPorMes.unidades_vendidas_por_mes
-                }
-                percentage={{
-                  color: porcentajeProductosMesAnterior >= 0 ? "success" : "error",
-                  amount:
-                    porcentajeProductosMesAnterior > 0
-                      ? "+" + porcentajeProductosMesAnterior + "%"
-                      : porcentajeProductosMesAnterior + "%",
-                  label: "en comparación al mes pasado",
-                }}
-              />
-            </MDBox>
-          </Grid>
-        </Grid>
-        <MDBox mt={4.5}>
+        {localStorage.getItem("factu") ? (
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsBarChart
-                  color="info"
-                  title="Monto Total de Ventas por Mes"
-                  description="Comparacion entre meses"
-                  date="Actual"
-                  chart={{
-                    labels: ventasPorMes.map((venta) => venta.mes),
-                    datasets: {
-                      label: "Monto de Ventas",
-                      data: ventasPorMes.map((venta) => venta.total_ventas),
-                    },
-                  }}
+            <Grid item xs={12} md={6} lg={3}>
+              <MDBox mb={1.5}>
+                <ComplexStatisticsCard color="dark" icon="weekend" title="Subir el certificado" />
+              </MDBox>
+            </Grid>
+            <Grid item xs={12} md={6} lg={3}>
+              <MDBox mb={1.5}>
+                <ComplexStatisticsCard
+                  icon="leaderboard"
+                  title="Creación de Clave para los XML de Factura Electrónica"
                 />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <Pie
-                  data={{
-                    labels:
-                      selectedMonth === -1 && selectedYear === 0
-                        ? topProductos.map((producto) => producto.nombre_producto)
-                        : topProductosPorMes.map((producto) => producto.nombre_producto),
-                    datasets: [
-                      {
-                        label: "Uniades Vendidas: ",
-                        data:
-                          selectedMonth === -1 && selectedYear === 0
-                            ? topProductos.map((producto) => producto.cantidad_vendida)
-                            : topProductosPorMes.map((producto) => producto.cantidad_vendida),
-                        backgroundColor: [
-                          "#8884d8",
-                          "#82ca9d",
-                          "#ffc658",
-                          "#d8a34a",
-                          "#d84a4a",
-                          "#4a4ad8",
-                          "#4ad8d8",
-                          "#d84ad8",
-                        ],
-                        borderColor: "black",
-                        borderWidth: 2,
-                      },
-                    ],
-                  }}
-                />
+            <Grid item xs={12} md={6} lg={3}>
+              <MDBox mb={1.5}>
+                <ComplexStatisticsCard color="success" icon="store" title="Cliente Estrella" />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <Line
-                  data={{
-                    labels:
-                      selectedMonth === -1 && selectedYear === 0
-                        ? topProductos.map((producto) => producto.nombre_producto)
-                        : topProductosPorMes.map((producto) => producto.nombre_producto),
-                    datasets: [
-                      {
-                        label: "Uniades Vendidas: ",
-                        data:
-                          selectedMonth === -1 && selectedYear === 0
-                            ? topProductos.map((producto) => producto.cantidad_vendida)
-                            : topProductosPorMes.map((producto) => producto.cantidad_vendida),
-                        fill: false,
-                        borderColor: "rgb(75, 192, 192)",
-                        pointBackgroundColor: "black",
-                        tension: 0.1,
-                      },
-                    ],
-                  }}
+            <Grid item xs={12} md={6} lg={3}>
+              <MDBox mb={1.5}>
+                <ComplexStatisticsCard
+                  color="primary"
+                  icon="person_add"
+                  title="Unidades Vendidas"
                 />
               </MDBox>
             </Grid>
           </Grid>
-        </MDBox>
+        ) : (
+          <Card>
+            <MDBox
+              variant="gradient"
+              bgColor="info"
+              borderRadius="lg"
+              coloredShadow="info"
+              mx={2}
+              mt={2}
+              p={2}
+              mb={1}
+              textAlign="center"
+            >
+              <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
+                Tienes que iniciar sesión en Facturación para poder ver esta página
+              </MDTypography>
+            </MDBox>
+            <MDBox pt={4} pb={3} px={3}>
+              <MDBox component="form" role="form">
+                <MDBox mt={3} mb={1} textAlign="center">
+                  <MDTypography variant="button" color="text">
+                    <MDTypography variant="button" color="info" fontWeight="medium" textGradient>
+                      <Link to="/sing-in-factu">Ir al inicio de sesión de facturación</Link>
+                    </MDTypography>
+                  </MDTypography>
+                </MDBox>
+              </MDBox>
+            </MDBox>
+          </Card>
+        )}
       </MDBox>
       <Footer />
     </DashboardLayout>
