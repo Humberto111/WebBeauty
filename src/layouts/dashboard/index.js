@@ -161,8 +161,9 @@ const Dashboard = () => {
             title: "Edicion Exitosa!",
             text: "Producto editado exitosamente",
             icon: "success",
-            timer: 1500,
+            timer: 500,
             position: "top-end",
+            toast: true,
           }).then((result) => {
             document.getElementById("btnCerrar").click();
             getProducts();
@@ -199,8 +200,9 @@ const Dashboard = () => {
             title: "Registro Exitoso!",
             text: "Producto agregado exitosamente",
             icon: "success",
-            timer: 1500,
+            timer: 500,
             position: "top-end",
+            toast: true,
           }).then((result) => {
             document.getElementById("btnCerrar").click();
             getProducts();
@@ -428,7 +430,7 @@ const Dashboard = () => {
           </div>
         </div>
       </MDBox>
-      <div id="modalProducts" className="modal fade" aria-hidden="true" style={{ zIndex: "9999" }}>
+      <div id="modalProducts" className="modal fade" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">

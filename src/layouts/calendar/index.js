@@ -194,8 +194,9 @@ const DemoApp = () => {
           title: "Registro Exitoso!",
           text: "Cita agregada exitosamente",
           icon: "success",
-          timer: 1500,
+          timer: 500,
           position: "top-end",
+          toast: true,
         }).then((result) => {
           getCitas();
           limpiarModal();
@@ -233,6 +234,7 @@ const DemoApp = () => {
           id: id,
         }),
       });
+      limpiarModal();
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -268,9 +270,6 @@ const DemoApp = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Si, eliminar!",
       cancelButtonText: "No, cancelar!",
-      customClass: {
-        container: "zIndex: 9999",
-      },
     });
 
     if (result.isConfirmed) {
@@ -326,7 +325,7 @@ const DemoApp = () => {
     <DashboardLayout>
       <DashboardNavbar />
       <div className="demo-app">
-        <div className="demo-app-main" style={{ zIndex: 9999 }}>
+        <div className="demo-app-main">
           <FullCalendar
             eventMouseEnter={(info) => {
               document.body.style.cursor = "pointer";
@@ -351,7 +350,7 @@ const DemoApp = () => {
             eventClick={handleEventClick}
             height={"90vh"}
             locales={[isLocate]}
-            timeZone="UTC"
+            timeZone="es-CR"
             locale="es"
             events={citas}
             slotMinTime="09:00"
@@ -381,7 +380,7 @@ const DemoApp = () => {
             }}
           />
         </div>
-        <div id="modalCitas" className="modal fade" aria-hidden="true" style={{ zIndex: "9999" }}>
+        <div id="modalCitas" className="modal fade" aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">

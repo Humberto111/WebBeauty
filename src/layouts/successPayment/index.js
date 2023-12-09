@@ -1,6 +1,9 @@
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
+import React, { useState, useEffect } from "react";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 
 const styles = {
   container: {
@@ -52,6 +55,81 @@ const styles = {
 };
 
 const Dashboard = () => {
+  const [usuarioLogeado, setUsuarioLogeado] = useState([]);
+  const [comprobante, setComprobante] = useState([]);
+
+  useEffect(() => {
+    const userStored = JSON.parse(localStorage.getItem("users"));
+    setUsuarioLogeado(userStored);
+  }, []);
+
+  useEffect(() => {
+    getComprobante();
+  }, [usuarioLogeado]);
+
+  const getComprobante = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/comprobante?id_usuario=${usuarioLogeado.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      console.log(data);
+      setComprobante(data);
+    } catch (error) {
+      console.error("Error de red:", error);
+    }
+  };
+
+  const imprimirComprobante = () => {
+    const doc = new jsPDF();
+
+    const fechaActual = new Date();
+
+    const dia = String(fechaActual.getDate()).padStart(2, "0");
+    const mes = String(fechaActual.getMonth() + 1).padStart(2, "0");
+    const año = fechaActual.getFullYear();
+    const fechaFormateada = `${dia}/${mes}/${año}`;
+
+    doc.autoTable({
+      head: [["Gracias por su compra", `${fechaFormateada}`]],
+    });
+
+    doc.autoTable({
+      head: [["Cliente", "Correo electrónico"]],
+      body: [
+        [
+          `${comprobante[0].id_usuario} - ${comprobante[0].nombre_usuario} ${comprobante[0].apellido_usuario}`,
+          comprobante[0].email_usuario,
+        ],
+      ],
+    });
+
+    doc.autoTable({
+      head: [["Artículo", "Nombre", "Descripción", "Precio", "Cantidad"]],
+      body: comprobante.map((item) => [
+        item.id_producto,
+        item.nombre_producto,
+        item.descripcion_producto,
+        item.precio_producto,
+        item.cantidad_producto,
+      ]),
+    });
+
+    doc.autoTable({
+      head: [["Subtotal", "Descuento", "Total"]],
+      body: [[comprobante[0].subtotal, comprobante[0].descuento, comprobante[0].total]],
+    });
+
+    doc.save("comprobante.pdf");
+  };
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -67,7 +145,7 @@ const Dashboard = () => {
           <a href="/dashboard" style={styles.link}>
             Seguir Comprando
           </a>
-          <a onClick={(e) => console.log("yeees")} style={styles.link}>
+          <a onClick={imprimirComprobante} style={styles.link}>
             Descargar Comprobante
           </a>
         </div>

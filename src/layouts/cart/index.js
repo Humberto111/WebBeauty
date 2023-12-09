@@ -111,7 +111,7 @@ const Dashboard = () => {
           }
         }
 
-        window.location.href = "/dashboard";
+        window.location.href = "/successPage";
       } else {
         return false;
       }

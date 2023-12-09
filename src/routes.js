@@ -23,7 +23,6 @@ import SuccessPage from "layouts/successPayment";
 import DashboardFactu from "layouts/factu/dashboardFactu";
 import LoginFactu from "layouts/factu/sign-in-factu";
 
-
 import GridViewIcon from "@mui/icons-material/GridView";
 import FilterBAndWIcon from "@mui/icons-material/FilterBAndW";
 import ContentCutIcon from "@mui/icons-material/ContentCut";
@@ -166,7 +165,6 @@ const routes = [
     component: <HistorialVentas />,
   },
   {
-    type: "collapse",
     name: "successPage",
     key: "successPage",
     icon: <LeaderboardIcon />,
