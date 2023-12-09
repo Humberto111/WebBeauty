@@ -9,9 +9,6 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 import MDButton from "components/MDButton";
 import Icon from "@mui/material/Icon";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import MDTypography from "components/MDTypography";
 
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
