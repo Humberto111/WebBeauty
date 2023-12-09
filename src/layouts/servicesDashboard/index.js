@@ -2,6 +2,12 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
+import DataTable from "examples/Tables/DataTable";
+import MDButton from "components/MDButton";
+import Icon from "@mui/material/Icon";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import MDTypography from "components/MDTypography";
 
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -122,8 +128,9 @@ const ServicesDashboard = () => {
             title: "Edicion Exitosa!",
             text: "Servicio editado exitosamente",
             icon: "success",
-            timer: 1500,
+            timer: 500,
             position: "top-end",
+            toast: true,
           }).then((result) => {
             document.getElementById("btnCerrar").click();
             getServices();
@@ -161,8 +168,9 @@ const ServicesDashboard = () => {
             title: "Registro Exitoso!",
             text: "Servicio agregado exitosamente",
             icon: "success",
-            timer: 1500,
+            timer: 500,
             position: "top-end",
+            toast: true,
           }).then((result) => {
             document.getElementById("btnCerrar").click();
             getServices();
@@ -221,73 +229,138 @@ const ServicesDashboard = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div className="row mt-3">
-        <div className="col-md-4 offset-md-4">
-          <div className="d-grid mx-auto">
-            <button
-              onClick={() => openModal(1)}
-              className="btn btn-dark"
-              data-bs-toggle="modal"
-              data-bs-target="#modalServices"
-            >
-              <i className="fa-solid fa-circle-plus">Agregar</i>
-            </button>
-          </div>
-        </div>
-      </div>
-      <MDBox py={3} style={{ display: "flex", width: "100%" }}>
-        <div className="container-fluid d-flex justify-content-center">
-          <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Categoría</th>
-                <th scope="col">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {services.map((service) => (
-                <tr key={service.id}>
-                  <td>{service.nombre}</td>
-                  <td>{service.descripcion}</td>
-                  <td>{service.precio}</td>
-                  <td>{service.categoria}</td>
-                  <td>
-                    <button
-                      onClick={() =>
-                        openModal(
-                          2,
-                          service.id,
-                          service.nombre,
-                          service.descripcion,
-                          service.precio,
-                          service.categoria
-                        )
-                      }
-                      className="btn btn-warning"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modalServices"
-                      style={{ marginRight: "20px" }}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => deleteService(service.id)}
-                      className="btn btn-danger"
-                      style={{ color: "black" }}
-                    >
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  Tipo de productos
+                  <button
+                    style={{ marginLeft: "20px" }}
+                    onClick={() => openModal(1)}
+                    className="btn btn-dark"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalServices"
+                  >
+                    <i className="fa-solid fa-circle-plus">Agregar</i>
+                  </button>
+                </MDTypography>
+              </MDBox>
+              <MDBox pt={3}>
+                <DataTable
+                  table={{
+                    columns: [
+                      { Header: "Nombre", accessor: "employed", align: "center" },
+                      { Header: "Descripción", accessor: "description", align: "center" },
+                      { Header: "Precio", accessor: "price", align: "center" },
+                      { Header: "Categoría", accessor: "category", align: "center" },
+                      { Header: "Acción", accessor: "action", align: "center" },
+                    ],
+                    rows: services.map((service) => ({
+                      function: service.id,
+                      employed: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {service.nombre}
+                        </MDTypography>
+                      ),
+                      description: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {service.descripcion}
+                        </MDTypography>
+                      ),
+                      price: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {service.precio}
+                        </MDTypography>
+                      ),
+                      category: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {service.categoria}
+                        </MDTypography>
+                      ),
+                      action: (
+                        <MDBox
+                          display="flex"
+                          alignItems="center"
+                          mt={{ xs: 2, sm: 0 }}
+                          ml={{ xs: -1.5, sm: 0 }}
+                        >
+                          <MDBox mr={1}>
+                            <MDButton
+                              variant="text"
+                              color="error"
+                              onClick={() => deleteService(service.id)}
+                            >
+                              <Icon>delete</Icon>&nbsp;Eliminar
+                            </MDButton>
+                          </MDBox>
+                          <MDButton
+                            variant="text"
+                            color="dark"
+                            onClick={() =>
+                              openModal(
+                                2,
+                                service.id,
+                                service.nombre,
+                                service.descripcion,
+                                service.precio,
+                                service.categoria
+                              )
+                            }
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalServices"
+                          >
+                            <Icon>edit</Icon>&nbsp;Editar
+                          </MDButton>
+                        </MDBox>
+                      ),
+                    })),
+                  }}
+                  isSorted={false}
+                  entriesPerPage={false}
+                  showTotalEntries={false}
+                  noEndBorder
+                />
+              </MDBox>
+            </Card>
+          </Grid>
+        </Grid>
       </MDBox>
-      <div id="modalServices" className="modal fade" aria-hidden="true" style={{ zIndex: "9999" }}>
+      <div id="modalServices" className="modal fade" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">

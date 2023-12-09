@@ -10,7 +10,7 @@ import DataTable from "examples/Tables/DataTable";
 import { useEffect, useState } from "react";
 import MDButton from "components/MDButton";
 import Icon from "@mui/material/Icon";
-import { redirect } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function Tables() {
   //const { columns, rows } = authorsTableData();
@@ -95,8 +95,17 @@ function Tables() {
         );
 
         if (response.ok) {
-          document.getElementById("btnCerrar").click();
-          getProducts();
+          Swal.fire({
+            title: "Edicion Exitosa!",
+            text: "Tipo de producto editado exitosamente",
+            icon: "success",
+            timer: 500,
+            position: "top-end",
+            toast: true,
+          }).then((result) => {
+            document.getElementById("btnCerrar").click();
+            getProducts();
+          });
         } else {
           console.log("Error al editar");
         }
@@ -119,8 +128,17 @@ function Tables() {
         );
 
         if (response.ok) {
-          document.getElementById("btnCerrar").click();
-          getProducts();
+          Swal.fire({
+            title: "Edicion Exitosa!",
+            text: "Tipo de producto agregado exitosamente",
+            icon: "success",
+            timer: 500,
+            position: "top-end",
+            toast: true,
+          }).then((result) => {
+            document.getElementById("btnCerrar").click();
+            getProducts();
+          });
         } else {
           console.log("Error al agregar");
         }
@@ -152,31 +170,20 @@ function Tables() {
   };
 
   const deleteProduct = async (id) => {
-    onDeleteProduct(id);
-    getProducts();
-  };
-
-  const createCheckoutSession = async (id) => {
-    try {
-      debugger;
-      const response = await fetch(
-        "https://web-beauty-api-638331a8cfae.herokuapp.com/create-checkout-session",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: "id",
-          }),
-        }
-      );
-      const data = await response.json();
-      window.location.href = data.url;
-    } catch (error) {
-      //si la respuesta es correcta, se redirecciona a la página de stripe
-      console.error("Error de red:", error);
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        onDeleteProduct(id);
+        getProducts();
+      }
+    });
   };
 
   return (
@@ -199,15 +206,13 @@ function Tables() {
                 <MDTypography variant="h6" color="white">
                   Categoría de productos
                   <button
+                    style={{ marginLeft: "20px" }}
                     onClick={() => openModal(1)}
                     className="btn btn-dark"
                     data-bs-toggle="modal"
                     data-bs-target="#modalProducts"
                   >
                     <i className="fa-solid fa-circle-plus">Agregar</i>
-                  </button>
-                  <button onClick={() => createCheckoutSession(1)} className="btn btn-dark">
-                    <i className="fa-solid fa-circle-plus">Pasarela de pago</i>
                   </button>
                 </MDTypography>
               </MDBox>
@@ -271,7 +276,7 @@ function Tables() {
           </Grid>
         </Grid>
       </MDBox>
-      <div id="modalProducts" className="modal fade" aria-hidden="true" style={{ zIndex: "9999" }}>
+      <div id="modalProducts" className="modal fade" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">

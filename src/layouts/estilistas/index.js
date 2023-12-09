@@ -6,6 +6,12 @@ import MDTypography from "components/MDTypography";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
+import DataTable from "examples/Tables/DataTable";
+import MDButton from "components/MDButton";
+import Icon from "@mui/material/Icon";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import MDTypography from "components/MDTypography";
 
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -143,8 +149,9 @@ const Dashboard = () => {
             title: "Edicion Exitosa!",
             text: "Estilista editado exitosamente",
             icon: "success",
-            timer: 1500,
+            timer: 500,
             position: "top-end",
+            toast: true,
           }).then((result) => {
             document.getElementById("btnCerrar").click();
             getEstilistas();
@@ -184,8 +191,9 @@ const Dashboard = () => {
             title: "Registro Exitoso!",
             text: "Estilista agregado exitosamente",
             icon: "success",
-            timer: 1500,
+            timer: 500,
             position: "top-end",
+            toast: true,
           }).then((result) => {
             document.getElementById("btnCerrar").click();
             getEstilistas();
@@ -244,94 +252,152 @@ const Dashboard = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <Card>
-        <MDBox
-          variant="gradient"
-          bgColor="info"
-          borderRadius="lg"
-          coloredShadow="info"
-          mx={2}
-          mt={2}
-          p={2}
-          mb={1}
-          textAlign="center"
-        >
-          <button
-            onClick={() => openModal(1)}
-            className="btn btn-dark"
-            data-bs-toggle="modal"
-            data-bs-target="#modalEstilistas"
-          >
-            <i className="fa-solid fa-circle-plus">Agregar</i>
-          </button>
-        </MDBox>
-      </Card>
-      <Grid container spacing={6}>
-        <Grid item xs={12} style={{ overflowY: "auto" }}>
-          <MDBox pt={3}>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Apellido</th>
-                  <th scope="col">Teléfono</th>
-                  <th scope="col">Dirección</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Descripción</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {estilistas.map((estilista) => (
-                  <tr key={estilista.id}>
-                    <td>{estilista.nombre}</td>
-                    <td>{estilista.apellido}</td>
-                    <td>{estilista.telefono}</td>
-                    <td>{estilista.direccion}</td>
-                    <td>{estilista.email}</td>
-                    <td>{estilista.descripcion}</td>
-                    <td>
-                      <button
-                        onClick={() =>
-                          openModal(
-                            2,
-                            estilista.id,
-                            estilista.nombre,
-                            estilista.apellido,
-                            estilista.telefono,
-                            estilista.direccion,
-                            estilista.email,
-                            estilista.descripcion
-                          )
-                        }
-                        className="btn btn-warning"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalEstilistas"
-                        style={{ marginRight: "20px" }}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => deleteEstilista(estilista.id)}
-                        className="btn btn-danger"
-                        style={{ color: "black" }}
-                      >
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </MDBox>
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  Tipo de productos
+                  <button
+                    style={{ marginLeft: "20px" }}
+                    onClick={() => openModal(1)}
+                    className="btn btn-dark"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEstilistas"
+                  >
+                    <i className="fa-solid fa-circle-plus">Agregar</i>
+                  </button>
+                </MDTypography>
+              </MDBox>
+              <MDBox pt={3}>
+                <DataTable
+                  table={{
+                    columns: [
+                      { Header: "Nombre", accessor: "name", align: "center" },
+                      { Header: "Teléfono", accessor: "phone", align: "center" },
+                      { Header: "Dirección", accessor: "address", align: "center" },
+                      { Header: "Email", accessor: "email", align: "center" },
+                      { Header: "Descripción", accessor: "description", align: "center" },
+                      { Header: "Acción", accessor: "action", align: "center" },
+                    ],
+                    rows: estilistas.map((estilista) => ({
+                      function: estilista.id,
+                      name: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {estilista.nombre + " " + estilista.apellido}
+                        </MDTypography>
+                      ),
+                      phone: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {estilista.telefono}
+                        </MDTypography>
+                      ),
+                      address: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {estilista.direccion}
+                        </MDTypography>
+                      ),
+                      email: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {estilista.email}
+                        </MDTypography>
+                      ),
+                      description: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {estilista.descripcion}
+                        </MDTypography>
+                      ),
+                      action: (
+                        <MDBox
+                          display="flex"
+                          alignItems="center"
+                          mt={{ xs: 2, sm: 0 }}
+                          ml={{ xs: -1.5, sm: 0 }}
+                        >
+                          <MDBox mr={1}>
+                            <MDButton
+                              variant="text"
+                              color="error"
+                              onClick={() => deleteEstilista(estilista.id)}
+                            >
+                              <Icon>delete</Icon>&nbsp;Eliminar
+                            </MDButton>
+                          </MDBox>
+                          <MDButton
+                            variant="text"
+                            color="dark"
+                            onClick={() =>
+                              openModal(
+                                2,
+                                estilista.id,
+                                estilista.nombre,
+                                estilista.apellido,
+                                estilista.telefono,
+                                estilista.direccion,
+                                estilista.email,
+                                estilista.descripcion
+                              )
+                            }
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEstilistas"
+                          >
+                            <Icon>edit</Icon>&nbsp;Editar
+                          </MDButton>
+                        </MDBox>
+                      ),
+                    })),
+                  }}
+                  isSorted={false}
+                  entriesPerPage={false}
+                  showTotalEntries={false}
+                  noEndBorder
+                />
+              </MDBox>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-      <div
-        id="modalEstilistas"
-        className="modal fade"
-        aria-hidden="true"
-        style={{ zIndex: "9999" }}
-      >
+      </MDBox>
+      <div id="modalEstilistas" className="modal fade" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">

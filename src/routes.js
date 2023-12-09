@@ -166,7 +166,6 @@ const routes = [
     component: <HistorialVentas />,
   },
   {
-    type: "collapse",
     name: "successPage",
     key: "successPage",
     icon: <LeaderboardIcon />,
