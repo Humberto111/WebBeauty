@@ -5,25 +5,23 @@ import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
 
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import MDSnackbar from "components/MDSnackbar";
-
-// Authentication layout components
-import CoverLayout from "layouts/authentication/components/CoverLayout";
-
-// Images
-import bgImage from "assets/images/bg-sign-up-cover.jpeg";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 import { useState } from "react";
 
 function Cover() {
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
+  const [about, setAbout] = useState("");
+  const [country, setCountry] = useState("");
   const [password, setPassword] = useState("");
 
   const [successSB, setSuccessSB] = useState(false);
@@ -66,23 +64,26 @@ function Cover() {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/register", {
+      const response = await fetch("https://web-beauty-factu-b5f1002b97bd.herokuapp.com/api.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          nombre: nombre,
-          apellido: apellido,
+          w: "users",
+          r: "users_register",
+          fullName: nombre + " " + apellido,
+          userName: userName,
           email: email,
-          password: password,
+          about: about,
+          country: country,
+          pwd: password,
         }),
       });
 
       if (response.ok) {
         openSuccessSB(true);
-        console.log("entró");
-        window.location.href = "/";
+        window.location.href = "/sing-in-factu";
       } else {
         openErrorSB(true);
         console.log("error");
@@ -93,7 +94,8 @@ function Cover() {
   };
 
   return (
-    <CoverLayout image={bgImage}>
+    <DashboardLayout>
+      <DashboardNavbar />
       <Card>
         <MDBox
           variant="gradient"
@@ -101,21 +103,21 @@ function Cover() {
           borderRadius="lg"
           coloredShadow="success"
           mx={2}
-          mt={-3}
-          p={3}
+          mt={2}
+          p={2}
           mb={1}
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Registro
+            Registro en Facturación
           </MDTypography>
           <MDTypography display="block" variant="button" color="white" my={1}>
             Introduzca los datos solicitados
           </MDTypography>
         </MDBox>
-        <MDBox pt={4} pb={3} px={3}>
+        <MDBox pt={1} pb={1} px={1}>
           <MDBox component="form" role="form">
-            <MDBox mb={2}>
+            <MDBox mb={1}>
               <MDInput
                 type="text"
                 label="Nombre"
@@ -125,7 +127,7 @@ function Cover() {
                 fullWidth
               />
             </MDBox>
-            <MDBox mb={2}>
+            <MDBox mb={1}>
               <MDInput
                 type="text"
                 label="Apellido"
@@ -135,7 +137,17 @@ function Cover() {
                 fullWidth
               />
             </MDBox>
-            <MDBox mb={2}>
+            <MDBox mb={1}>
+              <MDInput
+                type="text"
+                label="Nombre de Usuario"
+                variant="standard"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                fullWidth
+              />
+            </MDBox>
+            <MDBox mb={1}>
               <MDInput
                 type="email"
                 label="Correo"
@@ -145,7 +157,27 @@ function Cover() {
                 fullWidth
               />
             </MDBox>
-            <MDBox mb={2}>
+            <MDBox mb={1}>
+              <MDInput
+                type="text"
+                label="Otros datos"
+                variant="standard"
+                value={about}
+                onChange={(e) => setAbout(e.target.value)}
+                fullWidth
+              />
+            </MDBox>
+            <MDBox mb={1}>
+              <MDInput
+                type="text"
+                label="País"
+                variant="standard"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                fullWidth
+              />
+            </MDBox>
+            <MDBox mb={1}>
               <MDInput
                 type="password"
                 label="Contraseña"
@@ -163,7 +195,7 @@ function Cover() {
                 color="text"
                 sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
               >
-                &nbsp;&nbsp;I agree the&nbsp;
+                &nbsp;&nbsp;Acepto&nbsp;
               </MDTypography>
               <MDTypography
                 component="a"
@@ -173,26 +205,26 @@ function Cover() {
                 color="info"
                 textGradient
               >
-                Terms and Conditions
+                los términos y condiciones
               </MDTypography>
             </MDBox>
-            <MDBox mt={4} mb={1}>
+            <MDBox mt={1} mb={1}>
               <MDButton variant="gradient" color="info" onClick={onSubmitRegister} fullWidth>
                 Registrar
               </MDButton>
             </MDBox>
-            <MDBox mt={3} mb={1} textAlign="center">
+            <MDBox mt={1} mb={1} textAlign="center">
               <MDTypography variant="button" color="text">
                 Ya tienes cuenta?{" "}
                 <MDTypography variant="button" color="info" fontWeight="medium" textGradient>
-                  <Link to="/authentication/sign-in">Inicia Sesión</Link>
+                  <Link to="/sing-in-factu">Inicia Sesión en Facturación</Link>
                 </MDTypography>
               </MDTypography>
             </MDBox>
           </MDBox>
         </MDBox>
       </Card>
-    </CoverLayout>
+    </DashboardLayout>
   );
 }
 
