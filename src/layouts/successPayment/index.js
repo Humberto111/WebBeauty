@@ -69,16 +69,6 @@ const Dashboard = () => {
     getComprobante();
   }, [usuarioLogeado]);
 
-  const formatCurrency = (amount) => {
-    const formatter = new Intl.NumberFormat("es-CR", {
-      style: "currency",
-      currency: "CRC",
-      minimumFractionDigits: 2,
-    });
-
-    return formatter.format(amount);
-  };
-
   const getComprobante = async () => {
     try {
       const response = await fetch(
@@ -133,7 +123,7 @@ const Dashboard = () => {
         item.id_producto,
         item.nombre_producto,
         item.descripcion_producto,
-        formatCurrency(item.precio_producto),
+        item.precio_producto,
         item.cantidad_producto,
       ]),
     });
