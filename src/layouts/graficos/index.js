@@ -527,7 +527,7 @@ function Dashboard() {
                     porcentajeVentasMesAnterior > 0
                       ? "+" + porcentajeVentasMesAnterior + "%"
                       : porcentajeVentasMesAnterior + "%",
-                  label: "than last month",
+                  label: "en comparación al mes pasado",
                 }}
               />
             </MDBox>

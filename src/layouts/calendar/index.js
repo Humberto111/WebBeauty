@@ -494,7 +494,7 @@ const DemoApp = () => {
                     <option>Selecciona el estilista deseado</option>
                     {estilistas.map((estilista) => (
                       <option key={estilista.id} value={estilista.id}>
-                        {estilista.nombre}
+                        {estilista.nombre + " " + estilista.apellido}
                       </option>
                     ))}
                   </select>
