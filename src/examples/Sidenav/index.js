@@ -132,6 +132,29 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     return returnValue;
   });
 
+  const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock) => {
+    setId("");
+    setNombre("");
+    setDescripcion("");
+    setPrecio("");
+    setCantidad_en_stock("");
+    if (op === 1) {
+      setTitle("Nuevo producto");
+      setOperation(1);
+    } else if (op === 2) {
+      setTitle("Editar producto");
+      setId(id);
+      setNombre(nombre);
+      setDescripcion(descripcion);
+      setPrecio(precio);
+      setCantidad_en_stock(cantidad_en_stock);
+      setOperation(2);
+    }
+    window.setTimeout(() => {
+      document.getElementById("nombre").focus();
+    }, 500);
+  };
+
   return (
     <SidenavRoot
       {...rest}

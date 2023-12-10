@@ -21,16 +21,10 @@ const ServicesDashboard = () => {
   const [operation, setOperation] = useState(0);
   const [title, setTitle] = useState("");
   const [categoria, setCategoria] = useState("");
-  const [usuarioLogeado, setUsuarioLogeado] = useState([]);
-
-  useEffect(() => {
-    const userStored = JSON.parse(localStorage.getItem("users"));
-    setUsuarioLogeado(userStored);
-  }, []);
 
   useEffect(() => {
     getServices();
-  }, [usuarioLogeado]);
+  }, [services]);
 
   const getServices = async () => {
     try {
@@ -42,6 +36,7 @@ const ServicesDashboard = () => {
       });
 
       const data = await response.json();
+      console.log(data);
       setServices(data);
     } catch (error) {
       console.error("Error de red:", error);
@@ -69,16 +64,6 @@ const ServicesDashboard = () => {
     window.setTimeout(() => {
       document.getElementById("nombre").focus();
     }, 500);
-  };
-
-  const formatCurrency = (amount) => {
-    const formatter = new Intl.NumberFormat("es-CR", {
-      style: "currency",
-      currency: "CRC",
-      minimumFractionDigits: 2,
-    });
-
-    return formatter.format(amount);
   };
 
   const validar = () => {
@@ -248,31 +233,29 @@ const ServicesDashboard = () => {
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
-              {usuarioLogeado.tipo === "A" ? (
-                <MDBox
-                  mx={2}
-                  mt={-3}
-                  py={3}
-                  px={2}
-                  variant="gradient"
-                  bgColor="info"
-                  borderRadius="lg"
-                  coloredShadow="info"
-                >
-                  <MDTypography variant="h6" color="white">
-                    Tipo de productos
-                    <button
-                      style={{ marginLeft: "20px" }}
-                      onClick={() => openModal(1)}
-                      className="btn btn-dark"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modalServices"
-                    >
-                      <i className="fa-solid fa-circle-plus">Agregar</i>
-                    </button>
-                  </MDTypography>
-                </MDBox>
-              ) : null}
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  Tipo de productos
+                  <button
+                    style={{ marginLeft: "20px" }}
+                    onClick={() => openModal(1)}
+                    className="btn btn-dark"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalServices"
+                  >
+                    <i className="fa-solid fa-circle-plus">Agregar</i>
+                  </button>
+                </MDTypography>
+              </MDBox>
               <MDBox pt={3}>
                 <DataTable
                   table={{
@@ -281,12 +264,8 @@ const ServicesDashboard = () => {
                       { Header: "Descripción", accessor: "description", align: "center" },
                       { Header: "Precio", accessor: "price", align: "center" },
                       { Header: "Categoría", accessor: "category", align: "center" },
-                      usuarioLogeado.tipo === "A" && {
-                        Header: "Acción",
-                        accessor: "action",
-                        align: "center",
-                      },
-                    ].filter(Boolean),
+                      { Header: "Acción", accessor: "action", align: "center" },
+                    ],
                     rows: services.map((service) => ({
                       function: service.id,
                       employed: (
@@ -319,7 +298,7 @@ const ServicesDashboard = () => {
                           color="text"
                           fontWeight="medium"
                         >
-                          {formatCurrency(service.precio)}
+                          {service.precio}
                         </MDTypography>
                       ),
                       category: (

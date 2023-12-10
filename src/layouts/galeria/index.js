@@ -27,6 +27,7 @@ const Dashboard = () => {
     try {
       const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/images");
       const data = await response.json();
+      console.log(data);
       setImageList(data);
     } catch (error) {
       console.log(error);
@@ -119,13 +120,7 @@ const Dashboard = () => {
             </Grid>
             <Grid item xs={12}>
               <Box p={2}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  style={{ color: "white" }}
-                  fullWidth
-                  onClick={enviarSolicitud}
-                >
+                <Button variant="contained" color="primary" fullWidth onClick={enviarSolicitud}>
                   Guardar
                 </Button>
               </Box>

@@ -89,7 +89,9 @@ export default function App() {
               if (
                 route.key !== "categoria_productos" &&
                 route.key !== "tipo_productos" &&
+                route.key !== "services" &&
                 route.key !== "graficos" &&
+                route.key !== "estilista" &&
                 route.key !== "historialVentas" &&
                 route.key !== "sing-in-factu" &&
                 route.key !== "sing-up-factu"
@@ -129,7 +131,9 @@ export default function App() {
         const allowedRoutes = [
           "categoria_productos",
           "tipo_productos",
+          "services",
           "graficos",
+          "estilista",
           "historialVentas",
           "sing-in-factu",
           "sing-up-factu",
