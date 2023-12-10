@@ -25,7 +25,6 @@ const Dashboard = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [descuento, setDescuento] = useState(0);
   const [total, setTotal] = useState(0);
-  const [retrieveProducts, setRetrieveProducts] = useState([]);
 
   useEffect(() => {
     const userStored = JSON.parse(localStorage.getItem("users"));
@@ -51,19 +50,19 @@ const Dashboard = () => {
     const params = new URLSearchParams(queryString);
     const compraRealizada = params.get("compra_realizada");
 
-    const productsRetrieved = JSON.parse(localStorage.getItem("products"));
-    const montosRetrieved = JSON.parse(localStorage.getItem("montosTotales"));
-
     if (compraRealizada === "1") {
-      const fechaActual = new Date();
-      const anno = fechaActual.getFullYear();
-      const mes = (fechaActual.getMonth() + 1).toString().padStart(2, "0");
-      const dia = fechaActual.getDate().toString().padStart(2, "0");
-      const fechaFormateada = `${anno}-${mes}-${dia}`;
+      const productsRetrieved = JSON.parse(localStorage.getItem("products"));
+      console.log("productsRetrieved ", productsRetrieved);
 
-      if (productsStored.length > 0) {
+      if (productsRetrieved.length > 0) {
+        const montosRetrieved = JSON.parse(localStorage.getItem("montosTotales"));
+        const fechaFormateada = obtenerFechaActual();
+
+        console.log("product length ", productsRetrieved.length);
+
         try {
-          const response = await fetch(
+          // Enviar datos de la venta
+          const ventaResponse = await fetch(
             "https://web-beauty-api-638331a8cfae.herokuapp.com/addSale",
             {
               method: "POST",
@@ -80,44 +79,58 @@ const Dashboard = () => {
               }),
             }
           );
-          const data = await response.json();
-        } catch (error) {
-          console.error("Error de red:", error);
-        }
 
-        for (const key in productsRetrieved) {
-          if (Object.hasOwnProperty.call(productsRetrieved, key)) {
-            const product = productsRetrieved[key];
+          const ventaData = await ventaResponse.json();
 
-            try {
-              const response = await fetch(
-                "https://web-beauty-api-638331a8cfae.herokuapp.com/editProduct",
-                {
-                  method: "PUT",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    id: product.id,
-                    cantidad_en_stock: product.cantidad_en_stock.toString(),
-                  }),
+          if (ventaResponse.ok) {
+            // Actualizar productos en el servidor y eliminar localmente
+            await Promise.all(
+              productsRetrieved.map(async (product) => {
+                console.log("cada producto ", product);
+                try {
+                  const updateResponse = await fetch(
+                    "https://web-beauty-api-638331a8cfae.herokuapp.com/editProduct",
+                    {
+                      method: "PUT",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        id: product.id,
+                        cantidad_en_stock: product.cantidad_en_stock.toString(),
+                      }),
+                    }
+                  );
+
+                  const updateData = await updateResponse.json();
+
+                  if (updateResponse.ok) {
+                    onDeleteProduct(product.id);
+                  }
+                } catch (error) {
+                  console.error("Error de red al actualizar productos:", error);
                 }
-              );
-              const data = await response.json();
-              if (response.ok) {
-                onDeleteProduct(product.id);
-              }
-            } catch (error) {
-              console.error("Error de red:", error);
-            }
-          }
-        }
+              })
+            );
 
-        window.location.href = "/successPage";
+            // Redirigir a la página de éxito
+            //window.location.href = "/successPage";
+          }
+        } catch (error) {
+          console.error("Error de red al realizar la venta:", error);
+        }
       } else {
         return false;
       }
     }
+  };
+
+  const obtenerFechaActual = () => {
+    const fechaActual = new Date();
+    const anno = fechaActual.getFullYear();
+    const mes = (fechaActual.getMonth() + 1).toString().padStart(2, "0");
+    const dia = fechaActual.getDate().toString().padStart(2, "0");
+    return `${anno}-${mes}-${dia}`;
   };
 
   const getProductsOnCart = async () => {
