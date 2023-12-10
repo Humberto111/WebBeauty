@@ -45,29 +45,6 @@ const Dashboard = () => {
     }
   };
 
-  const getProductsOnCart = async () => {
-    if (!usuarioLogeado || !usuarioLogeado.id) {
-      return;
-    }
-    try {
-      const response = await fetch(
-        `https://web-beauty-api-638331a8cfae.herokuapp.com/shopping_cart?id_usuario=${usuarioLogeado.id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const data = await response.json();
-      console.log(data);
-      setProductsStored(data);
-    } catch (error) {
-      console.error("Error de red:", error);
-    }
-  };
-
   const openModal = (op, id, nombre, descripcion, precio, cantidad_en_stock) => {
     setId("");
     setNombre("");
@@ -135,6 +112,16 @@ const Dashboard = () => {
       }
       enviarSolicitud(parametros);
     }
+  };
+
+  const formatCurrency = (amount) => {
+    const formatter = new Intl.NumberFormat("es-CR", {
+      style: "currency",
+      currency: "CRC",
+      minimumFractionDigits: 2,
+    });
+
+    return formatter.format(amount);
   };
 
   const enviarSolicitud = async (parametros) => {
@@ -372,7 +359,9 @@ const Dashboard = () => {
                     </h4>
                     <p className="card-text">{product.descripcion}</p>
                     <p className="card-text">
-                      <small className="text-body-secondary">Precio: {product.precio}</small>
+                      <small className="text-body-secondary">
+                        Precio: {formatCurrency(product.precio)}
+                      </small>
                     </p>
                     <p className="card-text">
                       <small className="text-body-secondary">
@@ -397,18 +386,14 @@ const Dashboard = () => {
                               product.imagen
                             )
                           }
-                          className="btn btn-warning"
+                          className="btn btn-dark"
                           data-bs-toggle="modal"
                           data-bs-target="#modalProducts"
                           style={{ marginRight: "20px" }}
                         >
                           Editar
                         </button>
-                        <button
-                          onClick={() => deleteProduct(product.id)}
-                          className="btn btn-danger"
-                          style={{ color: "black" }}
-                        >
+                        <button onClick={() => deleteProduct(product.id)} className="btn btn-dark">
                           Eliminar
                         </button>
                       </div>
