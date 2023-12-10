@@ -81,11 +81,9 @@ function Cover() {
 
       if (response.ok) {
         openSuccessSB(true);
-        console.log("entró");
         window.location.href = "/";
       } else {
         openErrorSB(true);
-        console.log("error");
       }
     } catch (error) {
       console.error("Error de red:", error);

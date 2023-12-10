@@ -27,7 +27,6 @@ const Dashboard = () => {
     try {
       const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/images");
       const data = await response.json();
-      console.log(data);
       setImageList(data);
     } catch (error) {
       console.log(error);

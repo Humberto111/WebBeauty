@@ -67,7 +67,6 @@ const Dashboard = () => {
       );
 
       const data = await response.json();
-      console.log(data);
       setHistorialProductos(data);
     } catch (error) {
       console.error("Error de red:", error);
