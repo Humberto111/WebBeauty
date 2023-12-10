@@ -62,7 +62,6 @@ const Dashboard = () => {
     setPrecio("");
     setCantidad_en_stock("");
     setFile(null);
-    document.getElementById("fileInput").value = "";
     if (op === 1) {
       setTitle("Nuevo producto");
       setOperation(1);

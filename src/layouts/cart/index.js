@@ -110,7 +110,7 @@ const Dashboard = () => {
             );
 
             // Redirigir a la página de éxito
-            window.location.href = "/successPage";
+            //window.location.href = "/successPage";
           }
         } catch (error) {
           console.error("Error de red al realizar la venta:", error);
