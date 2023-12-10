@@ -120,7 +120,13 @@ const Dashboard = () => {
             </Grid>
             <Grid item xs={12}>
               <Box p={2}>
-                <Button variant="contained" color="primary" fullWidth onClick={enviarSolicitud}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ color: "white" }}
+                  fullWidth
+                  onClick={enviarSolicitud}
+                >
                   Guardar
                 </Button>
               </Box>
