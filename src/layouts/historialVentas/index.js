@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import Swal from "sweetalert2";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import MDBox from "components/MDBox";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import MDTypography from "components/MDTypography";
+import DataTable from "examples/Tables/DataTable";
 
 const formatCurrency = (amount) => {
   const formatter = new Intl.NumberFormat("es-CR", {
@@ -66,7 +67,6 @@ const Dashboard = () => {
       );
 
       const data = await response.json();
-      console.log(data);
       setHistorialVentas(data);
     } catch (error) {
       console.error("Error de red:", error);
@@ -76,40 +76,117 @@ const Dashboard = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div className="container mt-5">
-        <table className="table" style={{ textAlign: "center" }}>
-          <thead>
-            <tr>
-              <th scope="col">Producto</th>
-              <th scope="col">Nombre del producto</th>
-              <th scope="col">Nombre del usuario</th>
-              <th scope="col">Email del usuario</th>
-              <th scope="col">Cantidad de productos</th>
-              <th scope="col">Fecha de venta</th>
-              <th scope="col">Monto total venta</th>
-            </tr>
-          </thead>
-          <tbody>
-            {historialVentas.map((venta, index) => (
-              <tr key={venta.id_venta}>
-                <td>
-                  <img
-                    src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + venta.imagen}
-                    alt={venta.nombre_producto}
-                    style={{ width: "130px" }}
-                  />
-                </td>
-                <td>{venta.nombre_producto}</td>
-                <td>{venta.nombre + " " + venta.apellido}</td>
-                <td>{venta.email}</td>
-                <td>{venta.cantidad}</td>
-                <td>{formatDate(venta.fecha_venta).replace(",", " ")}</td>
-                <td>{formatCurrency(venta.total)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox pt={3}>
+                <DataTable
+                  table={{
+                    columns: [
+                      { Header: "Producto", accessor: "image", align: "center" },
+                      { Header: "Nombre producto", accessor: "productName", align: "center" },
+                      { Header: "Nombre usuario", accessor: "userName", align: "center" },
+                      { Header: "Email", accessor: "email", align: "center" },
+                      { Header: "Cantidad de productos", accessor: "quantity", align: "center" },
+                      { Header: "Fecha de venta", accessor: "datesale", align: "center" },
+                      { Header: "Precio Unitario", accessor: "unityPrice", align: "center" },
+                    ],
+                    rows: historialVentas.map((item) => ({
+                      function: item.id,
+                      image: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          <img
+                            src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + item.imagen}
+                            alt={item.nombre}
+                            style={{ width: "130px" }}
+                          />
+                        </MDTypography>
+                      ),
+                      productName: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {item.nombre_producto}
+                        </MDTypography>
+                      ),
+                      userName: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {item.nombre + " " + item.apellido}
+                        </MDTypography>
+                      ),
+                      email: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {item.email}
+                        </MDTypography>
+                      ),
+                      quantity: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {item.cantidad}
+                        </MDTypography>
+                      ),
+                      datesale: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {formatDate(item.fecha_venta).replace(",", " ")}
+                        </MDTypography>
+                      ),
+                      unityPrice: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {formatCurrency(item.cantidad * item.precio)}
+                        </MDTypography>
+                      ),
+                    })),
+                  }}
+                  isSorted={false}
+                  entriesPerPage={false}
+                  showTotalEntries={false}
+                  noEndBorder
+                />
+              </MDBox>
+            </Card>
+          </Grid>
+        </Grid>
+      </MDBox>
       <Footer />
     </DashboardLayout>
   );

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import Swal from "sweetalert2";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
+import MDBox from "components/MDBox";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import MDTypography from "components/MDTypography";
+import DataTable from "examples/Tables/DataTable";
 
 const formatCurrency = (amount) => {
   const formatter = new Intl.NumberFormat("es-CR", {
@@ -66,7 +67,6 @@ const Dashboard = () => {
       );
 
       const data = await response.json();
-      console.log(data);
       setHistorialProductos(data);
     } catch (error) {
       console.error("Error de red:", error);
@@ -76,40 +76,117 @@ const Dashboard = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div className="container mt-5">
-        <table className="table" style={{ textAlign: "center" }}>
-          <thead>
-            <tr>
-              <th scope="col">Producto</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Descripción</th>
-              <th scope="col">Precio unitario</th>
-              <th scope="col">Cantidad</th>
-              <th scope="col">Fecha</th>
-              <th scope="col">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {historialProductos.map((product, index) => (
-              <tr key={product.id}>
-                <td>
-                  <img
-                    src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + product.imagen}
-                    alt={product.nombre}
-                    style={{ width: "130px" }}
-                  />
-                </td>
-                <td>{product.nombre}</td>
-                <td>{product.descripcion}</td>
-                <td>{formatCurrency(product.precio)}</td>
-                <td>{product.cantidad}</td>
-                <td>{formatDate(product.fecha_venta).replace(",", " ")}</td>
-                <td>{formatCurrency(product.total)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <MDBox pt={6} pb={3}>
+        <Grid container spacing={6}>
+          <Grid item xs={12}>
+            <Card>
+              <MDBox pt={3}>
+                <DataTable
+                  table={{
+                    columns: [
+                      { Header: "Producto", accessor: "image", align: "center" },
+                      { Header: "Nombre", accessor: "name", align: "center" },
+                      { Header: "Descripción", accessor: "description", align: "center" },
+                      { Header: "Precio unitario", accessor: "price", align: "center" },
+                      { Header: "Cantidad", accessor: "quantity", align: "center" },
+                      { Header: "Fecha", accessor: "dateBuy", align: "center" },
+                      { Header: "Total", accessor: "total", align: "center" },
+                    ],
+                    rows: historialProductos.map((item) => ({
+                      function: item.id,
+                      image: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          <img
+                            src={"https://web-beauty-api-638331a8cfae.herokuapp.com/" + item.imagen}
+                            alt={item.nombre}
+                            style={{ width: "130px" }}
+                          />
+                        </MDTypography>
+                      ),
+                      name: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {item.nombre}
+                        </MDTypography>
+                      ),
+                      description: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {item.descripcion}
+                        </MDTypography>
+                      ),
+                      price: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {item.precio}
+                        </MDTypography>
+                      ),
+                      quantity: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {item.cantidad}
+                        </MDTypography>
+                      ),
+                      dateBuy: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {formatDate(item.fecha_venta).replace(",", " ")}
+                        </MDTypography>
+                      ),
+                      total: (
+                        <MDTypography
+                          component="a"
+                          href="#"
+                          variant="caption"
+                          color="text"
+                          fontWeight="medium"
+                        >
+                          {formatCurrency(item.cantidad * item.precio)}
+                        </MDTypography>
+                      ),
+                    })),
+                  }}
+                  isSorted={false}
+                  entriesPerPage={false}
+                  showTotalEntries={false}
+                  noEndBorder
+                />
+              </MDBox>
+            </Card>
+          </Grid>
+        </Grid>
+      </MDBox>
       <Footer />
     </DashboardLayout>
   );
