@@ -130,13 +130,7 @@ const Dashboard = () => {
 
     doc.autoTable({
       head: [["Subtotal", "Descuento", "Total"]],
-      body: [
-        [
-          formatCurrency(comprobante[0].subtotal),
-          formatCurrency(comprobante[0].descuento),
-          formatCurrency(comprobante[0].total),
-        ],
-      ],
+      body: [[comprobante[0].subtotal, comprobante[0].descuento, comprobante[0].total]],
     });
 
     doc.save("comprobante.pdf");
