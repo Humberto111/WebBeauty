@@ -30,6 +30,7 @@ import ContentCutIcon from "@mui/icons-material/ContentCut";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
+import { ShoppingCart } from "@mui/icons-material";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -71,7 +72,6 @@ const routes = [
     component: <Profile />,
   },
   {
-    type: "collapse",
     name: "Sign In",
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
@@ -79,7 +79,6 @@ const routes = [
     component: <SignIn />,
   },
   {
-    type: "collapse",
     name: "Sign Up",
     key: "sign-up",
     icon: <Icon fontSize="small">assignment</Icon>,
@@ -135,7 +134,7 @@ const routes = [
     type: "collapse",
     name: "Cart",
     key: "cart",
-    icon: <Icon fontSize="small">assignment</Icon>,
+    icon: <ShoppingCart />,
     route: "/cart",
     component: <CarritoCompras />,
   },
@@ -148,7 +147,6 @@ const routes = [
     component: <Graficos />,
   },
   {
-    //type: userStored.tipo === "C" ? "collapse" : "hidden",
     type: "collapse",
     name: "Historial de Compras",
     key: "historialProductos",
@@ -157,7 +155,6 @@ const routes = [
     component: <HistorialProductos />,
   },
   {
-    //type: userStored.tipo === "A" ? "collapse" : "hidden",
     type: "collapse",
     name: "Historial de Ventas",
     key: "historialVentas",
