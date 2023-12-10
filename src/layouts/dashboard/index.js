@@ -74,7 +74,7 @@ const Dashboard = () => {
     setDescripcion("");
     setPrecio("");
     setCantidad_en_stock("");
-    setFile("");
+    setFile(null);
     if (op === 1) {
       setTitle("Nuevo producto");
       setOperation(1);
