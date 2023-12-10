@@ -24,16 +24,10 @@ const Dashboard = () => {
   const [descripcion, setDescripcion] = useState("");
   const [title, setTitle] = useState("");
   const [operation, setOperation] = useState(0);
-  const [usuarioLogeado, setUsuarioLogeado] = useState([]);
-
-  useEffect(() => {
-    const userStored = JSON.parse(localStorage.getItem("users"));
-    setUsuarioLogeado(userStored);
-  }, []);
 
   useEffect(() => {
     getEstilistas();
-  }, [usuarioLogeado]);
+  }, [estilistas]);
 
   const getEstilistas = async () => {
     try {
@@ -259,31 +253,29 @@ const Dashboard = () => {
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
-              {usuarioLogeado.tipo === "A" ? (
-                <MDBox
-                  mx={2}
-                  mt={-3}
-                  py={3}
-                  px={2}
-                  variant="gradient"
-                  bgColor="info"
-                  borderRadius="lg"
-                  coloredShadow="info"
-                >
-                  <MDTypography variant="h6" color="white">
-                    Tipo de productos
-                    <button
-                      style={{ marginLeft: "20px" }}
-                      onClick={() => openModal(1)}
-                      className="btn btn-dark"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modalEstilistas"
-                    >
-                      <i className="fa-solid fa-circle-plus">Agregar</i>
-                    </button>
-                  </MDTypography>
-                </MDBox>
-              ) : null}
+              <MDBox
+                mx={2}
+                mt={-3}
+                py={3}
+                px={2}
+                variant="gradient"
+                bgColor="info"
+                borderRadius="lg"
+                coloredShadow="info"
+              >
+                <MDTypography variant="h6" color="white">
+                  Tipo de productos
+                  <button
+                    style={{ marginLeft: "20px" }}
+                    onClick={() => openModal(1)}
+                    className="btn btn-dark"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEstilistas"
+                  >
+                    <i className="fa-solid fa-circle-plus">Agregar</i>
+                  </button>
+                </MDTypography>
+              </MDBox>
               <MDBox pt={3}>
                 <DataTable
                   table={{
@@ -293,12 +285,8 @@ const Dashboard = () => {
                       { Header: "Dirección", accessor: "address", align: "center" },
                       { Header: "Email", accessor: "email", align: "center" },
                       { Header: "Descripción", accessor: "description", align: "center" },
-                      usuarioLogeado.tipo === "A" && {
-                        Header: "Acción",
-                        accessor: "action",
-                        align: "center",
-                      },
-                    ].filter(Boolean),
+                      { Header: "Acción", accessor: "action", align: "center" },
+                    ],
                     rows: estilistas.map((estilista) => ({
                       function: estilista.id,
                       name: (

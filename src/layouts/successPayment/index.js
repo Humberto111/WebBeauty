@@ -43,16 +43,14 @@ const styles = {
   },
   link: {
     display: "inline-block",
-    padding: "3px",
+    padding: "8px",
     backgroundColor: "#4CAF50",
     color: "#fff",
     textDecoration: "none",
-    borderRadius: "7px",
+    borderRadius: "5px",
     fontSize: "16px",
     fontWeight: "bold",
     transition: "background-color 0.3s ease",
-    cursor: "pointer",
-    marginLeft: "10px",
   },
 };
 
@@ -72,7 +70,7 @@ const Dashboard = () => {
   const getComprobante = async () => {
     try {
       const response = await fetch(
-        `https://web-beauty-api-638331a8cfae.herokuapp.com/comprobante?id_usuario=${usuarioLogeado.id}`,
+        `http://localhost:3001/comprobante?id_usuario=${usuarioLogeado.id}`,
         {
           method: "GET",
           headers: {
@@ -82,20 +80,11 @@ const Dashboard = () => {
       );
 
       const data = await response.json();
+      console.log(data);
       setComprobante(data);
     } catch (error) {
       console.error("Error de red:", error);
     }
-  };
-
-  const formatCurrency = (amount) => {
-    const formatter = new Intl.NumberFormat("es-CR", {
-      style: "currency",
-      currency: "CRC",
-      minimumFractionDigits: 2,
-    });
-
-    return formatter.format(amount);
   };
 
   const imprimirComprobante = () => {
@@ -110,10 +99,6 @@ const Dashboard = () => {
 
     doc.autoTable({
       head: [["Gracias por su compra", `${fechaFormateada}`]],
-      headStyles: {
-        fontStyle: "bold",
-        fontSize: 15,
-      },
     });
 
     doc.autoTable({
@@ -132,7 +117,7 @@ const Dashboard = () => {
         item.id_producto,
         item.nombre_producto,
         item.descripcion_producto,
-        formatCurrency(item.precio_producto),
+        item.precio_producto,
         item.cantidad_producto,
       ]),
     });
@@ -158,7 +143,7 @@ const Dashboard = () => {
         <p style={styles.thankYou}>¡Gracias por elegirnos!</p>
         <div style={styles.buttonContainer}>
           <a href="/dashboard" style={styles.link}>
-            Volver a la página principal
+            Seguir Comprando
           </a>
           <a onClick={imprimirComprobante} style={styles.link}>
             Descargar Comprobante

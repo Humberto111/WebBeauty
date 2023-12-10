@@ -24,6 +24,7 @@ function Notifications() {
       if (response.ok) {
         const data = await response.json();
         setComentario(data);
+        console.log(data);
       } else {
         console.log("error");
       }
@@ -106,12 +107,7 @@ function Notifications() {
           onChange={(e) => setNewComment(e.target.value)}
         />
         <Box mt={2}>
-          <Button
-            variant="contained"
-            color="primary"
-            style={{ color: "white" }}
-            onClick={handleCommentSubmit}
-          >
+          <Button variant="contained" color="primary" onClick={handleCommentSubmit}>
             Comentar
           </Button>
         </Box>

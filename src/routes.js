@@ -30,7 +30,6 @@ import ContentCutIcon from "@mui/icons-material/ContentCut";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
-import { ShoppingCart } from "@mui/icons-material";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -136,7 +135,7 @@ const routes = [
     type: "collapse",
     name: "Cart",
     key: "cart",
-    icon: <ShoppingCart />,
+    icon: <Icon fontSize="small">assignment</Icon>,
     route: "/cart",
     component: <CarritoCompras />,
   },
@@ -149,6 +148,7 @@ const routes = [
     component: <Graficos />,
   },
   {
+    //type: userStored.tipo === "C" ? "collapse" : "hidden",
     type: "collapse",
     name: "Historial de Compras",
     key: "historialProductos",
@@ -157,6 +157,7 @@ const routes = [
     component: <HistorialProductos />,
   },
   {
+    //type: userStored.tipo === "A" ? "collapse" : "hidden",
     type: "collapse",
     name: "Historial de Ventas",
     key: "historialVentas",
