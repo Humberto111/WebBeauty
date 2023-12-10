@@ -43,14 +43,16 @@ const styles = {
   },
   link: {
     display: "inline-block",
-    padding: "8px",
+    padding: "3px",
     backgroundColor: "#4CAF50",
     color: "#fff",
     textDecoration: "none",
-    borderRadius: "5px",
+    borderRadius: "7px",
     fontSize: "16px",
     fontWeight: "bold",
     transition: "background-color 0.3s ease",
+    cursor: "pointer",
+    marginLeft: "10px",
   },
 };
 
@@ -67,10 +69,20 @@ const Dashboard = () => {
     getComprobante();
   }, [usuarioLogeado]);
 
+  const formatCurrency = (amount) => {
+    const formatter = new Intl.NumberFormat("es-CR", {
+      style: "currency",
+      currency: "CRC",
+      minimumFractionDigits: 2,
+    });
+
+    return formatter.format(amount);
+  };
+
   const getComprobante = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3001/comprobante?id_usuario=${usuarioLogeado.id}`,
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/comprobante?id_usuario=${usuarioLogeado.id}`,
         {
           method: "GET",
           headers: {
@@ -99,6 +111,10 @@ const Dashboard = () => {
 
     doc.autoTable({
       head: [["Gracias por su compra", `${fechaFormateada}`]],
+      headStyles: {
+        fontStyle: "bold",
+        fontSize: 15,
+      },
     });
 
     doc.autoTable({
@@ -117,14 +133,20 @@ const Dashboard = () => {
         item.id_producto,
         item.nombre_producto,
         item.descripcion_producto,
-        item.precio_producto,
+        formatCurrency(item.precio_producto),
         item.cantidad_producto,
       ]),
     });
 
     doc.autoTable({
       head: [["Subtotal", "Descuento", "Total"]],
-      body: [[comprobante[0].subtotal, comprobante[0].descuento, comprobante[0].total]],
+      body: [
+        [
+          formatCurrency(comprobante[0].subtotal),
+          formatCurrency(comprobante[0].descuento),
+          formatCurrency(comprobante[0].total),
+        ],
+      ],
     });
 
     doc.save("comprobante.pdf");
@@ -143,7 +165,7 @@ const Dashboard = () => {
         <p style={styles.thankYou}>¡Gracias por elegirnos!</p>
         <div style={styles.buttonContainer}>
           <a href="/dashboard" style={styles.link}>
-            Seguir Comprando
+            Volver a la página principal
           </a>
           <a onClick={imprimirComprobante} style={styles.link}>
             Descargar Comprobante
