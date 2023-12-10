@@ -85,7 +85,6 @@ function Basic() {
         handleVerify2FA();
       } else {
         openErrorSB(true);
-        console.log("error");
       }
     } catch (error) {
       console.error("Error de red:", error);

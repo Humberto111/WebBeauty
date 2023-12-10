@@ -42,8 +42,6 @@ const ServicesDashboard = () => {
       });
 
       const data = await response.json();
-      console.log(data);
-      console.log(usuarioLogeado);
       setServices(data);
     } catch (error) {
       console.error("Error de red:", error);

@@ -44,7 +44,6 @@ function Tables() {
       );
 
       const data = await response.json();
-      console.log(data);
       setProducts(data);
     } catch (error) {
       console.error("Error de red:", error);

@@ -56,15 +56,17 @@ const Dashboard = () => {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:3001/historialVentas`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `https://web-beauty-api-638331a8cfae.herokuapp.com/historialVentas`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
-      console.log(data);
       setHistorialVentas(data);
     } catch (error) {
       console.error("Error de red:", error);

@@ -24,7 +24,6 @@ function Notifications() {
       if (response.ok) {
         const data = await response.json();
         setComentario(data);
-        console.log(data);
       } else {
         console.log("error");
       }

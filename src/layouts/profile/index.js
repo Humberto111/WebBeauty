@@ -112,7 +112,6 @@ function Overview() {
     try {
       //es post
       const user = JSON.parse(localStorage.getItem("users"));
-      console.log(user.email);
       const response = await fetch(
         "https://web-beauty-api-638331a8cfae.herokuapp.com/generateSecretAndQR",
         {
@@ -127,7 +126,6 @@ function Overview() {
       );
       const data = await response.json();
       setQrCodeUrl(data.qrCodeDataURL);
-      console.log(data);
     } catch (error) {
       console.error("Error de red:", error);
     }

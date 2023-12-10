@@ -52,13 +52,10 @@ const Dashboard = () => {
 
     if (compraRealizada === "1") {
       const productsRetrieved = JSON.parse(localStorage.getItem("products"));
-      console.log("productsRetrieved ", productsRetrieved);
 
       if (productsRetrieved.length > 0) {
         const montosRetrieved = JSON.parse(localStorage.getItem("montosTotales"));
         const fechaFormateada = obtenerFechaActual();
-
-        console.log("product length ", productsRetrieved.length);
 
         try {
           // Enviar datos de la venta
@@ -86,7 +83,6 @@ const Dashboard = () => {
             // Actualizar productos en el servidor y eliminar localmente
             await Promise.all(
               productsRetrieved.map(async (product) => {
-                console.log("cada producto ", product);
                 try {
                   const updateResponse = await fetch(
                     "https://web-beauty-api-638331a8cfae.herokuapp.com/editProduct",

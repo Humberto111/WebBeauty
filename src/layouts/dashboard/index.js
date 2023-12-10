@@ -260,7 +260,6 @@ const Dashboard = () => {
     }
 
     const isProductInCart = productsStored.some((item) => item.id_producto === product.id);
-    console.log(isProductInCart);
 
     if (isProductInCart) {
       Swal.fire({

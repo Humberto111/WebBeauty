@@ -356,7 +356,6 @@ const DemoApp = () => {
             slotMinTime="09:00"
             slotMaxTime="18:00"
             eventDidMount={(e) => {
-              console.log(estilistaToolTip);
               if (
                 e.event.extendedProps.id_usuario === usuarioLogeado.id ||
                 usuarioLogeado.tipo === "A"
