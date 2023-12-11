@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link, json } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -16,6 +16,7 @@ import MDSnackbar from "components/MDSnackbar";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import { Button } from "@mui/material";
+import axios from "axios";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -82,27 +83,36 @@ function Basic() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const data = {
+        w: "users",
+        r: "users_log_me_in",
+        userName: email,
+        pwd: password,
+      };
+      const body = JSON.stringify(data);
+
+      const contentLength = body.length;
+
       const response = await fetch(urlFactu, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+          connection: "keep-alive",
         },
-        body: JSON.stringify({
-          w: "users",
-          r: "users_log_me_in",
-          userName: email,
-          pwd: password,
-        }),
+        body,
       });
-
       if (response.ok) {
-        openSuccessSB(true);
         const data = await response.json();
-        const jsonData = JSON.stringify(data);
-        localStorage.setItem("factu", jsonData);
+        if (data.resp !== "-301") {
+          openSuccessSB(true);
+          const jsonData = JSON.stringify(data);
+          console.log(jsonData);
+          localStorage.setItem("factu", jsonData);
+        } else {
+          openErrorSB(true);
+        }
       } else {
         openErrorSB(true);
-        console.log("error");
       }
     } catch (error) {
       console.error("Error de red:", error);
@@ -116,7 +126,8 @@ function Basic() {
       const response = await fetch(urlFactu, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+          connection: "keep-alive",
         },
         body: JSON.stringify({
           w: "users",
@@ -125,8 +136,11 @@ function Basic() {
           iam: factuUser.resp.userName,
         }),
       });
-
+      console.log(response);
       if (response.ok) {
+        const data = await response.json();
+        const jsonData = JSON.stringify(data);
+        console.log(jsonData);
         openLogoutSB(true);
         localStorage.removeItem("factu");
       } else {
