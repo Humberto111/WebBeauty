@@ -23,6 +23,7 @@ import SuccessPage from "layouts/successPayment";
 import DashboardFactu from "layouts/factu/dashboardFactu";
 import LoginFactu from "layouts/factu/sign-in-factu";
 import RegisterFactu from "layouts/factu/sign-up-factu";
+import UploadCertificado from "layouts/factu/upload-certificado";
 
 import GridViewIcon from "@mui/icons-material/GridView";
 import FilterBAndWIcon from "@mui/icons-material/FilterBAndW";
@@ -194,6 +195,13 @@ const routes = [
     icon: <LeaderboardIcon />,
     route: "/facturacion",
     component: <DashboardFactu />,
+  },
+  {
+    name: "Subir Certificado",
+    key: "subir-certificado",
+    icon: <LeaderboardIcon />,
+    route: "/upload-certificado",
+    component: <UploadCertificado />,
   },
 ];
 
