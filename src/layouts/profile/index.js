@@ -156,7 +156,7 @@ function Overview() {
       setEmail(usuario.email);
       setPassword(usuario.password);
       setTipo(usuario.tipo);
-      const fechaParte = usuario.fecha_nacimiento.split("T")[0];
+      const fechaParte = usuario.fecha_nacimiento ? usuario.fecha_nacimiento : "";
       setFecha_nacimiento(fechaParte);
       setGenero(usuario.genero);
     }

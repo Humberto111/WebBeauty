@@ -29,7 +29,7 @@ const Dashboard = () => {
   useEffect(() => {
     const userStored = JSON.parse(localStorage.getItem("users"));
     setUsuarioLogeado(userStored);
-  }, [usuarioLogeado]);
+  }, []);
 
   useEffect(() => {
     getEstilistas();
