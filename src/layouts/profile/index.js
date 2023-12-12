@@ -47,12 +47,7 @@ function Overview() {
   const [usuario, setUsuario] = useState({});
   const [apellido, setApellido] = useState("");
   const [fecha_nacimiento, setFecha_nacimiento] = useState("");
-  const [genero, setGenero] = useState("");
-  const [password, setPassword] = useState("");
   const [profile_picture, setProfile_picture] = useState("");
-  const [tipo, setTipo] = useState("");
-
-  const apiUrl = "https://web-beauty-api-638331a8cfae.herokuapp.com";
 
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
@@ -74,16 +69,6 @@ function Overview() {
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
 
-  const handleSetTabValue = (event, newValue) => setTabValue(newValue);
-  /*setId(data[0].id);
-      setEmail(data[0].email);
-      setNombre(data[0].nombre);
-      setApellido(data[0].apellido);
-      setFecha_nacimiento(data[0].fecha_nacimiento);
-      setGenero(data[0].genero);
-      setPassword(data[0].password);
-      setProfile_picture(data[0].profile_picture);
-      setTipo(data[0].tipo);*/
   const getUsuario = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("users"));
@@ -98,6 +83,9 @@ function Overview() {
       );
 
       const data = await response.json();
+      data[0].fecha_nacimiento
+        ? (data[0].fecha_nacimiento = data[0].fecha_nacimiento.split("T")[0])
+        : "";
       setUsuario(data[0]);
     } catch (error) {
       console.error("Error de red:", error);
@@ -110,7 +98,6 @@ function Overview() {
 
   const generateQRAuth = async () => {
     try {
-      //es post
       const user = JSON.parse(localStorage.getItem("users"));
       const response = await fetch(
         "https://web-beauty-api-638331a8cfae.herokuapp.com/generateSecretAndQR",
@@ -145,20 +132,14 @@ function Overview() {
     setNombre("");
     setApellido("");
     setEmail("");
-    setPassword("");
-    setTipo("");
     setFecha_nacimiento("");
-    setGenero("");
     if (usuario) {
       setId(usuario.id);
       setNombre(usuario.nombre);
       setApellido(usuario.apellido);
       setEmail(usuario.email);
-      setPassword(usuario.password);
-      setTipo(usuario.tipo);
       const fechaParte = usuario.fecha_nacimiento ? usuario.fecha_nacimiento : "";
       setFecha_nacimiento(fechaParte);
-      setGenero(usuario.genero);
     }
     window.setTimeout(() => {
       document.getElementById("nombre").focus();
@@ -171,7 +152,7 @@ function Overview() {
       alert("El nombre es obligatorio", "warning");
       return false;
     } else if (apellido.trim() === "") {
-      alert("La apellido es obligatorio", "warning");
+      alert("El apellido es obligatorio", "warning");
       return false;
     } else if (email === "") {
       alert("El correo es obligatorio", "warning");
@@ -179,11 +160,8 @@ function Overview() {
     } else if (fecha_nacimiento === "") {
       alert("La fecha de nacimiento es obligatorio", "warning");
       return false;
-    } else if (genero === "") {
-      alert("La el genero obligatorio", "warning");
-      return false;
     } else {
-      parametros = { id, nombre, apellido, email, fecha_nacimiento, genero, password, tipo };
+      parametros = { id, nombre, apellido, email, fecha_nacimiento };
       enviarSolicitud(parametros);
     }
   };
@@ -203,9 +181,6 @@ function Overview() {
             apellido: parametros.apellido,
             email: parametros.email,
             fecha_nacimiento: parametros.fecha_nacimiento,
-            genero: parametros.genero,
-            password: parametros.password,
-            tipo: parametros.tipo,
           }),
         }
       );
@@ -459,34 +434,6 @@ function Overview() {
                   placeholder="Fecha de Nacimiento"
                   value={fecha_nacimiento}
                   onChange={(e) => setFecha_nacimiento(e.target.value)}
-                ></input>
-              </div>
-              {/*crear una radio buton para elegir el sexo*/}
-              <div className="input-group mb-3">
-                <span className="input-group-text">
-                  <i className="fa-solid fa-gift"></i>
-                </span>
-                <select
-                  className="form-select"
-                  id="genero"
-                  value={genero}
-                  onChange={(e) => setGenero(e.target.value)}
-                >
-                  <option value="0">Seleccione un Genero</option>
-                  <option value="1">Masculino</option>
-                  <option value="2">Femenino</option>
-                </select>
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">
-                  <i className="fa-solid fa-gift"></i>
-                </span>
-                <input
-                  type="password"
-                  id="password"
-                  className="form-control"
-                  placeholder="Password"
-                  onChange={(e) => setPassword(e.target.value)}
                 ></input>
               </div>
               <div className="d-grid col-6 mx-auto">

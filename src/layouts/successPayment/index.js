@@ -4,6 +4,7 @@ import Footer from "examples/Footer";
 import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import brandWhite from "assets/images/Beauty-3.png";
 
 const styles = {
   container: {
@@ -15,8 +16,8 @@ const styles = {
     margin: "auto",
   },
   icon: {
-    width: "80px",
-    height: "80px",
+    width: "120px",
+    height: "120px",
     marginBottom: "10px",
   },
   heading: {
@@ -140,7 +141,7 @@ const Dashboard = () => {
     <DashboardLayout>
       <DashboardNavbar />
       <div style={styles.container}>
-        <img src="https://via.placeholder.com/150" alt="Checkmark Icon" style={styles.icon} />
+        <img src={brandWhite} alt="Checkmark Icon" style={styles.icon} />
         <h1 style={styles.heading}>¡Gracias por tu compra!</h1>
         <p style={styles.text}>
           ¡Tu pedido ha sido procesado con éxito! Estamos emocionados de tenerte como nuestro
