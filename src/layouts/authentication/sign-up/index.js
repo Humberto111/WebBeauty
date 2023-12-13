@@ -17,6 +17,8 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
+import brandWhite from "assets/images/Beauty-white-2.png";
+import brandDark from "assets/images/Beauty.png";
 
 import { useState } from "react";
 
@@ -91,7 +93,7 @@ function Cover() {
   };
 
   return (
-    <CoverLayout image={bgImage}>
+    <CoverLayout image={brandDark}>
       <Card>
         <MDBox
           variant="gradient"
@@ -161,7 +163,7 @@ function Cover() {
                 color="text"
                 sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
               >
-                &nbsp;&nbsp;I agree the&nbsp;
+                &nbsp;&nbsp;Aceptar&nbsp;
               </MDTypography>
               <MDTypography
                 component="a"
@@ -171,7 +173,7 @@ function Cover() {
                 color="info"
                 textGradient
               >
-                Terms and Conditions
+                Terminos y condiciones
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>

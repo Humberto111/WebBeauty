@@ -18,6 +18,8 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import brandWhite from "assets/images/Beauty-white-2.png";
+import brandDark from "assets/images/Beauty.png";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -120,7 +122,7 @@ function Basic() {
   };
 
   return (
-    <BasicLayout image={bgImage}>
+    <BasicLayout image={brandDark}>
       <Card>
         <MDBox
           variant="gradient"

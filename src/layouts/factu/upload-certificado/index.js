@@ -69,27 +69,41 @@ function Cover() {
     e.preventDefault();
 
     try {
+      const formData = new FormData();
+      formData.append("w", "fileUploader");
+      formData.append("r", "subir_certif");
+      formData.append("sessionKey", factuUser.resp.sessionKey);
+      formData.append("fileToUpload", file);
+      formData.append("iam", factuUser.resp.sessionKey.userName);
+
       const response = await fetch("https://web-beauty-factu-b5f1002b97bd.herokuapp.com/api.php", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          // Utilizar 'multipart/form-data' para FormData
+          // y 'Connection' en lugar de 'connection'
+          "Content-Type": "multipart/form-data",
+          Connection: "keep-alive",
         },
-        body: JSON.stringify({
-          w: "fileUploader",
-          r: "subir_certif",
-          sessionKey: factuUser.resp.sessionKey,
-          fileToUpload: file,
-          iam: factuUser.resp.sessionKey.userName,
-        }),
+        body: formData,
       });
 
       if (response.ok) {
-        openSuccessSB(true);
-        const data = await response.json();
-        console.log(data);
+        const contentType = response.headers.get("Content-Type");
+        console.log(response);
+        if (contentType && contentType.includes("application/json")) {
+          // La respuesta es JSON
+          const data = await response.json();
+          console.log(data);
+          openSuccessSB(true);
+        } else {
+          // La respuesta no es JSON, puede ser HTML u otro tipo
+          const textoRespuesta = await response.text();
+          console.log("Respuesta no JSON:", textoRespuesta);
+          openSuccessSB(true);
+        }
       } else {
         openErrorSB(true);
-        console.log("error");
+        console.log("Error en la solicitud:", response.statusText);
       }
     } catch (error) {
       console.error("Error de red:", error);
