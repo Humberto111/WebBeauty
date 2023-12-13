@@ -92,7 +92,8 @@ export default function App() {
                 route.key !== "graficos" &&
                 route.key !== "historialVentas" &&
                 route.key !== "sing-in-factu" &&
-                route.key !== "sing-up-factu"
+                route.key !== "sing-up-factu" &&
+                route.key !== "facturacion"
               ) {
                 return <Route exact path={route.route} element={route.component} key={route.key} />;
               }
@@ -133,8 +134,13 @@ export default function App() {
           "historialVentas",
           "sing-in-factu",
           "sing-up-factu",
+          "facturacion",
         ];
         return allRoute.filter((route) => !allowedRoutes.includes(route.key));
+      }
+      if (user.tipo === "A") {
+        const allowedRoutesAdmin = ["historialProductos"];
+        return allRoute.filter((route) => !allowedRoutesAdmin.includes(route.key));
       }
       return allRoute;
     } catch (error) {
@@ -179,8 +185,6 @@ export default function App() {
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
-          <Configurator />
-          {configsButton}
         </>
       )}
       {layout === "vr" && <Configurator />}

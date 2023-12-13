@@ -197,14 +197,14 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <MDBox p={2} mt="auto">
         <MDButton
           className="btn btn-dark"
-          component="a"
+          component={NavLink}
           target="_blank"
-          rel="noreferrer"
           variant="gradient"
           color={sidenavColor}
           fullWidth
+          to="/calendario"
         >
-          Biti
+          Reservar Cita
         </MDButton>
       </MDBox>
     </SidenavRoot>

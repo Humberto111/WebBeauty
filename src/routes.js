@@ -33,6 +33,8 @@ import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import AssuredWorkloadIcon from "@mui/icons-material/AssuredWorkload";
+import SdCardAlertIcon from "@mui/icons-material/SdCardAlert";
+import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -118,7 +120,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Calendario",
+    name: "Citas",
     key: "calendario",
     icon: <CalendarMonthIcon />,
     route: "/calendario",
@@ -175,13 +177,13 @@ const routes = [
     type: "collapse",
     name: "Inicio de Sesión Factu",
     key: "sing-in-factu",
-    icon: <LeaderboardIcon />,
+    icon: <SdCardAlertIcon />,
     route: "/sing-in-factu",
     component: <LoginFactu />,
   },
   {
     key: "sing-up-factu",
-    icon: <LeaderboardIcon />,
+    icon: <SimCardDownloadIcon />,
     route: "/sing-up-factu",
     component: <RegisterFactu />,
   },
@@ -189,14 +191,14 @@ const routes = [
     type: "collapse",
     name: "Facturación",
     key: "facturacion",
-    icon: <LeaderboardIcon />,
+    icon: <SimCardDownloadIcon />,
     route: "/facturacion",
     component: <DashboardFactu />,
   },
   {
     name: "Subir Certificado",
     key: "subir-certificado",
-    icon: <LeaderboardIcon />,
+    icon: <SdCardAlertIcon />,
     route: "/upload-certificado",
     component: <UploadCertificado />,
   },

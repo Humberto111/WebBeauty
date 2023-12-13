@@ -62,9 +62,7 @@ function Cover() {
     />
   );
 
-  const onSubmitRegister = async (e) => {
-    e.preventDefault();
-
+  const onSubmitRegister = async () => {
     try {
       const response = await fetch("https://web-beauty-api-638331a8cfae.herokuapp.com/register", {
         method: "POST",
@@ -87,6 +85,24 @@ function Cover() {
       }
     } catch (error) {
       console.error("Error de red:", error);
+    }
+  };
+
+  const validar = () => {
+    if (nombre.trim() === "") {
+      alert("El nombre es obligatorio", "warning");
+      return false;
+    } else if (apellido.trim() === "") {
+      alert("El apellido es obligatorio", "warning");
+      return false;
+    } else if (email === "") {
+      alert("El email es obligatorio", "warning");
+      return false;
+    } else if (password === "") {
+      alert("La contraseña es obligatoria", "warning");
+      return false;
+    } else {
+      onSubmitRegister();
     }
   };
 
@@ -175,7 +191,7 @@ function Cover() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" onClick={onSubmitRegister} fullWidth>
+              <MDButton variant="gradient" color="info" onClick={validar} fullWidth>
                 Registrar
               </MDButton>
             </MDBox>

@@ -121,35 +121,9 @@ function Notifications() {
       <MDBox pt={2} px={2}>
         {comentario.map((comment) => (
           <Box key={comment.comentario_id} mb={2}>
-            <Alert color="primary" dismissible="true">
+            <Alert color="info" dismissible="true">
               <Typography variant="body2">{comment.texto}</Typography>
             </Alert>
-            {/* Formulario para Responder a Comentario */}
-            <Box mt={2} p={2}>
-              <TextField
-                label={"Responder al comentario " + comment.comentario_id}
-                multiline
-                rows={3}
-                variant="outlined"
-                fullWidth
-                value={responseTexts[comment.comentario_id] || ""}
-                onChange={(e) =>
-                  setResponseTexts((prevState) => ({
-                    ...prevState,
-                    [comment.comentario_id]: e.target.value,
-                  }))
-                }
-              />
-              <Box mt={2}>
-                <Button
-                  variant="contained"
-                  color="info"
-                  onClick={() => handleResponseSubmit(comment.comentario_id)}
-                >
-                  Responder
-                </Button>
-              </Box>
-            </Box>
           </Box>
         ))}
       </MDBox>
