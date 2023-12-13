@@ -352,6 +352,9 @@ function Overview() {
           </Grid>
           <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
             <div>
+              <MDTypography variant="h6" fontWeight="medium" mb={3}>
+                Escanea el código QR configurar el doble factor de autenticación en tu cuenta
+              </MDTypography>
               <img src={qrCodeUrl} alt="QR Code" />
               <div>
                 <input

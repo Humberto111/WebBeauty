@@ -61,6 +61,7 @@ const Dashboard = () => {
       );
 
       const data = await response.json();
+      getImages();
       // Realizar acciones adicionales según sea necesario
     } catch (error) {
       console.error("Error de red:", error);
@@ -85,6 +86,10 @@ const Dashboard = () => {
           }),
         }
       );
+
+      if (response.ok) {
+        getImages();
+      }
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -102,7 +107,6 @@ const Dashboard = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         onDeleteImagen(id);
-        getImages();
       }
     });
   };
