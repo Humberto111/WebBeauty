@@ -449,7 +449,7 @@ const ServicesDashboard = () => {
               </div>
               <div className="d-grid col-6 mx-auto">
                 <button onClick={() => validar()} className="btn btn-success">
-                  <i className="fa-solid fa-floppy-disk"></i> Gaurdar
+                  <i className="fa-solid fa-floppy-disk"></i> Guardar
                 </button>
               </div>
             </div>

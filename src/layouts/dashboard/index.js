@@ -51,7 +51,6 @@ const Dashboard = () => {
     setDescripcion("");
     setPrecio("");
     setCantidad_en_stock("");
-    setFile(null);
     if (op === 1) {
       setTitle("Nuevo producto");
       setOperation(1);
@@ -223,6 +222,9 @@ const Dashboard = () => {
           }),
         }
       );
+      if (response.ok) {
+        getProducts();
+      }
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -240,7 +242,6 @@ const Dashboard = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         onDeleteProduct(id);
-        getProducts();
       }
     });
   };
